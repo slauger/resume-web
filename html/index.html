@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lebenslauf</title>
+  <link rel="stylesheet" href="styles.css">
+  <meta name="color-scheme" content="light dark">
+</head>
+<body>
+<header class="hero">
+  <div class="container hero-inner">
+    <div class="id">
+      <img id="avatar" src="profile.jpg" alt="Profilbild" class="avatar" loading="lazy">
+      <div>
+        <h1 id="name" class="title"></h1>
+        <div id="profession" class="subtitle"></div>
+        <div id="summary" class="summary"></div>
+      </div>
+    </div>
+    <div class="actions no-print">
+      <button id="btnPrintCompact" title="PDF (kompakt)" class="btn">PDF kompakt</button>
+      <button id="btnPrintDetailed" title="PDF (detailliert)" class="btn">PDF detailliert</button>
+      <button id="btnDownloadJson" title="JSON herunterladen" class="btn">JSON</button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div id="error" class="card" style="display:none"></div>
+  <div id="cv"></div>
+</main>
+
+<script src="app.js" defer></script>
+</body>
+</html>

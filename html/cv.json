@@ -1,0 +1,105 @@
+{
+  "name": "Karl Klamauk",
+  "title": "Professioneller Pechvogel & Clown",
+  "image": "profile.jpg",
+  "contact": {
+    "address": "Zirkusweg 1, 12345 Witzhausen, Deutschland",
+    "email": "karl.klamauk@example.com",
+    "phone": "+49 151 00000000",
+    "web": {
+      "url": "https://example.com/karl-klamauk",
+      "title": "Website"
+    }
+  },
+  "socialLinks": [
+    {
+      "name": "GitHub",
+      "url": "https://github.com/der-klamauk"
+    },
+    {
+      "name": "LinkedIn",
+      "url": "https://www.linkedin.com/in/karl-klamauk/"
+    }
+  ],
+  "description": "Selbstironischer Clown und notorischer Tollpatsch – spezialisiert auf Slapstick, unerwartete Pannen und das charmante Scheitern auf hohem Niveau.",
+  "skills": [
+    "Slapstick",
+    "Jonglage (fällt oft runter)",
+    "Pantomime",
+    "Publikumsinteraktion",
+    "CI/CD (Clown In/Clown Out)",
+    "Git (für Konfetti)",
+    "Docker (Eimer)",
+    "Kubernetes (vieles im Eimer)",
+    "Selbstironie",
+    "Improvisation",
+    "Publikumsbindung",
+    "Krisenhumor"
+  ],
+  "languages": {
+    "Deutsch": {
+      "level": 100,
+      "label": "Muttersprache",
+      "cefr": "C2"
+    },
+    "Englisch": {
+      "level": 75,
+      "label": "Fließend",
+      "cefr": "C1"
+    }
+  },
+  "interests": [
+    "Tortenwerfen",
+    "Bananenschalen",
+    "Luftballontiere",
+    "Konfetti-Optimierung"
+  ],
+  "experience": [
+    {
+      "title": "Große Nummer geht klein aus",
+      "company": "Zirkus Fortuna",
+      "location": "Deutschlandweit",
+      "role": "Clown",
+      "type": "self_employed",
+      "period": {
+        "start": "2024-04",
+        "end": null
+      },
+      "skills": [
+        "Slapstick",
+        "Improvisation",
+        "Publikum"
+      ],
+      "description": "Abendfüllende Slapstick-Show mit kalkulierten Pannen – Lachen garantiert, Erfolg optional.",
+      "details": [
+        "Dramaturgie für 60‑minütige Pechvogel‑Routine entwickelt",
+        "Sicheres Scheitern als Stilmittel inszeniert (ohne echte Verletzungen)",
+        "Publikumsinteraktion mit situativer Improvisation und Running Gags"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Diplom in Angewandter Clownerie",
+      "school": "Hochschule für Humoristik",
+      "location": "Köln",
+      "period": {
+        "start": "2015-10",
+        "end": "2019-09"
+      },
+      "description": "Schwerpunkt Slapstick, Impro und Pädagogik.",
+      "details": [
+        "Abschlussprojekt: „Der mit der Torte tanzt“",
+        "Tutor für Erstsemester‑Clownerei"
+      ]
+    }
+  ],
+  "certificates": [
+    {
+      "title": "Certified Banana Peel Specialist (CBPS)",
+      "description": "Professioneller Umgang mit Bananenschalen, inklusive Rutsch‑Sicherheit.",
+      "date": "2020-04",
+      "url": null
+    }
+  ]
+}
