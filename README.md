@@ -7,7 +7,7 @@ It is designed to be hosted statically (e.g. via GitHub Pages, GitLab Pages, or 
 
 ![example](example.png)
 
-[Here](https://slauger.github.io/resume-web/) you can find and example, hosted on GitHub Pages.
+[Here](https://slauger.github.io/resume-web/) you can find an example, hosted on GitHub Pages.
 
 ---
 
