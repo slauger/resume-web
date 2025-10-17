@@ -1,8 +1,8 @@
 # resume-web
 
-**Static web frontend for JSON-based resumes with PDF export.**
+**Modern static web frontend for JSON-based resumes with advanced PDF export.**
 
-This project renders a modern resume directly from a `cv.json` file.  
+This project renders a stunning, modern resume directly from a `cv.json` file with glassmorphism design, animated backgrounds, and interactive features.
 It is designed to be hosted statically (e.g. via GitHub Pages, GitLab Pages, or AWS S3).
 
 ![example](example.png)
@@ -13,13 +13,30 @@ It is designed to be hosted statically (e.g. via GitHub Pages, GitLab Pages, or 
 
 ## ✨ Features
 
-- Load resume data from a single `cv.json`
-- Clean, modern web design
-- Expandable details for each experience
-- Skill tags displayed as badges
-- Language levels with progress bars
-- PDF export (compact and detailed version)
-- Optional raw JSON download
+### Core Features
+- 📄 Load resume data from a single `cv.json`
+- 🎨 **Modern glassmorphism design** with gradient backgrounds
+- 🎯 **Interactive skill filter** - Click on skills to filter experience entries
+- 📱 Fully responsive (Mobile, Tablet, Desktop)
+- 🌓 Automatic dark mode support
+- 🖨️ Professional PDF export (compact and detailed versions)
+- 💾 Raw JSON download
+- ♿ WCAG accessibility compliant
+
+### Design Features
+- ✨ Floating animated background shapes
+- 🎭 Smooth hover animations and transitions
+- 🌈 Beautiful gradient buttons and badges
+- 💎 Glassmorphism cards with backdrop blur
+- 📊 2-column grid layout on desktop
+- 🎪 Interactive contact icons (SVG)
+
+### Technical Features
+- 🔒 XSS protection with URL sanitization
+- ⚡ Zero dependencies - Pure vanilla JavaScript
+- 🎯 JSON Schema validation
+- 🧪 Testing setup with Vitest
+- 📦 No build step required
 
 ---
 
@@ -44,12 +61,35 @@ html/
    cd resume-web
    ```
 
-2. Replace `cv.json` and `profile.jpg` with your own data and image.
+2. Replace `html/cv.json` and `html/profile.jpg` with your own data and image.
 
-3. Open `index.html` locally in a browser **or** host it on:
-   - **GitHub Pages**: Push to `main` and enable Pages in repo settings  
-   - **GitLab Pages**: Use a simple static site config  
-   - **S3/CloudFront**: Upload files and enable static website hosting  
+3. **Local development**:
+   ```bash
+   make serve
+   # Or manually: cd html && python3 -m http.server 8000
+   ```
+   Then open http://localhost:8000
+
+4. **Deploy** to:
+   - **GitHub Pages**: Push to `main` and enable Pages in repo settings
+   - **GitLab Pages**: Use a simple static site config
+   - **S3/CloudFront**: Upload `html/` folder and enable static website hosting
+   - **Netlify/Vercel**: Point to `html/` directory
+
+5. **Validate your cv.json**:
+   ```bash
+   npm install
+   npm run validate
+   ```
+
+---
+
+## 🎯 Interactive Features
+
+### Skill Filter
+Click on any skill badge in the "Kernkompetenzen & Tech-Stack" section to filter the experience entries. Only projects using that skill will be displayed. Click again to reset the filter.
+
+This feature is perfect for recruiters who want to see only relevant experience!
 
 ---
 
