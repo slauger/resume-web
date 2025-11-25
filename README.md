@@ -17,9 +17,11 @@ It is designed to be hosted statically (e.g. via GitHub Pages, GitLab Pages, or 
 - 📄 Load resume data from a single `cv.json`
 - 🎨 **Modern glassmorphism design** with gradient backgrounds
 - 🎯 **Interactive skill filter** - Click on skills to filter experience entries
+- 📝 **Markdown support** - Use markdown syntax in descriptions and details
 - 📱 Fully responsive (Mobile, Tablet, Desktop)
 - 🌓 Automatic dark mode support
 - 🖨️ Professional PDF export (compact and detailed versions)
+- 📥 **Markdown export** - Download your CV as a `.md` file
 - 💾 Raw JSON download
 - ♿ WCAG accessibility compliant
 
@@ -28,15 +30,17 @@ It is designed to be hosted statically (e.g. via GitHub Pages, GitLab Pages, or 
 - 🎭 Smooth hover animations and transitions
 - 🌈 Beautiful gradient buttons and badges
 - 💎 Glassmorphism cards with backdrop blur
-- 📊 2-column grid layout on desktop
+- 📊 Single-column layout for better readability
 - 🎪 Interactive contact icons (SVG)
+- 🎨 Orange-themed markdown elements (code blocks, links)
 
 ### Technical Features
 - 🔒 XSS protection with URL sanitization
-- ⚡ Zero dependencies - Pure vanilla JavaScript
+- ⚡ Zero dependencies - Pure vanilla JavaScript (including markdown parser!)
 - 🎯 JSON Schema validation
 - 🧪 Testing setup with Vitest
 - 📦 No build step required
+- 🔐 Secure markdown rendering (HTML escaping + URL sanitization)
 
 ---
 
@@ -91,24 +95,47 @@ Click on any skill badge in the "Kernkompetenzen & Tech-Stack" section to filter
 
 This feature is perfect for recruiters who want to see only relevant experience!
 
+### Markdown Support
+You can use markdown syntax in your `cv.json` file for descriptions and details:
+
+- **Bold text**: `**text**` or `__text__`
+- *Italic text*: `*text*` or `_text_`
+- `Code blocks`: `` `text` ``
+- [Links](url): `[text](url)`
+
+Example:
+```json
+{
+  "description": "Developed a **cloud-native** platform using `Kubernetes` and *Docker*",
+  "details": [
+    "Migrated **100+ services** to the cloud",
+    "Achieved `99.9%` uptime",
+    "Read more on [our blog](https://example.com)"
+  ]
+}
+```
+
+The markdown is rendered client-side with full XSS protection and works in both the web view and PDF exports!
+
 ---
 
 ## 📝 JSON structure
 
 Top-level fields in `cv.json`:
 
-- `name`: Full name  
-- `title`: Professional title (e.g. *Cloud Consultant*)  
-- `image`: Path to profile picture  
-- `contact`: Address, email, phone, web  
-- `socialLinks`: List of `{ name, url }`  
-- `description`: Short profile summary  
-- `skills`: Array of strings (tags)  
-- `languages`: Object `{ "English": { "level": 85, "label": "Fluent", "cefr": "C1" } }`  
-- `interests`: Array of strings  
-- `experience`: Array of experience objects  
-- `education`: Array of education objects  
-- `certificates`: Array of certificates  
+- `name`: Full name
+- `title`: Professional title (e.g. *Cloud Consultant*)
+- `pageTitle`: *(Optional)* Custom browser tab title (falls back to `name – Lebenslauf`)
+- `image`: Path to profile picture
+- `contact`: Address, email, phone, web
+- `socialLinks`: List of `{ name, url }`
+- `description`: Short profile summary (supports markdown!)
+- `skills`: Array of strings (tags)
+- `languages`: Object `{ "English": { "level": 85, "label": "Fluent", "cefr": "C1" } }`
+- `interests`: Array of strings
+- `experience`: Array of experience objects (descriptions/details support markdown!)
+- `education`: Array of education objects (descriptions/details support markdown!)
+- `certificates`: Array of certificates (descriptions support markdown!)  
 
 ---
 
