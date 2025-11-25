@@ -1,0 +1,41 @@
+{
+  "name": "resume-web",
+  "version": "2.0.0",
+  "description": "Static web frontend for JSON-based resumes with PDF export",
+  "type": "module",
+  "scripts": {
+    "serve": "make serve",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "validate": "node scripts/validate-cv.js",
+    "lint:html": "htmlhint html/*.html",
+    "lint:css": "stylelint html/*.css",
+    "lint": "npm run lint:html && npm run lint:css",
+    "screenshot": "node scripts/screenshot.js",
+    "postinstall": "playwright install chromium --with-deps"
+  },
+  "keywords": [
+    "resume",
+    "cv",
+    "portfolio",
+    "static-site",
+    "pdf-export"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@vitest/ui": "^1.0.0",
+    "ajv": "^8.12.0",
+    "htmlhint": "^1.1.4",
+    "jsdom": "^23.0.0",
+    "playwright": "^1.40.0",
+    "stylelint": "^16.0.0",
+    "stylelint-config-standard": "^36.0.0",
+    "vitest": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/slauger/resume-web.git"
+  }
+}

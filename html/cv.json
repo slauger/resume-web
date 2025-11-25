@@ -76,6 +76,102 @@
         "Sicheres Scheitern als Stilmittel inszeniert (ohne echte Verletzungen)",
         "Publikumsinteraktion mit situativer Improvisation und Running Gags"
       ]
+    },
+    {
+      "title": "Digitaler Transformation Manager (Eimer-Edition)",
+      "company": "TechStartup 'CloudFail'",
+      "location": "Berlin",
+      "role": "Chief Chaos Officer",
+      "type": "contract",
+      "period": {
+        "start": "2023-01",
+        "end": "2024-03"
+      },
+      "skills": [
+        "Docker (Eimer)",
+        "Kubernetes (vieles im Eimer)",
+        "CI/CD (Clown In/Clown Out)",
+        "Git (für Konfetti)"
+      ],
+      "description": "Verantwortlich für das orchestrierte Scheitern in der Cloud – mit Style.",
+      "details": [
+        "Migration von On-Premise Torten zu Cloud-Torten erfolgreich vermasselt",
+        "Container-Orchestrierung: 99% der Eimer fielen zur richtigen Zeit um",
+        "Implementierung einer Continuous Chaos Pipeline mit automatisierten Pannen",
+        "Team-Building durch gemeinsames Lachen über Production-Fails"
+      ]
+    },
+    {
+      "title": "Pantomime & Non-Verbal Communication Expert",
+      "company": "Künstlergruppe 'Die Schweiger'",
+      "location": "Hamburg",
+      "role": "Senior Gestikulierer",
+      "type": "permanent",
+      "period": {
+        "start": "2020-06",
+        "end": "2022-12"
+      },
+      "skills": [
+        "Pantomime",
+        "Körpersprache",
+        "Non-verbale Kommunikation",
+        "Ausdruckstanz"
+      ],
+      "description": "Stille Kunst mit lauten Missgeschicken – wenn der Körper mehr sagt als tausend Worte.",
+      "details": [
+        "Entwicklung einer eigenen Zeichensprache für 'Hilfe, ich stecke fest'",
+        "Perfektionierung der 'unsichtbaren Wand' – leider zu überzeugend (Beule am Kopf)",
+        "Workshop-Leitung: 'Wie man in Stille scheitert' (ausgebucht!)",
+        "Gastauftritt im Fernsehen – versehentlich in einer Talkshow gelandet"
+      ]
+    },
+    {
+      "title": "Junior Luftballon-Architekt",
+      "company": "Kinderparty Service 'Knall & Fall'",
+      "location": "München",
+      "role": "Ballonkünstler",
+      "type": "staffing",
+      "period": {
+        "start": "2019-10",
+        "end": "2020-05"
+      },
+      "skills": [
+        "Luftballontiere",
+        "Krisenmanagement",
+        "Kindergeburtstage",
+        "Improvisationskunst"
+      ],
+      "description": "Von der Giraffe zum abstrakten Expressionismus – in nur einem *Knall*.",
+      "details": [
+        "Spezialisierung auf 'Was soll das sein?'-Tiere mit hohem Interpretationsspielraum",
+        "Entwicklung des legendären 'Platzenden Pudels' (unbeabsichtigt, aber ikonisch)",
+        "Notfall-Rettung bei Ballon-Pannen durch kreative Umdeutung",
+        "Kundenzufriedenheit: 4 von 5 Sternen ('Er hat uns sehr unterhalten, wenn auch anders als geplant')"
+      ]
+    },
+    {
+      "title": "Praktikum: Tortenwerfer & Splatter Artist",
+      "company": "Film-Studio 'Slapstick Productions'",
+      "location": "Köln",
+      "role": "Praktikant",
+      "type": "contract",
+      "period": {
+        "start": "2019-04",
+        "end": "2019-09"
+      },
+      "skills": [
+        "Tortenwerfen",
+        "Timing",
+        "Zielgenauigkeit (manchmal)",
+        "Krisenhumor"
+      ],
+      "description": "Präzisionsarbeit mit Sahne – Hauptdarsteller versehentlich öfter getroffen als geplant.",
+      "details": [
+        "Training in der Kunst des perfekt getimten Tortenwurfs",
+        "Entwicklung eigener Wurftechnik: 'Der Bumerang-Klecks'",
+        "Unfallquote: 73% (aber alle haben gelacht!)",
+        "Auszeichnung: 'Kreativster Fleck auf der Linse' beim Teamfilm-Festival"
+      ]
     }
   ],
   "education": [
@@ -99,6 +195,30 @@
       "title": "Certified Banana Peel Specialist (CBPS)",
       "description": "Professioneller Umgang mit Bananenschalen, inklusive Rutsch‑Sicherheit.",
       "date": "2020-04",
+      "url": null
+    },
+    {
+      "title": "Advanced Confetti Management Certificate",
+      "description": "Zertifizierung für professionelles Konfetti-Deployment mit optimaler Verteilung und Cleanup-Strategien.",
+      "date": "2021-11",
+      "url": null
+    },
+    {
+      "title": "Professional Pie Throwing License (Level 3)",
+      "description": "Lizenz zum professionellen Tortenwerfen mit Schwerpunkt auf Timing, Trajectory und Splatter-Pattern.",
+      "date": "2019-08",
+      "url": null
+    },
+    {
+      "title": "Kubernetes Administrator (Eimer-Edition)",
+      "description": "Zertifizierung für Container-Orchestrierung in chaotischen Umgebungen – spezialisiert auf fallende Objekte.",
+      "date": "2023-03",
+      "url": null
+    },
+    {
+      "title": "First Aid for Self-Inflicted Slapstick Injuries",
+      "description": "Notfallversorgung bei selbst verursachten Comedy-Unfällen. Schwerpunkt: Torte im Gesicht, Stolperfallen.",
+      "date": "2018-06",
       "url": null
     }
   ]
