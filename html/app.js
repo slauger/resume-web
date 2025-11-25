@@ -69,13 +69,14 @@
     $('summary').textContent = d.summary || d.description || '';
     if(d.image){ $('avatar').src = d.image; }
 
-    if(d.name){
-      document.title = d.name + ' – Lebenslauf';
-      const ogTitle = document.querySelector('meta[property="og:title"]');
-      if(ogTitle) ogTitle.content = d.name + ' – Lebenslauf';
-      const twTitle = document.querySelector('meta[name="twitter:title"]');
-      if(twTitle) twTitle.content = d.name + ' – Lebenslauf';
-    }
+    // Set document title from pageTitle field or fallback to name
+    const pageTitle = d.pageTitle || (d.name ? d.name + ' – Lebenslauf' : 'Lebenslauf');
+    document.title = pageTitle;
+
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if(ogTitle) ogTitle.content = pageTitle;
+    const twTitle = document.querySelector('meta[name="twitter:title"]');
+    if(twTitle) twTitle.content = pageTitle;
     const desc = d.title || d.description || 'Professioneller Lebenslauf';
     const ogDesc = document.querySelector('meta[property="og:description"]');
     if(ogDesc) ogDesc.content = desc;
@@ -281,13 +282,8 @@
     const blocks = [];
     blocks.push(renderHeader(d));
     blocks.push(renderSkills(d.skills));
-
-    // Languages and Interests side by side
-    const langHtml = renderLanguages(d.languages);
-    const interestsHtml = renderInterests(d.interests);
-    if(langHtml || interestsHtml){
-      blocks.push('<div class="two-col-grid">' + (langHtml || '') + (interestsHtml || '') + '</div>');
-    }
+    blocks.push(renderLanguages(d.languages));
+    blocks.push(renderInterests(d.interests));
 
     blocks.push('<section class="card" id="experienceSection">'+renderExperience(d.experience).replace('<section class="card">','').replace(/<\/section>$/,'')+'</section>');
     blocks.push(renderEducation(d.education));
