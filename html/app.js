@@ -3,6 +3,32 @@
   function $(id){ return document.getElementById(id); }
   function escapeHtml(str){ return String(str).replace(/[&<>"']/g, s=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[s])); }
   function s(v){ return v==null?'' : escapeHtml(v); }
+
+  // Minimal markdown parser for bold, italic, links, and code
+  function md(str){
+    if(str==null) return '';
+    let text = escapeHtml(str);
+
+    // Links: [text](url)
+    text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, linkText, url) => {
+      const cleanUrl = sanitizeUrl(url);
+      return cleanUrl ? `<a href="${cleanUrl}" target="_blank" rel="noopener">${linkText}</a>` : linkText;
+    });
+
+    // Bold: **text** or __text__
+    text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    text = text.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+
+    // Italic: *text* or _text_ (but not inside words)
+    text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    text = text.replace(/\b_([^_]+)_\b/g, '<em>$1</em>');
+
+    // Code: `text`
+    text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+    return text;
+  }
+
   function sanitizeUrl(url){
     if(!url) return '';
     const trimmed = String(url).trim();
@@ -60,7 +86,7 @@
   }
   function renderList(arr){
     if(!Array.isArray(arr) || !arr.length) return '';
-    return '<ul style="margin:6px 0 0 18px">'+arr.map(h=>'<li>'+s(h)+'</li>').join('')+'</ul>';
+    return '<ul style="margin:6px 0 0 18px">'+arr.map(h=>'<li>'+md(h)+'</li>').join('')+'</ul>';
   }
 
   function renderHeader(d){
@@ -156,7 +182,7 @@
       sorted.map(exp=>{
         const metaBits = [exp.company, formatPeriod(exp.period)].filter(Boolean);
         const meta = metaBits.join(' · ');
-        const desc = exp.description ? '<div style="margin-top:6px">'+s(exp.description)+'</div>' : '';
+        const desc = exp.description ? '<div style="margin-top:6px">'+md(exp.description)+'</div>' : '';
         const details = renderList(exp.details);
         return '<details><summary>'+s(exp.title)+' <span class="small">'+s(meta)+'</span></summary>'+
                '<div class="kv small">'+
@@ -175,7 +201,7 @@
       items.map(ed=>{
         const metaBits = [ed.school, ed.location, formatPeriod(ed.period)].filter(Boolean);
         const meta = metaBits.join(' · ');
-        const desc = ed.description ? '<div class="small" style="margin-top:6px">'+s(ed.description)+'</div>' : '';
+        const desc = ed.description ? '<div class="small" style="margin-top:6px">'+md(ed.description)+'</div>' : '';
         const details = renderList(ed.details);
         return '<details><summary>'+s(ed.degree)+' <span class="small">'+s(meta)+'</span></summary>'+desc+details+'</details>';
       }).join('')+
@@ -190,17 +216,125 @@
         const title = s(c.title||'Zertifikat');
         const cleanUrl = sanitizeUrl(c.url);
         const link = cleanUrl ? ' <a class="small" href="'+cleanUrl+'" target="_blank" rel="noopener">Link</a>' : '';
-        const desc = c.description ? '<div class="small" style="margin-top:4px">'+s(c.description)+'</div>' : '';
+        const desc = c.description ? '<div class="small" style="margin-top:4px">'+md(c.description)+'</div>' : '';
         return '<div style="margin:8px 0"><div style="font-weight:600">'+title+' '+date+link+'</div>'+desc+'</div>';
       }).join('')+
     '</section>';
   }
 
   let cvData = null;
+
+  function generateMarkdown(data){
+    if(!data) return '';
+    let md = '';
+
+    // Header
+    md += `# ${data.name || 'Lebenslauf'}\n\n`;
+    md += `**${data.title || ''}**\n\n`;
+    if(data.description) md += `${data.description}\n\n`;
+
+    // Contact
+    md += `## Kontakt\n\n`;
+    const contact = data.contact || {};
+    if(contact.email) md += `- **E-Mail:** ${contact.email}\n`;
+    if(contact.phone) md += `- **Telefon:** ${contact.phone}\n`;
+    if(contact.address) md += `- **Adresse:** ${contact.address}\n`;
+    if(contact.web?.url) md += `- **Web:** [${contact.web.title || contact.web.url}](${contact.web.url})\n`;
+    if(Array.isArray(data.socialLinks) && data.socialLinks.length){
+      md += `- **Social:** ${data.socialLinks.map(s => `[${s.name}](${s.url})`).join(', ')}\n`;
+    }
+    md += '\n';
+
+    // Skills
+    if(Array.isArray(data.skills) && data.skills.length){
+      md += `## Kernkompetenzen & Tech-Stack\n\n`;
+      md += data.skills.map(s => `- ${s}`).join('\n') + '\n\n';
+    }
+
+    // Languages
+    if(data.languages && Object.keys(data.languages).length){
+      md += `## Sprachen\n\n`;
+      Object.entries(data.languages).forEach(([name, val]) => {
+        const label = typeof val === 'object' ? val.label : '';
+        const cefr = typeof val === 'object' ? val.cefr : '';
+        md += `- **${name}**${label ? ` (${label})` : ''}${cefr ? ` - ${cefr}` : ''}\n`;
+      });
+      md += '\n';
+    }
+
+    // Interests
+    if(Array.isArray(data.interests) && data.interests.length){
+      md += `## Interessen\n\n`;
+      md += data.interests.map(i => `- ${i}`).join('\n') + '\n\n';
+    }
+
+    // Experience
+    if(Array.isArray(data.experience) && data.experience.length){
+      md += `## Berufserfahrung\n\n`;
+      const sorted = [...data.experience].sort((a,b)=>(b.period?.start||'').localeCompare(a.period?.start||''));
+      sorted.forEach(exp => {
+        md += `### ${exp.title}\n\n`;
+        if(exp.company) md += `**${exp.company}**`;
+        if(exp.location) md += ` · ${exp.location}`;
+        if(exp.period) md += ` · ${formatPeriod(exp.period)}`;
+        md += '\n\n';
+        if(exp.role) md += `**Rolle:** ${exp.role}\n\n`;
+        if(exp.description) md += `${exp.description}\n\n`;
+        if(Array.isArray(exp.skills) && exp.skills.length){
+          md += `**Skills:** ${exp.skills.join(', ')}\n\n`;
+        }
+        if(Array.isArray(exp.details) && exp.details.length){
+          md += exp.details.map(d => `- ${d}`).join('\n') + '\n\n';
+        }
+      });
+    }
+
+    // Education
+    if(Array.isArray(data.education) && data.education.length){
+      md += `## Ausbildung & Abschlüsse\n\n`;
+      data.education.forEach(ed => {
+        md += `### ${ed.degree}\n\n`;
+        if(ed.school) md += `**${ed.school}**`;
+        if(ed.location) md += ` · ${ed.location}`;
+        if(ed.period) md += ` · ${formatPeriod(ed.period)}`;
+        md += '\n\n';
+        if(ed.description) md += `${ed.description}\n\n`;
+        if(Array.isArray(ed.details) && ed.details.length){
+          md += ed.details.map(d => `- ${d}`).join('\n') + '\n\n';
+        }
+      });
+    }
+
+    // Certificates
+    if(Array.isArray(data.certificates) && data.certificates.length){
+      md += `## Zertifizierungen\n\n`;
+      data.certificates.forEach(cert => {
+        md += `### ${cert.title}`;
+        if(cert.date) md += ` (${formatYearMonth(cert.date)})`;
+        md += '\n\n';
+        if(cert.description) md += `${cert.description}\n\n`;
+        if(cert.url) md += `[Link zum Zertifikat](${cert.url})\n\n`;
+      });
+    }
+
+    return md;
+  }
+
   function attachControls(){
-    const c = $('btnPrintCompact'), d = $('btnPrintDetailed'), j = $('btnDownloadJson');
+    const c = $('btnPrintCompact'), d = $('btnPrintDetailed'), m = $('btnDownloadMarkdown'), j = $('btnDownloadJson');
     if(c) c.addEventListener('click',()=>{ document.querySelectorAll('details').forEach(x=>x.open=false); window.print(); });
     if(d) d.addEventListener('click',()=>{ document.querySelectorAll('details').forEach(x=>x.open=true); window.print(); });
+    if(m) m.addEventListener('click',()=>{
+      const mdContent = generateMarkdown(cvData);
+      const blob = new Blob([mdContent], {type: 'text/markdown;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      const name = cvData?.name ? cvData.name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'') : 'cv';
+      a.download = name + '-cv.md';
+      document.body.appendChild(a); a.click();
+      setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 200);
+    });
     if(j) j.addEventListener('click',()=>{
       fetch('cv.json',{cache:'no-store'}).then(r=>r.blob()).then(b=>{
         const url = URL.createObjectURL(b);
@@ -228,7 +362,7 @@
         (filtered.length ? filtered.sort((a,b)=>(b.period?.start||'').localeCompare(a.period?.start||'')).map(exp=>{
           const metaBits = [exp.company, formatPeriod(exp.period)].filter(Boolean);
           const meta = metaBits.join(' · ');
-          const desc = exp.description ? '<div style="margin-top:6px">'+s(exp.description)+'</div>' : '';
+          const desc = exp.description ? '<div style="margin-top:6px">'+md(exp.description)+'</div>' : '';
           const details = renderList(exp.details);
           return '<details><summary>'+s(exp.title)+' <span class="small">'+s(meta)+'</span></summary>'+
                  '<div class="kv small">'+

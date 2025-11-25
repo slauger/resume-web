@@ -380,6 +380,38 @@ details summary:hover{
   font-weight:400;
 }
 
+/* Markdown elements */
+strong{
+  font-weight:700;
+  color:#2a2a2a;
+}
+em{
+  font-style:italic;
+  color:#2a2a2a;
+}
+code{
+  background:rgba(255,87,34,0.08);
+  border:1px solid rgba(255,87,34,0.2);
+  border-radius:4px;
+  padding:2px 6px;
+  font-family:'SF Mono',Monaco,Consolas,'Courier New',monospace;
+  font-size:0.9em;
+  color:#d84315;
+  font-weight:500;
+}
+details a,
+.card a{
+  color:var(--accent);
+  text-decoration:none;
+  font-weight:500;
+  transition:all 0.2s ease;
+}
+details a:hover,
+.card a:hover{
+  text-decoration:underline;
+  filter:brightness(0.9);
+}
+
 @media print{
   @page {
     margin: 15mm 12mm;
@@ -553,6 +585,23 @@ details summary:hover{
     color:#ff5722!important;
     text-decoration:none!important;
     font-weight:500;
+  }
+
+  /* Markdown elements in print */
+  strong{
+    font-weight:700!important;
+    color:#1a1a1a!important;
+  }
+  em{
+    font-style:italic!important;
+    color:#1a1a1a!important;
+  }
+  code{
+    background:#f5f5f5!important;
+    border:1pt solid #d0d0d0!important;
+    padding:1pt 4pt!important;
+    font-size:9pt!important;
+    color:#1a1a1a!important;
   }
 
   /* Better orphan/widow control */

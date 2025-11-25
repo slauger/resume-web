@@ -70,11 +70,12 @@
         "Improvisation",
         "Publikum"
       ],
-      "description": "Abendfüllende Slapstick-Show mit kalkulierten Pannen – Lachen garantiert, Erfolg optional.",
+      "description": "Abendfüllende **Slapstick-Show** mit kalkulierten Pannen – *Lachen garantiert*, Erfolg optional.",
       "details": [
-        "Dramaturgie für 60‑minütige Pechvogel‑Routine entwickelt",
-        "Sicheres Scheitern als Stilmittel inszeniert (ohne echte Verletzungen)",
-        "Publikumsinteraktion mit situativer Improvisation und Running Gags"
+        "Dramaturgie für **60‑minütige** Pechvogel‑Routine entwickelt",
+        "Sicheres Scheitern als *Stilmittel* inszeniert (ohne echte Verletzungen)",
+        "Publikumsinteraktion mit `situativer Improvisation` und Running Gags",
+        "Mehr Details auf [meiner Website](https://example.com)"
       ]
     },
     {
@@ -93,11 +94,11 @@
         "CI/CD (Clown In/Clown Out)",
         "Git (für Konfetti)"
       ],
-      "description": "Verantwortlich für das orchestrierte Scheitern in der Cloud – mit Style.",
+      "description": "Verantwortlich für das **orchestrierte Scheitern** in der Cloud – *mit Style*.",
       "details": [
-        "Migration von On-Premise Torten zu Cloud-Torten erfolgreich vermasselt",
-        "Container-Orchestrierung: 99% der Eimer fielen zur richtigen Zeit um",
-        "Implementierung einer Continuous Chaos Pipeline mit automatisierten Pannen",
+        "Migration von **On-Premise Torten** zu `Cloud-Torten` erfolgreich vermasselt",
+        "Container-Orchestrierung: *99%* der Eimer fielen zur richtigen Zeit um",
+        "Implementierung einer **Continuous Chaos Pipeline** mit automatisierten Pannen",
         "Team-Building durch gemeinsames Lachen über Production-Fails"
       ]
     },
