@@ -115,7 +115,7 @@
 
     const contactHtml = '<section class="card">'+
       '<div class="section-title">Kontakt</div>'+
-      '<div class="contact-grid small">'+
+      '<div class="contact-grid">'+
         (contact.email? '<div class="contact-key">'+icons.email+' E‑Mail</div><div class="contact-item"><a href="mailto:'+s(contact.email)+'">'+s(contact.email)+'</a></div>' : '')+
         (contact.phone? '<div class="contact-key">'+icons.phone+' Telefon</div><div class="contact-item"><a href="tel:'+s(contact.phone)+'">'+s(contact.phone)+'</a></div>' : '')+
         (contact.address? '<div class="contact-key">'+icons.location+' Adresse</div><div class="contact-item">'+s(contact.address)+'</div>' : '')+
@@ -148,15 +148,17 @@
     if(!entries.length) return '';
     return '<section class="card">'+
              '<div class="section-title">Sprachen</div>'+
+             '<div class="languages">'+
              entries.map(([name, val])=>{
                let level=0,label='',cefr='';
                if(typeof val==='number'){ level = Math.max(0, Math.min(100, Number(val)||0)); }
                else if(typeof val==='object'){ level = Math.max(0, Math.min(100, Number(val.level)||0)); label = s(val.label||''); cefr = s(val.cefr||''); }
                return '<div class=\"lang-row\">'+
-         '<div class=\"lang-meta\"><span class=\"lang-name\">'+s(name)+'</span>'+(label? ' <span class=\"lang-badge\">'+label+'</span>' : '')+(cefr? ' <span class=\"lang-badge cefr\">'+cefr+'</span>' : '')+'</div>'+
+         '<div class=\"lang-meta\"><span class=\"lang-name\">'+s(name)+'</span>'+(label? ' <span class=\"badge\">'+label+'</span>' : '')+(cefr? ' <span class=\"badge cefr\">'+cefr+'</span>' : '')+'</div>'+
                         '<div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+level+'"><div class="bar" style="width:'+level+'%"></div></div>'+
                       '</div>';
              }).join('')+
+             '</div>'+
            '</section>';
   }
 
@@ -184,11 +186,14 @@
         const meta = metaBits.join(' · ');
         const desc = exp.description ? '<div style="margin-top:6px">'+md(exp.description)+'</div>' : '';
         const details = renderList(exp.details);
-        return '<details><summary>'+s(exp.title)+' <span class="small">'+s(meta)+'</span></summary>'+
-               '<div class="kv small">'+
-                 '<div class="k">Rolle</div><div>'+s(exp.role||'')+'</div>'+
-                 '<div class="k">Art der Beschäftigung</div><div>'+s(({'self_employed':'Selbstständig','permanent':'Festanstellung','contract':'Freier Vertrag','staffing':'AN-Überlassung'})[exp.type]||exp.type||'')+'</div>'+
-                 '<div class="k">Einsatzort</div><div>'+s(exp.location||'')+'</div>'+
+        const roleIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+        const typeIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>';
+        const locationIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+        return '<details><summary><div class="summary-title">'+s(exp.title)+'</div><div class="summary-meta">'+s(meta)+'</div></summary>'+
+               '<div class="exp-meta">'+
+                 '<span class="meta-item">'+roleIcon+s(exp.role||'')+'</span>'+
+                 '<span class="meta-item">'+typeIcon+s(({'self_employed':'Selbstständig','permanent':'Festanstellung','contract':'Freier Vertrag','staffing':'AN-Überlassung'})[exp.type]||exp.type||'')+'</span>'+
+                 '<span class="meta-item">'+locationIcon+s(exp.location||'')+'</span>'+
                '</div>'+
  (Array.isArray(exp.skills)&&exp.skills.length ? '<div class=\"badges\" style=\"margin-top:8px\">'+exp.skills.map(t=>'<span class=\"badge\">'+s(t)+'</span>').join('')+'</div>' : '') + desc + details + '</details>';
       }).join('')+
@@ -203,7 +208,7 @@
         const meta = metaBits.join(' · ');
         const desc = ed.description ? '<div class="small" style="margin-top:6px">'+md(ed.description)+'</div>' : '';
         const details = renderList(ed.details);
-        return '<details><summary>'+s(ed.degree)+' <span class="small">'+s(meta)+'</span></summary>'+desc+details+'</details>';
+        return '<details><summary><div class="summary-title">'+s(ed.degree)+'</div><div class="summary-meta">'+s(meta)+'</div></summary>'+desc+details+'</details>';
       }).join('')+
     '</section>';
   }
@@ -358,17 +363,20 @@
 
     const expSection = document.querySelector('#experienceSection');
     if(expSection){
-      expSection.innerHTML = '<div class="section-title">Ausgewählte Berufserfahrung'+(skill?' <span class="badge" style="font-size:10px">Filter: '+s(skill)+'</span>':'')+'</div>'+
+      expSection.innerHTML = '<div class="section-title">Ausgewählte Berufserfahrung'+(skill?' <span class="badge">Filter: '+s(skill)+'</span>':'')+'</div>'+
         (filtered.length ? filtered.sort((a,b)=>(b.period?.start||'').localeCompare(a.period?.start||'')).map(exp=>{
           const metaBits = [exp.company, formatPeriod(exp.period)].filter(Boolean);
           const meta = metaBits.join(' · ');
           const desc = exp.description ? '<div style="margin-top:6px">'+md(exp.description)+'</div>' : '';
           const details = renderList(exp.details);
-          return '<details><summary>'+s(exp.title)+' <span class="small">'+s(meta)+'</span></summary>'+
-                 '<div class="kv small">'+
-                   '<div class="k">Rolle</div><div>'+s(exp.role||'')+'</div>'+
-                   '<div class="k">Art der Beschäftigung</div><div>'+s(({'self_employed':'Selbstständig','permanent':'Festanstellung','contract':'Freier Vertrag','staffing':'AN-Überlassung'})[exp.type]||exp.type||'')+'</div>'+
-                   '<div class="k">Einsatzort</div><div>'+s(exp.location||'')+'</div>'+
+          const roleIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+          const typeIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>';
+          const locationIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+          return '<details><summary><div class="summary-title">'+s(exp.title)+'</div><div class="small summary-meta">'+s(meta)+'</div></summary>'+
+                 '<div class="exp-meta">'+
+                   '<span class="meta-item">'+roleIcon+s(exp.role||'')+'</span>'+
+                   '<span class="meta-item">'+typeIcon+s(({'self_employed':'Selbstständig','permanent':'Festanstellung','contract':'Freier Vertrag','staffing':'AN-Überlassung'})[exp.type]||exp.type||'')+'</span>'+
+                   '<span class="meta-item">'+locationIcon+s(exp.location||'')+'</span>'+
                  '</div>'+
    (Array.isArray(exp.skills)&&exp.skills.length ? '<div class=\"badges\" style=\"margin-top:8px\">'+exp.skills.map(t=>'<span class=\"badge\">'+s(t)+'</span>').join('')+'</div>' : '') + desc + details + '</details>';
         }).join('') : '<div class="small" style="margin-top:8px">Keine Projekte mit dieser Kompetenz gefunden.</div>');
