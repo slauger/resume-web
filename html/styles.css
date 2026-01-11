@@ -120,8 +120,9 @@ a:hover{filter:brightness(0.9)}
   border-bottom:2px solid var(--accent-soft-border);
   box-shadow:0 2px 12px rgba(0, 0, 0, 0.08), 0 0 30px rgba(19, 89, 153, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.5);
   position:relative;
-  overflow:hidden;
+  overflow:visible;  /* Changed from hidden to visible for dropdown */
   margin-bottom: 20px;
+  z-index:10;
 }
 .hero::before{
   display:none;                         /* Kein Gradient mehr - cleaner Look */
@@ -132,18 +133,18 @@ a:hover{filter:brightness(0.9)}
   justify-content:space-between;
   flex-wrap:wrap;
   gap:32px;
-  padding: 40px 16px;
+  padding: 40px 24px;
 }
 .id{
   display:flex;
-  gap:24px;
+  gap:42px;
   align-items:center;
   flex:1;
   min-width:300px;
 }
 .avatar{
-  width:110px;
-  height:110px;
+  width:140px;
+  height:140px;
   border-radius:50%;
   object-fit:cover;
   border:3px solid var(--accent-structural);
@@ -167,7 +168,6 @@ a:hover{filter:brightness(0.9)}
 .subtitle{
   color:var(--muted);
   font-size:18px;
-  margin-top:6px;
   font-weight:500;
 }
 .summary{
@@ -177,10 +177,129 @@ a:hover{filter:brightness(0.9)}
   line-height:1.6;
   font-weight:400;
 }
+/* Export Dropdown */
+.export-dropdown{
+  position:relative;
+  display:inline-block;
+}
+
+.btn-group{
+  display:flex;
+  box-shadow:var(--shadow-sm);
+  border-radius:var(--radius-sm);
+  overflow:hidden;
+}
+
+.btn-export-main,
+.btn-export-toggle{
+  color:#fff!important;
+  background:var(--accent)!important;
+  border:none;
+  cursor:pointer;
+  transition:all 0.2s ease;
+  font-weight:600;
+  font-size:14px;
+  display:flex;
+  align-items:center;
+  white-space:nowrap;
+}
+
+.btn-export-main{
+  padding:10px 16px;
+  gap:8px;
+  border-radius:var(--radius-sm) 0 0 var(--radius-sm);
+  flex:1;
+}
+
+.btn-export-toggle{
+  padding:10px 12px;
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  border-left:1px solid var(--accent-soft-border);
+}
+
+.btn-export-main:hover,
+.btn-export-toggle:hover{
+  background:var(--accent-light)!important;
+}
+
+.btn-group:hover{
+  box-shadow:var(--shadow-md);
+}
+
+.btn-export-main .icon{
+  flex-shrink:0;
+}
+
+.btn-export-toggle .chevron{
+  flex-shrink:0;
+  transition:transform 0.2s ease;
+  width:16px;
+  height:16px;
+  opacity:0.9;
+}
+
+.export-dropdown.active .chevron{
+  transform:rotate(180deg);
+}
+
+.dropdown-menu{
+  position:absolute;
+  top:calc(100% + 4px);
+  right:0;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  box-shadow:var(--shadow-lg);
+  min-width:200px;
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(-10px);
+  transition:all 0.2s ease;
+  z-index:9999;  /* Increased to ensure it's above everything */
+  overflow:hidden;
+}
+
+.export-dropdown.active .dropdown-menu{
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0);
+}
+
+.dropdown-item{
+  width:100%;
+  padding:10px 14px;
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  font-size:14px;
+  font-weight:500;
+  color:var(--text-primary);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  transition:background 0.15s ease;
+  text-align:left;
+  border-bottom:1px solid var(--border);
+}
+
+.dropdown-item:last-child{
+  border-bottom:none;
+}
+
+.dropdown-item:hover{
+  background:var(--accent-soft);
+}
+
+.dropdown-item .icon{
+  flex-shrink:0;
+  color:var(--accent);
+}
+
+/* Legacy Actions Support */
 .actions{display:flex;gap:10px;flex-wrap:wrap}
 .actions .btn{
   color:#fff!important;
-  background:var(--accent)!important;   /* Primary Blue für Aktionen */
+  background:var(--accent)!important;
   border:none!important;
   padding:12px 20px;
   border-radius:var(--radius-sm);
@@ -191,7 +310,7 @@ a:hover{filter:brightness(0.9)}
   font-size:13px;
 }
 .actions .btn:hover{
-  transform:translateY(-1px);           /* Subtiler */
+  transform:translateY(-1px);
   box-shadow:var(--shadow-md);
   background:var(--accent-light)!important;
 }
@@ -222,7 +341,7 @@ a:hover{filter:brightness(0.9)}
   padding-bottom:8px;
   border-bottom:2px solid var(--accent-structural);
 }
-.badges{display:flex;flex-wrap:wrap;gap:6px}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin: 8px 0}
 .badge{
   background:var(--accent-soft);        /* Soft Blue Background */
   color:var(--accent);                  /* Primary Blue Text für guten Kontrast */
@@ -314,7 +433,7 @@ details summary:hover .summary-title{
 .exp-meta{
   display:flex;
   flex-wrap:wrap;
-  gap:16px;
+  gap: 0px 16px;
   margin-top:8px;
   margin-bottom:8px;
   font-size:14px;
@@ -361,9 +480,13 @@ details summary:hover .summary-title{
 .contact-item{font-size:15px}
 @media (max-width:768px){
   .hero-inner{flex-direction:column;align-items:flex-start}
+  .hero-inner .id{gap:24px}
+  .export-dropdown{width:100%}
+  .btn-group{width:100%}
+  .btn-export-main{justify-content:center}
   .actions{width:100%;justify-content:stretch}
   .actions .btn{flex:1}
-  .avatar{width:64px;height:64px}
+  .avatar{width:110px;height:110px}
   .title{font-size:24px}
   .kv{grid-template-columns:140px 1fr}
 }
@@ -380,6 +503,10 @@ details summary:hover .summary-title{
   .kv .k{font-weight:600;margin-top:8px}
   .actions{flex-direction:column}
   .actions .btn{width:100%}
+  details ul{
+    margin-left:16px;
+    padding-left:0;
+  }
 }
 .contact-item{display:block}
 .contact-social{display:flex;flex-wrap:wrap;gap:12px}
@@ -455,10 +582,10 @@ details a:hover,
   .container{max-width:100%;padding:0;margin:0}
 
   .hero{
-    background:#fff!important;
+    background:color-mix(in srgb, var(--color-primary) 5%, white)!important;
     border:none!important;
     border-bottom:1.5pt solid var(--accent)!important;
-    padding:10pt 0!important;
+    padding:10pt 16pt!important;
     margin-bottom:10pt!important;
     box-shadow:none!important;
   }
@@ -466,8 +593,8 @@ details a:hover,
   .hero-inner{padding:0!important;gap:8pt}
 
   .avatar{
-    width:55pt!important;
-    height:55pt!important;
+    width:80pt!important;
+    height:80pt!important;
     border:2pt solid var(--accent)!important;
     box-shadow:none!important;
   }
@@ -477,12 +604,10 @@ details a:hover,
     color:#1a1a1a!important;
     -webkit-text-fill-color:initial!important;
     font-weight:800!important;
-    margin-bottom:3pt!important;
   }
   .subtitle{
     font-size:11pt!important;
     color:#4a5568!important;
-    margin-top:2pt!important;
     font-weight:600!important;
   }
   .summary{
@@ -493,6 +618,7 @@ details a:hover,
   }
 
   .actions{display:none!important}
+  .export-dropdown{display:none!important}
   #loading, #error{display:none!important}
   #cv{display:block!important}
 
