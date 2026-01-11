@@ -184,17 +184,19 @@
       sorted.map(exp=>{
         const metaBits = [exp.company, formatPeriod(exp.period)].filter(Boolean);
         const meta = metaBits.join(' · ');
-        const desc = exp.description ? '<div style="margin-top:6px">'+md(exp.description)+'</div>' : '';
+        const desc = exp.description ? '<div style="margin-top:14px">'+md(exp.description)+'</div>' : '';
         const details = renderList(exp.details);
         const roleIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
         const typeIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>';
         const locationIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+        const typeLabel = ({'self_employed':'Selbstständig','permanent':'Festanstellung','contract':'Freier Vertrag','staffing':'AN-Überlassung'})[exp.type]||exp.type||'';
+        const metaItems = [
+          exp.role ? '<span class="meta-item">'+roleIcon+s(exp.role)+'</span>' : '',
+          typeLabel ? '<span class="meta-item">'+typeIcon+s(typeLabel)+'</span>' : '',
+          exp.location ? '<span class="meta-item">'+locationIcon+s(exp.location)+'</span>' : ''
+        ].filter(Boolean);
         return '<details><summary><div class="summary-title">'+s(exp.title)+'</div><div class="summary-meta">'+s(meta)+'</div></summary>'+
-               '<div class="exp-meta">'+
-                 '<span class="meta-item">'+roleIcon+s(exp.role||'')+'</span>'+
-                 '<span class="meta-item">'+typeIcon+s(({'self_employed':'Selbstständig','permanent':'Festanstellung','contract':'Freier Vertrag','staffing':'AN-Überlassung'})[exp.type]||exp.type||'')+'</span>'+
-                 '<span class="meta-item">'+locationIcon+s(exp.location||'')+'</span>'+
-               '</div>'+
+               (metaItems.length ? '<div class="exp-meta">'+metaItems.join('')+'</div>' : '')+
  (Array.isArray(exp.skills)&&exp.skills.length ? '<div class=\"badges\" style=\"margin-top:8px\">'+exp.skills.map(t=>'<span class=\"badge\">'+s(t)+'</span>').join('')+'</div>' : '') + desc + details + '</details>';
       }).join('')+
     '</section>';
@@ -206,7 +208,7 @@
       items.map(ed=>{
         const metaBits = [ed.school, ed.location, formatPeriod(ed.period)].filter(Boolean);
         const meta = metaBits.join(' · ');
-        const desc = ed.description ? '<div class="small" style="margin-top:6px">'+md(ed.description)+'</div>' : '';
+        const desc = ed.description ? '<div style="margin-top:10px">'+md(ed.description)+'</div>' : '';
         const details = renderList(ed.details);
         return '<details><summary><div class="summary-title">'+s(ed.degree)+'</div><div class="summary-meta">'+s(meta)+'</div></summary>'+desc+details+'</details>';
       }).join('')+
@@ -222,7 +224,7 @@
         const cleanUrl = sanitizeUrl(c.url);
         const link = cleanUrl ? ' <a class="small" href="'+cleanUrl+'" target="_blank" rel="noopener">Link</a>' : '';
         const desc = c.description ? '<div class="small" style="margin-top:4px">'+md(c.description)+'</div>' : '';
-        return '<div style="margin:8px 0"><div style="font-weight:600">'+title+' '+date+link+'</div>'+desc+'</div>';
+        return '<div style="margin:12px 0"><div style="font-weight:600">'+title+' '+date+link+'</div>'+desc+'</div>';
       }).join('')+
     '</section>';
   }
@@ -326,9 +328,49 @@
   }
 
   function attachControls(){
+    // Dropdown toggle functionality
+    const dropdown = document.querySelector('.export-dropdown');
+    const btnExportMain = $('btnExportMain');
+    const btnDropdownToggle = $('btnDropdownToggle');
+
+    // Main button: download detailed PDF
+    if(btnExportMain){
+      btnExportMain.addEventListener('click', () => {
+        document.querySelectorAll('details').forEach(x=>x.open=true);
+        window.print();
+      });
+    }
+
+    // Toggle button: open/close dropdown
+    if(btnDropdownToggle && dropdown){
+      btnDropdownToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle('active');
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if(!dropdown.contains(e.target)){
+          dropdown.classList.remove('active');
+        }
+      });
+    }
+
+    // Dropdown menu items
     const c = $('btnPrintCompact'), d = $('btnPrintDetailed'), m = $('btnDownloadMarkdown'), j = $('btnDownloadJson');
-    if(c) c.addEventListener('click',()=>{ document.querySelectorAll('details').forEach(x=>x.open=false); window.print(); });
-    if(d) d.addEventListener('click',()=>{ document.querySelectorAll('details').forEach(x=>x.open=true); window.print(); });
+
+    if(c) c.addEventListener('click',()=>{
+      document.querySelectorAll('details').forEach(x=>x.open=false);
+      window.print();
+      if(dropdown) dropdown.classList.remove('active');
+    });
+
+    if(d) d.addEventListener('click',()=>{
+      document.querySelectorAll('details').forEach(x=>x.open=true);
+      window.print();
+      if(dropdown) dropdown.classList.remove('active');
+    });
+
     if(m) m.addEventListener('click',()=>{
       const mdContent = generateMarkdown(cvData);
       const blob = new Blob([mdContent], {type: 'text/markdown;charset=utf-8'});
@@ -339,6 +381,7 @@
       a.download = name + '-cv.md';
       document.body.appendChild(a); a.click();
       setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 200);
+      if(dropdown) dropdown.classList.remove('active');
     });
     if(j) j.addEventListener('click',()=>{
       fetch('cv.json',{cache:'no-store'}).then(r=>r.blob()).then(b=>{
@@ -349,6 +392,7 @@
         a.download = name + '-cv.json';
         document.body.appendChild(a); a.click();
         setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 200);
+        if(dropdown) dropdown.classList.remove('active');
       }).catch(e=>showError('cv.json konnte nicht geladen werden für Download: '+String(e)));
     });
   }
@@ -367,7 +411,7 @@
         (filtered.length ? filtered.sort((a,b)=>(b.period?.start||'').localeCompare(a.period?.start||'')).map(exp=>{
           const metaBits = [exp.company, formatPeriod(exp.period)].filter(Boolean);
           const meta = metaBits.join(' · ');
-          const desc = exp.description ? '<div style="margin-top:6px">'+md(exp.description)+'</div>' : '';
+          const desc = exp.description ? '<div style="margin-top:14px">'+md(exp.description)+'</div>' : '';
           const details = renderList(exp.details);
           const roleIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
           const typeIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>';
@@ -379,7 +423,7 @@
                    '<span class="meta-item">'+locationIcon+s(exp.location||'')+'</span>'+
                  '</div>'+
    (Array.isArray(exp.skills)&&exp.skills.length ? '<div class=\"badges\" style=\"margin-top:8px\">'+exp.skills.map(t=>'<span class=\"badge\">'+s(t)+'</span>').join('')+'</div>' : '') + desc + details + '</details>';
-        }).join('') : '<div class="small" style="margin-top:8px">Keine Projekte mit dieser Kompetenz gefunden.</div>');
+        }).join('') : '<div class="small">Keine Projekte mit dieser Kompetenz gefunden.</div>');
     }
 
     updateSkillBadges(skill);
