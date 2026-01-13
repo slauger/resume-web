@@ -5,7 +5,7 @@
  * Wird in GitHub Actions während des Deployments ausgeführt.
  */
 
-const { chromium } = require('playwright');
+import { chromium } from 'playwright';
 
 (async () => {
   console.log('🚀 Starting screenshot generation...');
