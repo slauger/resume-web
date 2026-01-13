@@ -5,7 +5,9 @@
 This project renders a stunning, modern resume directly from a `cv.json` file with glassmorphism design, animated backgrounds, and interactive features.
 It is designed to be hosted statically (e.g. via GitHub Pages, GitLab Pages, or AWS S3).
 
-![example](example.png)
+![Screenshot](https://slauger.github.io/resume-web/screenshot.png)
+
+> *Screenshot is automatically generated during deployment*
 
 [Here](https://slauger.github.io/resume-web/) you can find an example, hosted on GitHub Pages.
 

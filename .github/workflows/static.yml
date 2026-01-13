@@ -31,6 +31,35 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      # Generate screenshot for README
+      - name: Setup Node.js for screenshot generation
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Playwright
+        run: |
+          npm install -D playwright
+          npx playwright install chromium --with-deps
+
+      - name: Generate screenshot
+        run: |
+          # Start local server in background
+          cd html
+          python3 -m http.server 8000 &
+          SERVER_PID=$!
+          cd ..
+
+          # Wait for server to be ready
+          sleep 3
+
+          # Create screenshot
+          node screenshot.js
+
+          # Stop server
+          kill $SERVER_PID
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
