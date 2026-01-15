@@ -8,8 +8,13 @@
 
 :root {
   --color-primary: #ff1493;      /* Deep pink */
-  --color-secondary: #00ced1;    /* Dark turquoise */
+  --color-secondary: #000000;    /* Black text for readability */
   --color-background: #ffd700;   /* Golden yellow */
+
+  /* Keep text readable on bright background */
+  --text-primary: #000000;
+  --text-secondary: #ff1493;     /* Pink secondary */
+  --text-tertiary: #00ced1;      /* Turquoise tertiary */
 }
 
 /* Comic Sans EVERYTHING */

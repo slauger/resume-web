@@ -7,6 +7,23 @@
   --color-primary: #ff00ff;      /* Hot magenta/pink */
   --color-secondary: #00ffff;    /* Cyan text */
   --color-background: #1a0033;   /* Deep purple background */
+
+  /* Override derived colors for dark mode - mix with black instead of white */
+  --text-primary: var(--color-secondary);
+  --text-secondary: color-mix(in srgb, var(--color-secondary) 80%, black);
+  --text-tertiary: color-mix(in srgb, var(--color-secondary) 65%, black);
+
+  /* Card backgrounds need to be darker than page background */
+  --card: color-mix(in srgb, var(--color-background) 92%, white);
+  --card-hover: color-mix(in srgb, var(--card) 95%, white);
+  --bg-dark: color-mix(in srgb, var(--color-background) 85%, black);
+
+  /* Borders need to be visible on dark background */
+  --border: color-mix(in srgb, var(--color-secondary) 20%, transparent);
+
+  /* Accent soft colors */
+  --accent-soft: color-mix(in srgb, var(--color-primary) 15%, var(--color-background));
+  --accent-soft-border: color-mix(in srgb, var(--color-primary) 50%, transparent);
 }
 
 /* Extra retro flavor */
@@ -36,4 +53,31 @@ h1, h2, h3 {
   background: linear-gradient(135deg, #ff00ff, #00ffff) !important;
   text-shadow: 0 0 5px rgba(0,0,0,0.8);
   font-weight: bold;
+}
+
+/* Fix hardcoded backgrounds for dark mode */
+.hero {
+  background: rgba(26, 0, 51, 0.95) !important;  /* Deep purple with transparency */
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 0, 255, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+}
+
+.card {
+  background: var(--card) !important;
+}
+
+/* Fix details/experience sections */
+details {
+  background: rgba(26, 0, 51, 0.5) !important;  /* Dark purple semi-transparent */
+  border: 1px solid rgba(255, 0, 255, 0.25) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(255, 0, 255, 0.15) !important;
+}
+
+details:hover {
+  background: rgba(26, 0, 51, 0.7) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 0, 255, 0.25) !important;
+}
+
+details[open] {
+  background: rgba(26, 0, 51, 0.8) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 35px rgba(255, 0, 255, 0.35) !important;
 }

@@ -6,4 +6,48 @@
   --color-primary: #f97316;      /* Orange accent */
   --color-secondary: #f8fafc;    /* Light text (inverted) */
   --color-background: #0f172a;   /* Dark slate background */
+
+  /* Override derived colors for dark mode - mix with black instead of white */
+  --text-primary: var(--color-secondary);                                      /* Light text on dark bg */
+  --text-secondary: color-mix(in srgb, var(--color-secondary) 80%, black);     /* Slightly dimmed */
+  --text-tertiary: color-mix(in srgb, var(--color-secondary) 65%, black);      /* More dimmed */
+
+  /* Card backgrounds need to be darker than page background */
+  --card: color-mix(in srgb, var(--color-background) 92%, white);              /* Slightly lighter than bg */
+  --card-hover: color-mix(in srgb, var(--card) 95%, white);                    /* Even lighter on hover */
+  --bg-dark: color-mix(in srgb, var(--color-background) 85%, black);           /* Darker sections */
+
+  /* Borders need to be visible on dark background */
+  --border: color-mix(in srgb, var(--color-secondary) 20%, transparent);       /* Subtle light borders */
+
+  /* Accent soft colors for badges/chips */
+  --accent-soft: color-mix(in srgb, var(--color-primary) 15%, var(--color-background)); /* Dark orange bg */
+  --accent-soft-border: color-mix(in srgb, var(--color-primary) 50%, transparent);       /* Orange border */
+}
+
+/* Fix hardcoded backgrounds for dark mode */
+.hero {
+  background: rgba(15, 23, 42, 0.95) !important;  /* Dark slate with transparency */
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3), 0 0 30px rgba(249, 115, 22, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+}
+
+.card {
+  background: var(--card) !important;
+}
+
+/* Fix details/experience sections */
+details {
+  background: rgba(15, 23, 42, 0.5) !important;  /* Dark semi-transparent */
+  border: 1px solid rgba(249, 115, 22, 0.15) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(249, 115, 22, 0.06) !important;
+}
+
+details:hover {
+  background: rgba(15, 23, 42, 0.7) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 30px rgba(249, 115, 22, 0.12) !important;
+}
+
+details[open] {
+  background: rgba(15, 23, 42, 0.8) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 35px rgba(249, 115, 22, 0.15) !important;
 }

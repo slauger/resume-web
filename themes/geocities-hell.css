@@ -6,8 +6,13 @@
 
 :root {
   --color-primary: #ff0000;      /* Screaming red */
-  --color-secondary: #ffff00;    /* Eye-searing yellow */
+  --color-secondary: #000000;    /* Black text for readability on bright bg */
   --color-background: #00ff00;   /* Toxic lime green */
+
+  /* Override for maximum chaos but keep it readable */
+  --text-primary: #000000;
+  --text-secondary: #ff0000;     /* Red secondary text */
+  --text-tertiary: #0000ff;      /* Blue tertiary */
 }
 
 /* Animated rainbow background */
