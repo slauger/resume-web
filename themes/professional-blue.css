@@ -1,0 +1,9 @@
+/* Professional Blue Theme
+ * Clean, corporate blue color scheme
+ */
+
+:root {
+  --color-primary: #2563eb;      /* Professional blue */
+  --color-secondary: #0f172a;    /* Dark slate */
+  --color-background: #f8fafc;   /* Light gray */
+}

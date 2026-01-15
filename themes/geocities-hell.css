@@ -1,0 +1,100 @@
+/* Geocities Hell Theme
+ * WARNING: Eye cancer ahead! 🚨
+ * Maximum 90s Geocities vibes with under construction GIFs (in spirit)
+ * Blinking text, rainbow backgrounds, and Comic Sans energy
+ */
+
+:root {
+  --color-primary: #ff0000;      /* Screaming red */
+  --color-secondary: #ffff00;    /* Eye-searing yellow */
+  --color-background: #00ff00;   /* Toxic lime green */
+}
+
+/* Animated rainbow background */
+body {
+  background: linear-gradient(
+    45deg,
+    #ff0000 0%,
+    #ff7f00 14%,
+    #ffff00 28%,
+    #00ff00 42%,
+    #0000ff 57%,
+    #4b0082 71%,
+    #9400d3 85%,
+    #ff0000 100%
+  );
+  background-size: 400% 400%;
+  animation: rainbowShift 3s ease infinite;
+}
+
+@keyframes rainbowShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Blinking text effect (RIP <blink> tag) */
+h1, h2, .title {
+  animation: blink 0.5s step-start infinite;
+  text-shadow:
+    2px 2px 0 #000,
+    4px 4px 0 #fff,
+    6px 6px 0 #ff0,
+    8px 8px 0 #f0f;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* Rotating elements */
+.card {
+  animation: wobble 2s ease-in-out infinite;
+  border: 5px dashed #ff00ff !important;
+  box-shadow:
+    0 0 20px #ff0,
+    0 0 40px #0ff,
+    0 0 60px #f0f !important;
+}
+
+@keyframes wobble {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+/* Pulsating badges */
+.badge {
+  animation: pulse 0.5s ease-in-out infinite;
+  background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff, #ff00ff) !important;
+  background-size: 300% 300%;
+  font-weight: bold;
+  border: 3px solid #ffff00 !important;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+/* Under construction vibes */
+.hero::before {
+  content: '🚧 UNDER CONSTRUCTION 🚧';
+  display: block;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  animation: blink 0.3s step-start infinite;
+  color: #000;
+  background: #ff0;
+  padding: 10px;
+}
+
+/* Marquee energy (but we can't use <marquee>) */
+.summary {
+  animation: slide 10s linear infinite;
+}
+
+@keyframes slide {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}

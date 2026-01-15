@@ -1,0 +1,9 @@
+/* Elegant Purple Theme
+ * Sophisticated purple color scheme
+ */
+
+:root {
+  --color-primary: #9333ea;      /* Vivid purple */
+  --color-secondary: #1e1b4b;    /* Dark indigo */
+  --color-background: #faf5ff;   /* Light purple */
+}

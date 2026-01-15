@@ -1,0 +1,39 @@
+/* frnz.de Retro Theme
+ * Inspired by constellation7.org - Purple space vibes with neon colors
+ * For maximum 90s nostalgia
+ */
+
+:root {
+  --color-primary: #ff00ff;      /* Hot magenta/pink */
+  --color-secondary: #00ffff;    /* Cyan text */
+  --color-background: #1a0033;   /* Deep purple background */
+}
+
+/* Extra retro flavor */
+body {
+  background: linear-gradient(45deg, #1a0033 0%, #2d0052 50%, #1a0033 100%);
+  background-size: 200% 200%;
+  animation: spaceGradient 10s ease infinite;
+}
+
+@keyframes spaceGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Neon glow effect on headings */
+h1, h2, h3 {
+  text-shadow:
+    0 0 10px #ff00ff,
+    0 0 20px #ff00ff,
+    0 0 30px #ff00ff,
+    0 0 40px #ff00ff;
+}
+
+/* Make badges extra vibrant */
+.badge {
+  background: linear-gradient(135deg, #ff00ff, #00ffff) !important;
+  text-shadow: 0 0 5px rgba(0,0,0,0.8);
+  font-weight: bold;
+}

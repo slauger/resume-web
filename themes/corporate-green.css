@@ -1,0 +1,9 @@
+/* Corporate Green Theme
+ * Professional green color scheme
+ */
+
+:root {
+  --color-primary: #059669;      /* Emerald green */
+  --color-secondary: #064e3b;    /* Dark green */
+  --color-background: #f0fdf4;   /* Light green tint */
+}

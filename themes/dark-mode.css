@@ -1,0 +1,9 @@
+/* Dark Mode Theme
+ * True dark theme with orange accents
+ */
+
+:root {
+  --color-primary: #f97316;      /* Orange accent */
+  --color-secondary: #f8fafc;    /* Light text (inverted) */
+  --color-background: #0f172a;   /* Dark slate background */
+}

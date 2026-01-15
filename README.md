@@ -123,13 +123,30 @@ The markdown is rendered client-side with full XSS protection and works in both 
 
 ## 🎨 Customization
 
-### Color Scheme
+### Pre-defined Themes
 
-You can customize the color scheme by creating a `custom.css` file in the `html/` directory. The design uses a modern color system based on three primary variables that automatically derive all other colors:
+The `themes/` directory contains ready-to-use color schemes:
 
-1. Create `html/custom.css`
-2. Override the CSS variables:
+- **Professional**: `professional-blue`, `corporate-green`, `elegant-purple`
+- **Dark Mode**: `dark-mode` (orange accents on dark background)
+- **Retro**: `frnz-retro` (90s purple space vibes with neon colors)
+- **Fun**: `geocities-hell`, `comic-sans-nightmare` ⚠️ (not for actual resumes!)
 
+**Usage (for forks):**
+
+Set the `THEME` variable in your deployment workflow:
+```yaml
+env:
+  THEME: 'professional-blue'
+```
+
+See **[themes/README.md](themes/README.md)** for full theme documentation, previews, and customization guide.
+
+### Custom Color Scheme
+
+You can create your own theme by overriding CSS variables. The design uses a modern color system based on three primary variables that automatically derive all other colors:
+
+**Option 1: Create `themes/custom.css` in your fork** (recommended for merge-ability):
 ```css
 :root {
   --color-primary: #2563eb;      /* Main accent color (blue) */
@@ -137,6 +154,10 @@ You can customize the color scheme by creating a `custom.css` file in the `html/
   --color-background: #f8fafc;   /* Page background (light) */
 }
 ```
+
+**Option 2: Create `html/custom.css`** (direct override):
+
+Same CSS as above, just placed in the `html/` directory.
 
 All other colors (badges, buttons, borders, hover states, etc.) are automatically calculated from these three base colors using CSS `color-mix()`.
 
@@ -151,44 +172,6 @@ All other colors (badges, buttons, borders, hover states, etc.) are automaticall
 | `--color-accent-structural` | derived | Borders and dividers |
 | `--color-text-secondary` | derived | Secondary text |
 | `--color-hover` | derived | Hover states |
-
-**Example Color Schemes:**
-
-<details>
-<summary>Professional Blue</summary>
-
-```css
-:root {
-  --color-primary: #2563eb;      /* Blue */
-  --color-secondary: #0f172a;    /* Dark slate */
-  --color-background: #f8fafc;   /* Light gray */
-}
-```
-</details>
-
-<details>
-<summary>Elegant Purple</summary>
-
-```css
-:root {
-  --color-primary: #9333ea;      /* Purple */
-  --color-secondary: #1e1b4b;    /* Dark indigo */
-  --color-background: #faf5ff;   /* Light purple */
-}
-```
-</details>
-
-<details>
-<summary>Corporate Green</summary>
-
-```css
-:root {
-  --color-primary: #059669;      /* Green */
-  --color-secondary: #064e3b;    /* Dark green */
-  --color-background: #f0fdf4;   /* Light green */
-}
-```
-</details>
 
 ---
 
