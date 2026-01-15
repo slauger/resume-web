@@ -78,7 +78,7 @@
 
   --radius:12px;
   --radius-sm:8px;
-  --lang-col:260px;
+  --lang-col:300px;
 }
 /* Dark mode media query removed - we use dark theme by default with orange accent */
 *{box-sizing:border-box}
@@ -579,7 +579,7 @@ details a:hover,
   }
 
   .bg-decoration,.shape{display:none!important}
-  .container{max-width:100%;padding:0;margin:0}
+  .container{max-width:100%;padding:0 16pt;margin:0}
 
   .hero{
     background:color-mix(in srgb, var(--color-primary) 5%, white)!important;

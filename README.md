@@ -121,6 +121,129 @@ The markdown is rendered client-side with full XSS protection and works in both 
 
 ---
 
+## 🎨 Customization
+
+### Color Scheme
+
+You can customize the color scheme by creating a `custom.css` file in the `html/` directory. The design uses a modern color system based on three primary variables that automatically derive all other colors:
+
+1. Create `html/custom.css`
+2. Override the CSS variables:
+
+```css
+:root {
+  --color-primary: #2563eb;      /* Main accent color (blue) */
+  --color-secondary: #0f172a;    /* Text color (dark slate) */
+  --color-background: #f8fafc;   /* Page background (light) */
+}
+```
+
+All other colors (badges, buttons, borders, hover states, etc.) are automatically calculated from these three base colors using CSS `color-mix()`.
+
+**Available CSS Variables:**
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `--color-primary` | `#f97316` | Main accent color (orange) |
+| `--color-secondary` | `#0f172a` | Text and structural elements |
+| `--color-background` | `#f8fafc` | Page background |
+| `--color-accent-soft` | derived | Soft accent backgrounds |
+| `--color-accent-structural` | derived | Borders and dividers |
+| `--color-text-secondary` | derived | Secondary text |
+| `--color-hover` | derived | Hover states |
+
+**Example Color Schemes:**
+
+<details>
+<summary>Professional Blue</summary>
+
+```css
+:root {
+  --color-primary: #2563eb;      /* Blue */
+  --color-secondary: #0f172a;    /* Dark slate */
+  --color-background: #f8fafc;   /* Light gray */
+}
+```
+</details>
+
+<details>
+<summary>Elegant Purple</summary>
+
+```css
+:root {
+  --color-primary: #9333ea;      /* Purple */
+  --color-secondary: #1e1b4b;    /* Dark indigo */
+  --color-background: #faf5ff;   /* Light purple */
+}
+```
+</details>
+
+<details>
+<summary>Corporate Green</summary>
+
+```css
+:root {
+  --color-primary: #059669;      /* Green */
+  --color-secondary: #064e3b;    /* Dark green */
+  --color-background: #f0fdf4;   /* Light green */
+}
+```
+</details>
+
+---
+
+## 🚀 Deployment with GitHub Actions
+
+This repository includes a ready-to-use GitHub Actions workflow for deploying to Cloudflare Pages. Forks automatically inherit this workflow.
+
+### Quick Start (for forks)
+
+1. **Fork this repository**
+
+2. **Set up Cloudflare Pages secrets** in your fork:
+   - Go to **Settings → Secrets and variables → Actions**
+   - Add two repository secrets:
+     - `CLOUDFLARE_API_TOKEN`: Your Cloudflare API token
+     - `CLOUDFLARE_ACCOUNT_ID`: Your Cloudflare account ID
+
+   Get these from: https://dash.cloudflare.com/profile/api-tokens
+   Required permissions: **"Cloudflare Pages - Edit"**
+
+3. **Push to main** - The workflow automatically deploys to `https://{repository-name}.pages.dev`
+
+### Optional Configuration
+
+**Custom Cloudflare Project Name:**
+
+If your Cloudflare Pages project name differs from your repository name:
+
+1. Go to **Settings → Secrets and variables → Actions → Variables**
+2. Add repository variable: `CLOUDFLARE_PROJECT_NAME` = `your-project-name`
+
+**Pin Upstream Version (for forks):**
+
+To pin a specific version of the upstream `slauger/resume-web`:
+
+1. Go to **Actions → Deploy to Cloudflare Pages → Run workflow**
+2. Enter the upstream version:
+   - Git tag: `v1.0.0` (recommended for stability)
+   - Commit SHA: `a1b2c3d4...` (maximum control)
+   - Branch: `main` (auto-updates, not recommended)
+
+Or edit `.github/workflows/deploy.yml` and change:
+```yaml
+env:
+  UPSTREAM_REF: 'v1.0.0'  # Pin to specific tag
+```
+
+Find available tags at: https://github.com/slauger/resume-web/tags
+
+### Advanced: Custom Workflow
+
+For advanced customization, copy `deploy-template.yml` to `.github/workflows/deploy.yml` and modify as needed.
+
+---
+
 ## 📝 JSON structure
 
 Top-level fields in `cv.json`:

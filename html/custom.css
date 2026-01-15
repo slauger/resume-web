@@ -1,0 +1,16 @@
+/* Custom CSS Overrides
+ *
+ * This file is intentionally kept empty in the upstream repository.
+ * Users can override CSS variables here without modifying styles.css.
+ *
+ * Example - Custom color scheme:
+ *
+ * :root {
+ *   --color-primary: #2563eb;      /* Main accent color (blue) */
+ *   --color-secondary: #0f172a;    /* Text color (dark slate) */
+ *   --color-background: #f8fafc;   /* Page background (light) */
+ * }
+ *
+ * All other colors (accent-soft, accent-structural, text-secondary, etc.)
+ * are automatically derived from these three base colors using color-mix().
+ */

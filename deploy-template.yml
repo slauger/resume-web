@@ -1,0 +1,104 @@
+# GitHub Actions Workflow Template for resume-web forks
+#
+# This template shows how to use resume-web as a base with your custom overlay files.
+# Copy this to your fork at .github/workflows/deploy.yml and customize as needed.
+
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      upstream_ref:
+        description: 'Upstream version (tag, branch, or commit SHA)'
+        required: false
+        default: 'main'
+        type: string
+
+env:
+  # Pin upstream version - can be overridden via manual workflow trigger
+  UPSTREAM_REF: ${{ inputs.upstream_ref || 'main' }}  # Default: 'main'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      # 1. Checkout your fork (contains custom files in html/)
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+        with:
+          path: overlay
+
+      # 2. Checkout upstream resume-web
+      - name: Checkout upstream resume-web
+        uses: actions/checkout@v4
+        with:
+          repository: slauger/resume-web
+          ref: ${{ env.UPSTREAM_REF }}
+          path: resume-web
+
+      # 3. Copy your custom files (cv.json, custom.css, etc.)
+      - name: Copy custom files
+        run: |
+          echo "Files in overlay/html:"
+          ls -la overlay/html/
+          echo "Copying files to resume-web/html/..."
+          cp -fv overlay/html/* resume-web/html/
+          echo "Files in resume-web/html after copy:"
+          ls -la resume-web/html/
+
+      # 4. Validate cv.json against schema
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install ajv-cli for schema validation
+        run: npm install -g ajv-cli
+
+      - name: Validate cv.json against schema
+        run: |
+          ajv validate -s resume-web/cv-schema.json -d resume-web/html/cv.json --strict=false
+
+      # 5. Deploy to Cloudflare Pages
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: ${{ github.event.repository.name }}  # Uses repository name as project name
+          directory: resume-web/html
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+# ──────────────────────────────────────────────────────────────────────
+# Required Secrets (Settings → Secrets and variables → Actions):
+# ──────────────────────────────────────────────────────────────────────
+# - CLOUDFLARE_API_TOKEN: Your Cloudflare API token
+# - CLOUDFLARE_ACCOUNT_ID: Your Cloudflare account ID
+#
+# Get these from: https://dash.cloudflare.com/profile/api-tokens
+# Required permissions: "Cloudflare Pages - Edit"
+# ──────────────────────────────────────────────────────────────────────
+
+# ──────────────────────────────────────────────────────────────────────
+# Pinning Upstream Versions:
+# ──────────────────────────────────────────────────────────────────────
+# Change the UPSTREAM_REF environment variable at the top of this file:
+#
+# 1. Use a git tag (recommended for production):
+#    UPSTREAM_REF: v1.0.0
+#
+# 2. Use a commit SHA (recommended for maximum stability):
+#    UPSTREAM_REF: a1b2c3d4e5f6789...
+#
+# 3. Use a branch (auto-updates, not recommended for production):
+#    UPSTREAM_REF: main
+#
+# Find available tags at:
+# https://github.com/slauger/resume-web/tags
+# ──────────────────────────────────────────────────────────────────────
