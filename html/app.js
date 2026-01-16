@@ -135,7 +135,7 @@
     if(typeof skills === 'object' && !Array.isArray(skills)){
       const categories = Object.entries(skills);
       if(!categories.length) return '';
-      return '<section class="card"><div class="section-title">Kernkompetenzen &amp; Tech‑Stack</div>'+
+      return '<section class="card" id="skillsSection"><div class="section-title">Kernkompetenzen &amp; Tech‑Stack <span class="small" id="filterStatus"></span></div>'+
         categories.map(([category, items])=>'<div style="margin-bottom:16px"><div class="small" style="font-weight:600;margin-bottom:8px">'+s(category)+'</div><div class="badges">'+(Array.isArray(items)?items.map(x=>'<span class="badge skill-badge" data-skill="'+s(x)+'">'+s(x)+'</span>').join(''):'')+'</div></div>').join('')+
         '</section>';
     }
