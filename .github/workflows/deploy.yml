@@ -1,0 +1,147 @@
+# Ready-to-use deployment workflow for resume-web
+# Place this at: .github/workflows/deploy.yml in upstream repository
+#
+# Forks inherit this workflow automatically and only need to:
+# 1. Set CLOUDFLARE_API_TOKEN secret
+# 2. Set CLOUDFLARE_ACCOUNT_ID secret
+# 3. (Optional) Set CLOUDFLARE_PROJECT_NAME variable if different from repo name
+# 4. Push to main!
+
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      upstream_ref:
+        description: 'Upstream version (for forks only - ignored in upstream repo)'
+        required: false
+        default: 'main'
+        type: string
+      cloudflare_project:
+        description: 'Cloudflare Pages project name (leave empty to use repository name)'
+        required: false
+        type: string
+
+env:
+  UPSTREAM_REF: ${{ inputs.upstream_ref || 'main' }}
+  # Priority: workflow input > repository variable > repository name
+  CLOUDFLARE_PROJECT: ${{ inputs.cloudflare_project || vars.CLOUDFLARE_PROJECT_NAME || github.event.repository.name }}
+
+jobs:
+  # Check if deployment secrets are configured
+  check-secrets:
+    runs-on: ubuntu-latest
+    outputs:
+      has-secrets: ${{ steps.check.outputs.has-secrets }}
+    steps:
+      - name: Check if deployment secrets are set
+        id: check
+        run: |
+          if [ -n "${{ secrets.CLOUDFLARE_API_TOKEN }}" ] && [ -n "${{ secrets.CLOUDFLARE_ACCOUNT_ID }}" ]; then
+            echo "has-secrets=true" >> $GITHUB_OUTPUT
+            echo "✅ Deployment secrets are configured"
+          else
+            echo "has-secrets=false" >> $GITHUB_OUTPUT
+            echo "⚠️  Deployment secrets not configured - skipping deployment"
+            echo "ℹ️  To enable deployment, add these secrets in repository settings:"
+            echo "   - CLOUDFLARE_API_TOKEN"
+            echo "   - CLOUDFLARE_ACCOUNT_ID"
+          fi
+
+  # Build and validate
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # For upstream: checkout self
+      # For forks: checkout fork (overlay) + upstream (base)
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+        with:
+          path: overlay
+
+      # Only checkout upstream if this is a fork
+      - name: Checkout upstream resume-web (forks only)
+        if: github.repository != 'slauger/resume-web'
+        uses: actions/checkout@v4
+        with:
+          repository: slauger/resume-web
+          ref: ${{ env.UPSTREAM_REF }}
+          path: resume-web
+
+      # For upstream: use overlay directly
+      # For forks: merge overlay into upstream
+      - name: Prepare build directory
+        run: |
+          if [ "${{ github.repository }}" = "slauger/resume-web" ]; then
+            echo "📦 Building from upstream repository"
+            mv overlay resume-web
+          else
+            echo "📦 Building from fork - merging custom files"
+            echo "Files in overlay/html:"
+            ls -la overlay/html/ || echo "No html directory in fork"
+            if [ -d "overlay/html" ]; then
+              echo "Copying custom files to upstream..."
+              cp -fv overlay/html/* resume-web/html/ || true
+            fi
+          fi
+          echo "Final files in resume-web/html:"
+          ls -la resume-web/html/
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install ajv-cli for schema validation
+        run: npm install -g ajv-cli
+
+      - name: Validate cv.json against schema
+        run: |
+          if [ -f "resume-web/html/cv.json" ]; then
+            ajv validate -s resume-web/cv-schema.json -d resume-web/html/cv.json --strict=false
+            echo "✅ cv.json is valid"
+          else
+            echo "⚠️  No cv.json found - skipping validation"
+          fi
+
+      # Upload build artifact for deployment job
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: resume-build
+          path: resume-web/html/
+          retention-days: 1
+
+  # Deploy (only if secrets are configured)
+  deploy:
+    needs: [check-secrets, build]
+    if: needs.check-secrets.outputs.has-secrets == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - name: Download build artifact
+        uses: actions/upload-artifact/download@v4
+        with:
+          name: resume-build
+          path: html
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: ${{ env.CLOUDFLARE_PROJECT }}
+          directory: html
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deployment successful
+        run: |
+          echo "🚀 Deployment successful!"
+          echo "📍 Project: ${{ env.CLOUDFLARE_PROJECT }}"
+          echo "📍 Your resume should be available at:"
+          echo "   https://${{ env.CLOUDFLARE_PROJECT }}.pages.dev"

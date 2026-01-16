@@ -78,7 +78,7 @@
 
   --radius:12px;
   --radius-sm:8px;
-  --lang-col:260px;
+  --lang-col:300px;
 }
 /* Dark mode media query removed - we use dark theme by default with orange accent */
 *{box-sizing:border-box}
@@ -348,10 +348,6 @@ a:hover{filter:brightness(0.9)}
   padding:4px 12px;
   border-radius:999px;
   font-size:13px;
-  max-width:200px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
   display:inline-block;
   vertical-align:middle;
   transition:all 0.2s ease;
@@ -567,7 +563,7 @@ details a:hover,
 
 @media print{
   @page {
-    margin: 15mm 15mm;
+    margin: 0;
     size: A4 portrait;
   }
 
@@ -576,6 +572,8 @@ details a:hover,
     color:#1a1a1a;
     font-size:10pt!important;
     line-height:1.4;
+    margin: 5mm;
+    padding: 0;
   }
 
   .bg-decoration,.shape{display:none!important}
@@ -585,8 +583,8 @@ details a:hover,
     background:color-mix(in srgb, var(--color-primary) 5%, white)!important;
     border:none!important;
     border-bottom:1.5pt solid var(--accent)!important;
-    padding:10pt 16pt!important;
-    margin-bottom:10pt!important;
+    padding:10pt 0;
+    margin-bottom:0;
     box-shadow:none!important;
   }
   .hero::before{display:none}

@@ -1,0 +1,83 @@
+/* frnz.de Retro Theme
+ * Inspired by constellation7.org - Purple space vibes with neon colors
+ * For maximum 90s nostalgia
+ */
+
+:root {
+  --color-primary: #ff00ff;      /* Hot magenta/pink */
+  --color-secondary: #00ffff;    /* Cyan text */
+  --color-background: #1a0033;   /* Deep purple background */
+
+  /* Override derived colors for dark mode - mix with black instead of white */
+  --text-primary: var(--color-secondary);
+  --text-secondary: color-mix(in srgb, var(--color-secondary) 80%, black);
+  --text-tertiary: color-mix(in srgb, var(--color-secondary) 65%, black);
+
+  /* Card backgrounds need to be darker than page background */
+  --card: color-mix(in srgb, var(--color-background) 92%, white);
+  --card-hover: color-mix(in srgb, var(--card) 95%, white);
+  --bg-dark: color-mix(in srgb, var(--color-background) 85%, black);
+
+  /* Borders need to be visible on dark background */
+  --border: color-mix(in srgb, var(--color-secondary) 20%, transparent);
+
+  /* Accent soft colors */
+  --accent-soft: color-mix(in srgb, var(--color-primary) 15%, var(--color-background));
+  --accent-soft-border: color-mix(in srgb, var(--color-primary) 50%, transparent);
+}
+
+/* Extra retro flavor */
+body {
+  background: linear-gradient(45deg, #1a0033 0%, #2d0052 50%, #1a0033 100%);
+  background-size: 200% 200%;
+  animation: spaceGradient 10s ease infinite;
+}
+
+@keyframes spaceGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Neon glow effect on headings */
+h1, h2, h3 {
+  text-shadow:
+    0 0 10px #ff00ff,
+    0 0 20px #ff00ff,
+    0 0 30px #ff00ff,
+    0 0 40px #ff00ff;
+}
+
+/* Make badges extra vibrant */
+.badge {
+  background: linear-gradient(135deg, #ff00ff, #00ffff) !important;
+  text-shadow: 0 0 5px rgba(0,0,0,0.8);
+  font-weight: bold;
+}
+
+/* Fix hardcoded backgrounds for dark mode */
+.hero {
+  background: rgba(26, 0, 51, 0.95) !important;  /* Deep purple with transparency */
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 0, 255, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+}
+
+.card {
+  background: var(--card) !important;
+}
+
+/* Fix details/experience sections */
+details {
+  background: rgba(26, 0, 51, 0.5) !important;  /* Dark purple semi-transparent */
+  border: 1px solid rgba(255, 0, 255, 0.25) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(255, 0, 255, 0.15) !important;
+}
+
+details:hover {
+  background: rgba(26, 0, 51, 0.7) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 0, 255, 0.25) !important;
+}
+
+details[open] {
+  background: rgba(26, 0, 51, 0.8) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 35px rgba(255, 0, 255, 0.35) !important;
+}
