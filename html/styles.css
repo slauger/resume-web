@@ -562,11 +562,6 @@ details a:hover,
 }
 
 @media print{
-  @page {
-    margin: 15mm;
-    size: A4 portrait;
-  }
-
   body{
     background:#fff!important;
     color:#1a1a1a;
