@@ -348,10 +348,6 @@ a:hover{filter:brightness(0.9)}
   padding:4px 12px;
   border-radius:999px;
   font-size:13px;
-  max-width:200px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
   display:inline-block;
   vertical-align:middle;
   transition:all 0.2s ease;
