@@ -26,7 +26,7 @@ It is designed to be hosted statically (e.g. via GitHub Pages, GitLab Pages, or 
 - 🏷️ **Categorized skills** - Organize skills by category for better structure
 - 📝 **Markdown support** - Use markdown syntax in descriptions and details
 - 📱 Fully responsive (Mobile, Tablet, Desktop)
-- 🌓 Automatic dark mode support
+- 🎨 **Multiple themes** - Choose from professional, retro, or fun color schemes
 - 🖨️ Professional PDF export (compact and detailed versions)
 - 📥 **Markdown export** - Download your CV as a `.md` file
 - 💾 Raw JSON download
