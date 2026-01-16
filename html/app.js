@@ -183,7 +183,7 @@
     if(!names.length) return '';
     return '<section class="card">'+
              '<div class="section-title">Interessen</div>'+
-             '<div class="interests">'+
+             '<div class="badges">'+
                names.map(name=>'<span class="badge">'+s(name)+'</span>').join('')+
              '</div>'+
            '</section>';
