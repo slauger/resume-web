@@ -81,12 +81,7 @@ async function takeScreenshot(page, name, customCSS = null, colorScheme = 'light
   // 1. Default Screenshot (light mode, orange theme)
   await takeScreenshot(page, 'screenshot', null, 'light');
 
-  // 2. Dark Mode Screenshot (using dark-mode.css theme)
-  const darkModeCSS = readFileSync(join(THEMES_DIR, 'dark-mode.css'), 'utf-8');
-  await page.reload({ waitUntil: 'networkidle' });
-  await takeScreenshot(page, 'screenshot-dark', darkModeCSS, 'dark');
-
-  // 3. Theme Screenshots
+  // 2. Theme Screenshots
   for (const theme of themes) {
     const themePath = join(THEMES_DIR, `${theme}.css`);
     const themeCSS = readFileSync(themePath, 'utf-8');
