@@ -19,6 +19,7 @@ It is designed to be hosted statically (e.g. via GitHub Pages, GitLab Pages, or 
 - 📄 Load resume data from a single `cv.json`
 - 🎨 **Modern glassmorphism design** with gradient backgrounds
 - 🎯 **Interactive skill filter** - Click on skills to filter experience entries
+- 🏷️ **Categorized skills** - Organize skills by category for better structure
 - 📝 **Markdown support** - Use markdown syntax in descriptions and details
 - 📱 Fully responsive (Mobile, Tablet, Desktop)
 - 🌓 Automatic dark mode support
@@ -238,12 +239,55 @@ Top-level fields in `cv.json`:
 - `contact`: Address, email, phone, web
 - `socialLinks`: List of `{ name, url }`
 - `description`: Short profile summary (supports markdown!)
-- `skills`: Array of strings (tags)
+- `skills`: Array of strings **OR** object with categories (see below)
 - `languages`: Object `{ "English": { "level": 85, "label": "Fluent", "cefr": "C1" } }`
 - `interests`: Array of strings
 - `experience`: Array of experience objects (descriptions/details support markdown!)
 - `education`: Array of education objects (descriptions/details support markdown!)
 - `certificates`: Array of certificates (descriptions support markdown!)  
+
+### Skills Format Options
+
+The `skills` field supports three different formats for maximum flexibility:
+
+#### 1. Flat Array (Simple)
+```json
+{
+  "skills": ["Docker", "Kubernetes", "AWS", "Python", "React"]
+}
+```
+All skills displayed in a single section without categories.
+
+#### 2. Categorized Object (Recommended)
+```json
+{
+  "skills": {
+    "Cloud & DevOps": ["AWS", "Azure", "Docker", "Kubernetes", "Terraform"],
+    "Programming": ["Python", "JavaScript", "Go", "TypeScript"],
+    "Soft Skills": ["Leadership", "Communication", "Problem Solving"]
+  }
+}
+```
+Skills grouped by category with headings. Best for resumes with diverse skill sets.
+
+#### 3. Array of Category Objects (Legacy)
+```json
+{
+  "skills": [
+    {
+      "category": "Cloud & DevOps",
+      "items": ["AWS", "Azure", "Docker", "Kubernetes"]
+    },
+    {
+      "category": "Programming",
+      "items": ["Python", "JavaScript", "Go"]
+    }
+  ]
+}
+```
+Alternative format for backwards compatibility.
+
+**All formats support the interactive skill filter!** Click any skill badge to filter experience entries.
 
 ---
 
