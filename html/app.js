@@ -129,6 +129,19 @@
 
   let activeSkillFilter = null;
   function renderSkills(skills){
+    if(!skills) return '';
+
+    // Handle object format (categorized skills)
+    if(typeof skills === 'object' && !Array.isArray(skills)){
+      const categories = Object.entries(skills);
+      if(!categories.length) return '';
+      return '<section class="card"><div class="section-title">Kernkompetenzen &amp; Tech‑Stack</div>'+
+        '<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px">'+
+        categories.map(([category, items])=>'<div><div class="small" style="font-weight:600">'+s(category)+'</div><div class="badges">'+(Array.isArray(items)?items.map(x=>'<span class="badge skill-badge" data-skill="'+s(x)+'">'+s(x)+'</span>').join(''):'')+'</div></div>').join('')+
+        '</div></section>';
+    }
+
+    // Handle array format (legacy)
     if(!Array.isArray(skills) || !skills.length) return '';
     if(skills[0] && typeof skills[0] === 'object' && Array.isArray(skills[0].items)){
       return '<section class="card"><div class="section-title">Kernkompetenzen &amp; Tech‑Stack</div>'+
@@ -253,9 +266,20 @@
     md += '\n';
 
     // Skills
-    if(Array.isArray(data.skills) && data.skills.length){
+    if(data.skills){
       md += `## Kernkompetenzen & Tech-Stack\n\n`;
-      md += data.skills.map(s => `- ${s}`).join('\n') + '\n\n';
+      if(typeof data.skills === 'object' && !Array.isArray(data.skills)){
+        // Categorized format (object)
+        Object.entries(data.skills).forEach(([category, items]) => {
+          md += `### ${category}\n\n`;
+          if(Array.isArray(items) && items.length){
+            md += items.map(s => `- ${s}`).join('\n') + '\n\n';
+          }
+        });
+      } else if(Array.isArray(data.skills) && data.skills.length){
+        // Legacy format (flat array)
+        md += data.skills.map(s => `- ${s}`).join('\n') + '\n\n';
+      }
     }
 
     // Languages

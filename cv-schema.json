@@ -59,9 +59,23 @@
       "description": "Short profile summary"
     },
     "skills": {
-      "type": "array",
-      "items": { "type": "string" },
-      "description": "Flat array of skills"
+      "oneOf": [
+        {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Flat array of skills (legacy format)"
+        },
+        {
+          "type": "object",
+          "description": "Categorized skills (optional format)",
+          "patternProperties": {
+            ".*": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      ]
     },
     "languages": {
       "type": "object",
