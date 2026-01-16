@@ -12,11 +12,15 @@ Clean, corporate blue color scheme perfect for traditional industries.
 - Secondary: Dark slate (#0f172a)
 - Background: Light gray (#f8fafc)
 
+![Professional Blue Theme](https://slauger.github.io/resume-web/screenshot-professional-blue.png)
+
 #### `corporate-green`
 Professional green color scheme with an eco-friendly vibe.
 - Primary: Emerald green (#059669)
 - Secondary: Dark green (#064e3b)
 - Background: Light green tint (#f0fdf4)
+
+![Corporate Green Theme](https://slauger.github.io/resume-web/screenshot-corporate-green.png)
 
 #### `elegant-purple`
 Sophisticated purple color scheme for creative professionals.
@@ -24,11 +28,15 @@ Sophisticated purple color scheme for creative professionals.
 - Secondary: Dark indigo (#1e1b4b)
 - Background: Light purple (#faf5ff)
 
+![Elegant Purple Theme](https://slauger.github.io/resume-web/screenshot-elegant-purple.png)
+
 #### `dark-mode`
 True dark theme with orange accents - easy on the eyes.
 - Primary: Orange accent (#f97316)
 - Secondary: Light text (#f8fafc)
 - Background: Dark slate (#0f172a)
+
+![Dark Mode Theme](https://slauger.github.io/resume-web/screenshot-dark-mode.png)
 
 ### Retro & Fun Themes
 
@@ -38,6 +46,8 @@ Inspired by constellation7.org - Purple space vibes with neon colors for maximum
 - Secondary: Cyan text (#00ffff)
 - Background: Deep purple (#1a0033)
 - **Bonus**: Animated gradient background, neon glow effects, vibrant badges
+
+![FRNZ Retro Theme](https://slauger.github.io/resume-web/screenshot-frnz-retro.png)
 
 #### `geocities-hell` ⚠️
 **WARNING: Eye cancer ahead!**
@@ -51,6 +61,8 @@ Maximum 90s Geocities vibes with blinking text, rainbow backgrounds, and under c
 
 *Use at your own risk. May cause temporary blindness.*
 
+![Geocities Hell Theme](https://slauger.github.io/resume-web/screenshot-geocities-hell.png)
+
 #### `comic-sans-nightmare` ⚠️
 **WARNING: May cause psychological damage!**
 
@@ -63,6 +75,8 @@ Everything wrong with web design, circa 2001. Comic Sans, WordArt, glitter backg
 - Crazy rotating badges
 
 *Not recommended for actual job applications. Or anything, really.*
+
+![Comic Sans Nightmare Theme](https://slauger.github.io/resume-web/screenshot-comic-sans-nightmare.png)
 
 ## 🚀 How to Use
 

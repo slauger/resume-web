@@ -7,7 +7,11 @@ It is designed to be hosted statically (e.g. via GitHub Pages, GitLab Pages, or 
 
 ![Screenshot](https://slauger.github.io/resume-web/screenshot.png)
 
-> *Screenshot is automatically generated during deployment*
+**Dark Mode:**
+
+![Dark Mode Screenshot](https://slauger.github.io/resume-web/screenshot-dark.png)
+
+> *Screenshots are automatically generated during deployment*
 
 [Here](https://slauger.github.io/resume-web/) you can find an example, hosted on GitHub Pages.
 
