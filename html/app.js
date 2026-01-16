@@ -136,9 +136,8 @@
       const categories = Object.entries(skills);
       if(!categories.length) return '';
       return '<section class="card"><div class="section-title">Kernkompetenzen &amp; Tech‑Stack</div>'+
-        '<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px">'+
-        categories.map(([category, items])=>'<div><div class="small" style="font-weight:600">'+s(category)+'</div><div class="badges">'+(Array.isArray(items)?items.map(x=>'<span class="badge skill-badge" data-skill="'+s(x)+'">'+s(x)+'</span>').join(''):'')+'</div></div>').join('')+
-        '</div></section>';
+        categories.map(([category, items])=>'<div style="margin-bottom:16px"><div class="small" style="font-weight:600;margin-bottom:8px">'+s(category)+'</div><div class="badges">'+(Array.isArray(items)?items.map(x=>'<span class="badge skill-badge" data-skill="'+s(x)+'">'+s(x)+'</span>').join(''):'')+'</div></div>').join('')+
+        '</section>';
     }
 
     // Handle array format (legacy)
