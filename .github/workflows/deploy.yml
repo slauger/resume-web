@@ -107,6 +107,20 @@ jobs:
             echo "⚠️  No cv.json found - skipping validation"
           fi
 
+      - name: Validate content files against schema (i18n mode)
+        run: |
+          if [ -d "resume-web/html/cv" ]; then
+            echo "📦 i18n mode detected - validating content files"
+            for file in resume-web/html/cv/*.json; do
+              if [ -f "$file" ]; then
+                ajv validate -s resume-web/cv-content-schema.json -d "$file" --strict=false
+                echo "✅ $(basename $file) is valid"
+              fi
+            done
+          else
+            echo "ℹ️  No cv/ directory - single-file mode"
+          fi
+
       # Upload build artifact for deployment job
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
