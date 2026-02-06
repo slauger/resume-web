@@ -1,10 +1,30 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Resume CV Schema",
-  "description": "Schema for resume-web cv.json format",
+  "description": "Schema for resume-web cv.json format (supports both single-file and i18n multi-file format)",
   "type": "object",
-  "required": ["name", "title", "contact"],
+  "required": ["name", "contact"],
   "properties": {
+    "defaultLang": {
+      "type": "string",
+      "description": "Default language code (e.g., 'de', 'en') for i18n mode",
+      "pattern": "^[a-z]{2}$"
+    },
+    "availableLangs": {
+      "type": "array",
+      "description": "Available languages for i18n mode",
+      "items": {
+        "type": "object",
+        "required": ["code", "label"],
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[a-z]{2}$"
+          },
+          "label": { "type": "string" }
+        }
+      }
+    },
     "name": {
       "type": "string",
       "description": "Full name",
@@ -12,7 +32,7 @@
     },
     "title": {
       "type": "string",
-      "description": "Professional title or role"
+      "description": "Professional title or role (optional in i18n mode, required in single-file mode)"
     },
     "image": {
       "type": "string",
