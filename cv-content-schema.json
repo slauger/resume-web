@@ -1,0 +1,170 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Resume CV Content Schema",
+  "description": "Schema for language-specific content files (cv/de.json, cv/en.json)",
+  "type": "object",
+  "required": ["title"],
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Professional title or role"
+    },
+    "description": {
+      "type": "string",
+      "description": "Short profile summary"
+    },
+    "pageTitle": {
+      "type": "string",
+      "description": "Browser tab title"
+    },
+    "skills": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Flat array of skills (legacy format)"
+        },
+        {
+          "type": "object",
+          "description": "Categorized skills",
+          "patternProperties": {
+            ".*": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      ]
+    },
+    "languages": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "type": "object",
+          "required": ["level"],
+          "properties": {
+            "level": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "label": { "type": "string" },
+            "cefr": {
+              "type": "string",
+              "pattern": "^(A1|A2|B1|B2|C1|C2)$"
+            }
+          }
+        }
+      }
+    },
+    "interests": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "experience": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "company", "role", "period"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Project or position title (5-7 words recommended)"
+          },
+          "company": { "type": "string" },
+          "location": { "type": "string" },
+          "role": { "type": "string" },
+          "type": {
+            "type": "string",
+            "enum": ["self_employed", "permanent", "contract", "staffing"]
+          },
+          "period": {
+            "type": "object",
+            "required": ["start"],
+            "properties": {
+              "start": {
+                "type": "string",
+                "pattern": "^[0-9]{4}-[0-9]{2}$"
+              },
+              "end": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[0-9]{4}-[0-9]{2}$"
+                  },
+                  { "type": "null" }
+                ]
+              }
+            }
+          },
+          "skills": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "description": {
+            "type": "string",
+            "description": "One-line summary"
+          },
+          "details": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "education": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["degree", "school"],
+        "properties": {
+          "degree": { "type": "string" },
+          "school": { "type": "string" },
+          "location": { "type": "string" },
+          "period": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string",
+                "pattern": "^[0-9]{4}-[0-9]{2}$"
+              },
+              "end": {
+                "type": "string",
+                "pattern": "^[0-9]{4}-[0-9]{2}$"
+              }
+            }
+          },
+          "description": { "type": "string" },
+          "details": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "certificates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "date": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}$"
+          },
+          "url": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uri"
+              },
+              { "type": "null" }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
