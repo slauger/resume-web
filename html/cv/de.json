@@ -1,0 +1,447 @@
+{
+  "title": "Professioneller Pechvogel & Clown",
+  "description": "Selbstironischer Clown und notorischer Tollpatsch – spezialisiert auf Slapstick, unerwartete Pannen und das charmante Scheitern auf hohem Niveau.",
+  "pageTitle": "Karl Klamauk – Lebenslauf",
+  "skills": {
+    "Clownerie & Performance": [
+      "Slapstick",
+      "Jonglage (fällt oft runter)",
+      "Pantomime",
+      "Publikumsinteraktion",
+      "Improvisation",
+      "Selbstironie",
+      "Krisenhumor",
+      "Timing & Rhythmus",
+      "Körperkomik",
+      "Akrobatik (mit Airbag)"
+    ],
+    "Tech & Cloud (mit Humor)": [
+      "CI/CD (Clown In/Clown Out)",
+      "Git (für Konfetti)",
+      "Docker (Eimer)",
+      "Kubernetes (vieles im Eimer)",
+      "Terraform (Tortenform)",
+      "Jenkins (Jonglier-Engine)",
+      "Ansible (Ansage & Spaß)",
+      "GitLab CI",
+      "Prometheus (Feuerwerk-Monitoring)",
+      "AWS (Amazon Witze Service)"
+    ],
+    "Kreative Künste": [
+      "Tortenwerfen",
+      "Luftballontiere",
+      "Konfetti-Optimierung",
+      "Bananenschalen-Platzierung",
+      "Splatter-Art",
+      "Kostümdesign",
+      "Maskenspiel",
+      "Requisiten-Bau"
+    ],
+    "Soft Skills": [
+      "Publikumsbindung",
+      "Teamarbeit (meistens)",
+      "Krisenmanagement",
+      "Stressresilienz",
+      "Kreative Problemlösung",
+      "Empathie & Humor",
+      "Selbstreflexion",
+      "Flexibilität"
+    ]
+  },
+  "languages": {
+    "Deutsch": {
+      "level": 100,
+      "label": "Muttersprache",
+      "cefr": "C2"
+    },
+    "Englisch": {
+      "level": 85,
+      "label": "Fließend",
+      "cefr": "C1"
+    },
+    "Französisch": {
+      "level": 60,
+      "label": "Grundkenntnisse",
+      "cefr": "B1"
+    },
+    "Spanisch": {
+      "level": 45,
+      "label": "Anfänger",
+      "cefr": "A2"
+    },
+    "Pantomimisch": {
+      "level": 95,
+      "label": "Muttergeste",
+      "cefr": "C2"
+    }
+  },
+  "interests": [
+    "Tortenwerfen",
+    "Bananenschalen-Sammlung",
+    "Luftballontiere",
+    "Konfetti-Optimierung",
+    "Vintage Clown-Nasen",
+    "Slapstick-Film-Archäologie",
+    "Improvisationstheater",
+    "Stand-up Comedy",
+    "Straßenkunst",
+    "Zirkusgeschichte",
+    "Hupen-Tuning",
+    "Oversized-Schuhe-Customizing"
+  ],
+  "experience": [
+    {
+      "title": "Große Nummer geht klein aus",
+      "company": "Zirkus Fortuna",
+      "location": "Deutschlandweit",
+      "role": "Clown",
+      "type": "self_employed",
+      "period": {
+        "start": "2024-04",
+        "end": null
+      },
+      "skills": [
+        "Slapstick",
+        "Improvisation",
+        "Publikum"
+      ],
+      "description": "Abendfüllende **Slapstick-Show** mit kalkulierten Pannen – *Lachen garantiert*, Erfolg optional.",
+      "details": [
+        "Dramaturgie für **60‑minütige** Pechvogel‑Routine entwickelt",
+        "Sicheres Scheitern als *Stilmittel* inszeniert (ohne echte Verletzungen)",
+        "Publikumsinteraktion mit `situativer Improvisation` und Running Gags",
+        "Mehr Details auf [meiner Website](https://example.com)"
+      ]
+    },
+    {
+      "title": "Digitaler Transformation Manager (Eimer-Edition)",
+      "company": "TechStartup 'CloudFail'",
+      "location": "Berlin",
+      "role": "Chief Chaos Officer",
+      "type": "contract",
+      "period": {
+        "start": "2023-01",
+        "end": "2024-03"
+      },
+      "skills": [
+        "Docker (Eimer)",
+        "Kubernetes (vieles im Eimer)",
+        "CI/CD (Clown In/Clown Out)",
+        "Git (für Konfetti)"
+      ],
+      "description": "Verantwortlich für das **orchestrierte Scheitern** in der Cloud – *mit Style*.",
+      "details": [
+        "Migration von **On-Premise Torten** zu `Cloud-Torten` erfolgreich vermasselt",
+        "Container-Orchestrierung: *99%* der Eimer fielen zur richtigen Zeit um",
+        "Implementierung einer **Continuous Chaos Pipeline** mit automatisierten Pannen",
+        "Team-Building durch gemeinsames Lachen über Production-Fails"
+      ]
+    },
+    {
+      "title": "Pantomime & Non-Verbal Communication Expert",
+      "company": "Künstlergruppe 'Die Schweiger'",
+      "location": "Hamburg",
+      "role": "Senior Gestikulierer",
+      "type": "permanent",
+      "period": {
+        "start": "2020-06",
+        "end": "2022-12"
+      },
+      "skills": [
+        "Pantomime",
+        "Körpersprache",
+        "Non-verbale Kommunikation",
+        "Ausdruckstanz"
+      ],
+      "description": "Stille Kunst mit lauten Missgeschicken – wenn der Körper mehr sagt als tausend Worte.",
+      "details": [
+        "Entwicklung einer eigenen Zeichensprache für 'Hilfe, ich stecke fest'",
+        "Perfektionierung der 'unsichtbaren Wand' – leider zu überzeugend (Beule am Kopf)",
+        "Workshop-Leitung: 'Wie man in Stille scheitert' (ausgebucht!)",
+        "Gastauftritt im Fernsehen – versehentlich in einer Talkshow gelandet"
+      ]
+    },
+    {
+      "title": "Junior Luftballon-Architekt",
+      "company": "Kinderparty Service 'Knall & Fall'",
+      "location": "München",
+      "role": "Ballonkünstler",
+      "type": "staffing",
+      "period": {
+        "start": "2019-10",
+        "end": "2020-05"
+      },
+      "skills": [
+        "Luftballontiere",
+        "Krisenmanagement",
+        "Kindergeburtstage",
+        "Improvisationskunst"
+      ],
+      "description": "Von der Giraffe zum abstrakten Expressionismus – in nur einem *Knall*.",
+      "details": [
+        "Spezialisierung auf 'Was soll das sein?'-Tiere mit hohem Interpretationsspielraum",
+        "Entwicklung des legendären 'Platzenden Pudels' (unbeabsichtigt, aber ikonisch)",
+        "Notfall-Rettung bei Ballon-Pannen durch kreative Umdeutung",
+        "Kundenzufriedenheit: 4 von 5 Sternen ('Er hat uns sehr unterhalten, wenn auch anders als geplant')"
+      ]
+    },
+    {
+      "title": "Praktikum: Tortenwerfer & Splatter Artist",
+      "company": "Film-Studio 'Slapstick Productions'",
+      "location": "Köln",
+      "role": "Praktikant",
+      "type": "contract",
+      "period": {
+        "start": "2019-04",
+        "end": "2019-09"
+      },
+      "skills": [
+        "Tortenwerfen",
+        "Timing & Rhythmus",
+        "Krisenhumor",
+        "Splatter-Art"
+      ],
+      "description": "Präzisionsarbeit mit Sahne – Hauptdarsteller versehentlich öfter getroffen als geplant.",
+      "details": [
+        "Training in der Kunst des perfekt getimten Tortenwurfs",
+        "Entwicklung eigener Wurftechnik: 'Der Bumerang-Klecks'",
+        "Unfallquote: 73% (aber alle haben gelacht!)",
+        "Auszeichnung: 'Kreativster Fleck auf der Linse' beim Teamfilm-Festival"
+      ]
+    },
+    {
+      "title": "Straßenkunst-Performance 'Der taumelnde Poet'",
+      "company": "Selbstständig",
+      "location": "Berlin Mitte",
+      "role": "Straßenkünstler",
+      "type": "self_employed",
+      "period": {
+        "start": "2018-05",
+        "end": "2019-03"
+      },
+      "skills": [
+        "Publikumsinteraktion",
+        "Improvisation",
+        "Körperkomik",
+        "Straßenkunst"
+      ],
+      "description": "Living Statue mit integrierten Missgeschicken – Kunst trifft auf Chaos.",
+      "details": [
+        "Entwicklung eines interaktiven Charakters: 'Der Mann, der nicht stehen bleiben kann'",
+        "Durchschnittlich 200€ Einnahmen pro Tag (in 5-Cent-Stücken)",
+        "Viral gegangen auf Instagram: 2,4 Millionen Views für 'Der Sturz, der nie endet'",
+        "Zusammenarbeit mit lokalen Künstlern für Flash-Mob-Performances"
+      ]
+    },
+    {
+      "title": "Community Manager für Clown-Influencer",
+      "company": "Social Media Agentur 'LaughLabs'",
+      "location": "Remote",
+      "role": "Social Media Manager",
+      "type": "contract",
+      "period": {
+        "start": "2017-08",
+        "end": "2018-04"
+      },
+      "skills": [
+        "Social Media Marketing",
+        "Content-Erstellung",
+        "Community Management",
+        "Krisenmanagement"
+      ],
+      "description": "Management von Comedy-Content für 500K+ Follower – manchmal lustiger als geplant.",
+      "details": [
+        "Steigerung der Follower-Zahlen um 340% in 8 Monaten",
+        "Entwicklung viraler Content-Strategien (12 Posts mit >1M Reichweite)",
+        "Krisenintervention bei 'Pie-Gate 2017' (versehentlicher Politiker-Treffer)",
+        "A/B-Testing von Memes: 'Banana Peel vs. Rake' (Rake gewann mit 73% Engagement)"
+      ]
+    },
+    {
+      "title": "Assistent der Zirkusdirektion",
+      "company": "Wanderzirkus 'Maharani'",
+      "location": "Europa-Tournee",
+      "role": "Organisationsassistent",
+      "type": "permanent",
+      "period": {
+        "start": "2016-03",
+        "end": "2017-07"
+      },
+      "skills": [
+        "Eventmanagement",
+        "Logistik",
+        "Teamarbeit (meistens)",
+        "Krisenmanagement"
+      ],
+      "description": "Koordination von Shows, Transporten und Notfällen – learning by doing (and failing).",
+      "details": [
+        "Organisation von 140+ Shows in 8 Ländern",
+        "Notfall-Vertretung als Clown bei Krankheitsausfall (standing ovations!)",
+        "Optimierung der Tour-Logistik: 25% Zeitersparnis durch neue Route",
+        "Konfliktlösung im multikulturellen Team (12 Nationalitäten)"
+      ]
+    },
+    {
+      "title": "Studentenjob: Kindergeburtstags-Entertainer",
+      "company": "Event-Service 'Partyzauber'",
+      "location": "Köln & Umgebung",
+      "role": "Entertainer",
+      "type": "staffing",
+      "period": {
+        "start": "2015-10",
+        "end": "2016-02"
+      },
+      "skills": [
+        "Kinderprogramm",
+        "Improvisation",
+        "Stressresilienz",
+        "Luftballontiere"
+      ],
+      "description": "Unterhaltung für 4- bis 10-Jährige – härter als es klingt.",
+      "details": [
+        "Durchführung von 60+ Kindergeburtstagen ohne größere Zwischenfälle",
+        "Spezialisierung auf 'Schwierige Gruppen' (Bonuszahlung: +30%)",
+        "Entwicklung des 'Ruhige-Minute-Spiels' (Patent pending)",
+        "5-Sterne-Bewertung: 'Er hat alle beschäftigt, sogar Kevin!'"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Diplom in Angewandter Clownerie",
+      "school": "Hochschule für Humoristik",
+      "location": "Köln",
+      "period": {
+        "start": "2015-10",
+        "end": "2019-09"
+      },
+      "description": "Schwerpunkt Slapstick, Impro und Pädagogik. Abschlussnote: 1,3 (Chaos cum laude)",
+      "details": [
+        "Abschlussprojekt: 'Der mit der Torte tanzt' (Note: 1,0)",
+        "Tutor für Erstsemester-Clownerei (WiSe 2017/18 & SoSe 2018)",
+        "Stipendium der 'Stiftung Lachende Herzen' (2016-2019)",
+        "Nebenfach: Theaterpädagogik & Performance-Psychologie",
+        "Auslandssemester an der Circus Arts Academy, Paris (SoSe 2017)"
+      ]
+    },
+    {
+      "degree": "Fortbildung: Professional Clown Techniques",
+      "school": "International Clown Academy",
+      "location": "London, UK",
+      "period": {
+        "start": "2020-01",
+        "end": "2020-03"
+      },
+      "description": "Intensivkurs für fortgeschrittene Clowns mit Fokus auf internationale Standards.",
+      "details": [
+        "Module: Advanced Slapstick, Character Development, Physical Comedy",
+        "Gastdozenten von Cirque du Soleil und Slava's Snowshow",
+        "Zertifizierung: 'Professional Clown' (International Standards)"
+      ]
+    },
+    {
+      "degree": "Workshop: DevOps for Creatives",
+      "school": "Tech Academy Berlin",
+      "location": "Berlin",
+      "period": {
+        "start": "2022-11",
+        "end": "2023-01"
+      },
+      "description": "Einführung in DevOps, CI/CD und Cloud-Technologien für Quereinsteiger.",
+      "details": [
+        "Grundlagen: Docker, Kubernetes, Git, CI/CD-Pipelines",
+        "Projektarbeit: 'Automatisiertes Konfetti-Deployment-System'",
+        "Abschlusszertifikat mit Auszeichnung"
+      ]
+    },
+    {
+      "degree": "Ausbildung: Staatlich geprüfter Artist",
+      "school": "Staatliche Artistenschule Berlin",
+      "location": "Berlin",
+      "period": {
+        "start": "2013-09",
+        "end": "2015-07"
+      },
+      "description": "Grundausbildung in Artistik, Akrobatik und darstellender Kunst.",
+      "details": [
+        "Schwerpunkte: Clownerie, Akrobatik, Jonglage, Luftartistik",
+        "Abschlusspräsentation: 'Die tollpatschige Fledermaus' (Publikumspreis)",
+        "Zusatzqualifikation: Erste Hilfe & Arbeitssicherheit am Set"
+      ]
+    }
+  ],
+  "certificates": [
+    {
+      "title": "Certified Kubernetes Administrator (CKA)",
+      "description": "Offizielle Linux Foundation Zertifizierung für Kubernetes Administration.",
+      "date": "2023-05",
+      "url": "https://www.cncf.io/certification/cka/"
+    },
+    {
+      "title": "AWS Certified Cloud Practitioner",
+      "description": "Grundlagen-Zertifizierung für Amazon Web Services (AWS) Cloud.",
+      "date": "2023-02",
+      "url": "https://aws.amazon.com/certification/certified-cloud-practitioner/"
+    },
+    {
+      "title": "GitLab Certified CI/CD Specialist",
+      "description": "Zertifizierung für GitLab CI/CD Pipelines und DevOps-Workflows.",
+      "date": "2023-08",
+      "url": null
+    },
+    {
+      "title": "Certified Banana Peel Specialist (CBPS)",
+      "description": "Professioneller Umgang mit Bananenschalen, inklusive Rutsch-Sicherheit.",
+      "date": "2020-04",
+      "url": null
+    },
+    {
+      "title": "Advanced Confetti Management Certificate",
+      "description": "Zertifizierung für professionelles Konfetti-Deployment mit optimaler Verteilung und Cleanup-Strategien.",
+      "date": "2021-11",
+      "url": null
+    },
+    {
+      "title": "Professional Pie Throwing License (Level 3)",
+      "description": "Lizenz zum professionellen Tortenwerfen mit Schwerpunkt auf Timing, Trajectory und Splatter-Pattern.",
+      "date": "2019-08",
+      "url": null
+    },
+    {
+      "title": "International Clown Certification (ICC)",
+      "description": "Weltweite Anerkennung als professioneller Clown durch die World Clown Association.",
+      "date": "2020-06",
+      "url": null
+    },
+    {
+      "title": "First Aid for Self-Inflicted Slapstick Injuries",
+      "description": "Notfallversorgung bei selbst verursachten Comedy-Unfällen. Schwerpunkt: Torte im Gesicht, Stolperfallen.",
+      "date": "2018-06",
+      "url": null
+    },
+    {
+      "title": "Professional Stage Combat Certification",
+      "description": "Zertifizierung für sicheren Bühnenkampf und choreografierte Slapstick-Sequenzen.",
+      "date": "2019-03",
+      "url": null
+    },
+    {
+      "title": "Docker Certified Associate (DCA)",
+      "description": "Offizielle Docker-Zertifizierung für Container-Technologien (Eimer-Variante nicht enthalten).",
+      "date": "2022-12",
+      "url": "https://www.docker.com/certification"
+    },
+    {
+      "title": "PRINCE2 Foundation (Project Management)",
+      "description": "Grundlagen-Zertifizierung in Projektmanagement nach PRINCE2-Methodik.",
+      "date": "2021-09",
+      "url": null
+    },
+    {
+      "title": "Scrum Master Certified (SMC)",
+      "description": "Agile Projektmanagement-Zertifizierung für Scrum-Methodik.",
+      "date": "2022-03",
+      "url": null
+    }
+  ]
+}

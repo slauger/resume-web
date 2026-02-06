@@ -1,0 +1,57 @@
+{
+  "ui": {
+    "contact": "Kontakt",
+    "skills": "Kernkompetenzen & Tech-Stack",
+    "languages": "Sprachen",
+    "interests": "Interessen",
+    "experience": "Ausgewählte Berufserfahrung",
+    "education": "Ausbildung & Abschlüsse",
+    "certificates": "Zertifizierungen",
+    "present": "heute",
+    "loading": "Lade Lebenslauf...",
+    "error": "Fehler",
+    "errorLoadCv": "cv.json konnte nicht geladen werden",
+    "errorLoadI18n": "Sprachdatei konnte nicht geladen werden",
+    "errorLoadContent": "Inhaltsdatei konnte nicht geladen werden",
+    "errorContainer": "Container #cv fehlt.",
+    "noProjects": "Keine Projekte mit dieser Kompetenz gefunden.",
+    "filteredBy": "gefiltert nach",
+    "clearFilter": "Filter löschen",
+    "link": "Link",
+    "certificate": "Zertifikat",
+    "defaultPageTitle": "Lebenslauf",
+    "defaultDescription": "Professioneller Lebenslauf"
+  },
+  "buttons": {
+    "exportPdf": "Lebenslauf als PDF",
+    "pdfCompact": "PDF (kompakt)",
+    "pdfDetailed": "PDF (detailliert)",
+    "markdown": "Markdown",
+    "json": "JSON"
+  },
+  "contact": {
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "address": "Adresse",
+    "web": "Web",
+    "social": "Social"
+  },
+  "types": {
+    "self_employed": "Selbstständig",
+    "permanent": "Festanstellung",
+    "contract": "Freier Vertrag",
+    "staffing": "AN-Überlassung"
+  },
+  "months": ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
+  "markdown": {
+    "contact": "Kontakt",
+    "skills": "Kernkompetenzen & Tech-Stack",
+    "languages": "Sprachen",
+    "interests": "Interessen",
+    "experience": "Berufserfahrung",
+    "education": "Ausbildung & Abschlüsse",
+    "certificates": "Zertifizierungen",
+    "role": "Rolle",
+    "certLink": "Link zum Zertifikat"
+  }
+}

@@ -4,6 +4,23 @@
   function escapeHtml(str){ return String(str).replace(/[&<>"']/g, s=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[s])); }
   function s(v){ return v==null?'' : escapeHtml(v); }
 
+  // i18n system
+  let i18n = {};
+  let config = {};
+  let currentLang = 'de';
+
+  function detectLang(){
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('lang') || config.defaultLang || 'de';
+  }
+
+  function t(key){
+    const keys = key.split('.');
+    let val = i18n;
+    for(const k of keys) val = val?.[k];
+    return val || key;
+  }
+
   // Minimal markdown parser for bold, italic, links, and code
   function md(str){
     if(str==null) return '';
@@ -57,11 +74,11 @@
     box.style.background = 'var(--card)';
     box.style.border = '2px solid #ef4444';
     box.style.borderRadius = 'var(--radius)';
-    box.innerHTML = '<div style="color:#ef4444;font-weight:600;margin-bottom:8px;font-size:16px">\u26A0\uFE0F Fehler</div><div class="small">'+s(msg)+'</div>';
+    box.innerHTML = '<div style="color:#ef4444;font-weight:600;margin-bottom:8px;font-size:16px">\u26A0\uFE0F '+t('ui.error')+'</div><div class="small">'+s(msg)+'</div>';
   }
 
   function monthName(m){
-    const arr = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+    const arr = i18n.months || ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
     const i = parseInt(m,10); return (i>=1&&i<=12)?arr[i-1]:m;
   }
   function formatYM(ym){
@@ -78,7 +95,7 @@
     if(!p) return '';
     if(typeof p === 'string') return s(p);
     const start = p.start ? formatYM(p.start) : '';
-    const end = (p.end===null) ? 'heute' : (p.end ? formatYM(p.end) : '');
+    const end = (p.end===null) ? t('ui.present') : (p.end ? formatYM(p.end) : '');
     if(start && end) return `${start} – ${end}`;
     if(start && !end) return `${start}`;
     if(!start && end) return `${end}`;
@@ -96,14 +113,14 @@
     if(d.image){ $('avatar').src = d.image; }
 
     // Set document title from pageTitle field or fallback to name
-    const pageTitle = d.pageTitle || (d.name ? d.name + ' – Lebenslauf' : 'Lebenslauf');
+    const pageTitle = d.pageTitle || (d.name ? d.name + ' – ' + t('ui.defaultPageTitle') : t('ui.defaultPageTitle'));
     document.title = pageTitle;
 
     const ogTitle = document.querySelector('meta[property="og:title"]');
     if(ogTitle) ogTitle.content = pageTitle;
     const twTitle = document.querySelector('meta[name="twitter:title"]');
     if(twTitle) twTitle.content = pageTitle;
-    const desc = d.title || d.description || 'Professioneller Lebenslauf';
+    const desc = d.title || d.description || t('ui.defaultDescription');
     const ogDesc = document.querySelector('meta[property="og:description"]');
     if(ogDesc) ogDesc.content = desc;
     const twDesc = document.querySelector('meta[name="twitter:description"]');
@@ -114,13 +131,13 @@
     const socials = Array.isArray(d.socialLinks) ? d.socialLinks : [];
 
     const contactHtml = '<section class="card">'+
-      '<div class="section-title">Kontakt</div>'+
+      '<div class="section-title">'+t('ui.contact')+'</div>'+
       '<div class="contact-grid">'+
-        (contact.email? '<div class="contact-key">'+icons.email+' E‑Mail</div><div class="contact-item"><a href="mailto:'+s(contact.email)+'">'+s(contact.email)+'</a></div>' : '')+
-        (contact.phone? '<div class="contact-key">'+icons.phone+' Telefon</div><div class="contact-item"><a href="tel:'+s(contact.phone)+'">'+s(contact.phone)+'</a></div>' : '')+
-        (contact.address? '<div class="contact-key">'+icons.location+' Adresse</div><div class="contact-item">'+s(contact.address)+'</div>' : '')+
-        (web.url? '<div class="contact-key contact-web">'+icons.web+' Web</div><div class="contact-item contact-web"><a href=\"'+sanitizeUrl(web.url)+'\" target=\"_blank\" rel=\"noopener\">'+s(web.title||web.url)+'</a></div>' : '')+
-        (socials.length? '<div class="contact-key contact-social">'+icons.social+' Social</div><div class="contact-item contact-social">'+socials.map(x=>{const u=sanitizeUrl(x.url);return u?'<a href="'+u+'" target="_blank" rel="noopener">'+s(x.name)+'</a>':'';}).filter(Boolean).join(' ')+'</div>' : '')+
+        (contact.email? '<div class="contact-key">'+icons.email+' '+t('contact.email')+'</div><div class="contact-item"><a href="mailto:'+s(contact.email)+'">'+s(contact.email)+'</a></div>' : '')+
+        (contact.phone? '<div class="contact-key">'+icons.phone+' '+t('contact.phone')+'</div><div class="contact-item"><a href="tel:'+s(contact.phone)+'">'+s(contact.phone)+'</a></div>' : '')+
+        (contact.address? '<div class="contact-key">'+icons.location+' '+t('contact.address')+'</div><div class="contact-item">'+s(contact.address)+'</div>' : '')+
+        (web.url? '<div class="contact-key contact-web">'+icons.web+' '+t('contact.web')+'</div><div class="contact-item contact-web"><a href=\"'+sanitizeUrl(web.url)+'\" target=\"_blank\" rel=\"noopener\">'+s(web.title||web.url)+'</a></div>' : '')+
+        (socials.length? '<div class="contact-key contact-social">'+icons.social+' '+t('contact.social')+'</div><div class="contact-item contact-social">'+socials.map(x=>{const u=sanitizeUrl(x.url);return u?'<a href="'+u+'" target="_blank" rel="noopener">'+s(x.name)+'</a>':'';}).filter(Boolean).join(' ')+'</div>' : '')+
       '</div>'+
     '</section>';
 
@@ -135,7 +152,7 @@
     if(typeof skills === 'object' && !Array.isArray(skills)){
       const categories = Object.entries(skills);
       if(!categories.length) return '';
-      return '<section class="card" id="skillsSection"><div class="section-title">Kernkompetenzen &amp; Tech‑Stack <span class="small" id="filterStatus"></span></div>'+
+      return '<section class="card" id="skillsSection"><div class="section-title">'+s(t('ui.skills'))+' <span class="small" id="filterStatus"></span></div>'+
         categories.map(([category, items])=>'<div style="margin-bottom:16px"><div class="small" style="font-weight:600;margin-bottom:8px">'+s(category)+'</div><div class="badges">'+(Array.isArray(items)?items.map(x=>'<span class="badge skill-badge" data-skill="'+s(x)+'">'+s(x)+'</span>').join(''):'')+'</div></div>').join('')+
         '</section>';
     }
@@ -143,13 +160,13 @@
     // Handle array format (legacy)
     if(!Array.isArray(skills) || !skills.length) return '';
     if(skills[0] && typeof skills[0] === 'object' && Array.isArray(skills[0].items)){
-      return '<section class="card"><div class="section-title">Kernkompetenzen &amp; Tech‑Stack</div>'+
+      return '<section class="card"><div class="section-title">'+s(t('ui.skills'))+'</div>'+
         '<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px">'+
         skills.map(cat=>'<div><div class="small" style="font-weight:600">'+s(cat.category)+'</div><div class="badges">'+(Array.isArray(cat.items)?cat.items.map(x=>'<span class="badge skill-badge" data-skill="'+s(x)+'">'+s(x)+'</span>').join(''):'')+'</div></div>').join('')+
         '</div></section>';
     } else {
       return '<section class="card" id="skillsSection">'+
-        '<div class="section-title">Kernkompetenzen &amp; Tech‑Stack <span class="small" id="filterStatus"></span></div>'+
+        '<div class="section-title">'+s(t('ui.skills'))+' <span class="small" id="filterStatus"></span></div>'+
         '<div class="badges">'+skills.map(x=>'<span class="badge skill-badge" data-skill="'+s(x)+'">'+s(x)+'</span>').join('')+'</div></section>';
     }
   }
@@ -159,7 +176,7 @@
     const entries = Object.entries(langs);
     if(!entries.length) return '';
     return '<section class="card">'+
-             '<div class="section-title">Sprachen</div>'+
+             '<div class="section-title">'+t('ui.languages')+'</div>'+
              '<div class="languages">'+
              entries.map(([name, val])=>{
                let level=0,label='',cefr='';
@@ -182,7 +199,7 @@
     names = names.filter(x=>String(x).trim().length>0);
     if(!names.length) return '';
     return '<section class="card">'+
-             '<div class="section-title">Interessen</div>'+
+             '<div class="section-title">'+t('ui.interests')+'</div>'+
              '<div class="badges">'+
                names.map(name=>'<span class="badge">'+s(name)+'</span>').join('')+
              '</div>'+
@@ -192,7 +209,7 @@
   function renderExperience(items){
     if(!Array.isArray(items) || !items.length) return '';
     const sorted = [...items].sort((a,b)=>(b.period?.start||'').localeCompare(a.period?.start||''));
-    return '<section class="card"><div class="section-title">Ausgewählte Berufserfahrung</div>'+
+    return '<section class="card"><div class="section-title">'+t('ui.experience')+'</div>'+
       sorted.map(exp=>{
         const metaBits = [exp.company, formatPeriod(exp.period)].filter(Boolean);
         const meta = metaBits.join(' · ');
@@ -201,7 +218,7 @@
         const roleIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
         const typeIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>';
         const locationIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
-        const typeLabel = ({'self_employed':'Selbstständig','permanent':'Festanstellung','contract':'Freier Vertrag','staffing':'AN-Überlassung'})[exp.type]||exp.type||'';
+        const typeLabel = t('types.'+exp.type) || exp.type || '';
         const metaItems = [
           exp.role ? '<span class="meta-item">'+roleIcon+s(exp.role)+'</span>' : '',
           typeLabel ? '<span class="meta-item">'+typeIcon+s(typeLabel)+'</span>' : '',
@@ -216,7 +233,7 @@
 
   function renderEducation(items){
     if(!Array.isArray(items) || !items.length) return '';
-    return '<section class="card"><div class="section-title">Ausbildung &amp; Abschlüsse</div>'+
+    return '<section class="card"><div class="section-title">'+s(t('ui.education'))+'</div>'+
       items.map(ed=>{
         const metaBits = [ed.school, ed.location, formatPeriod(ed.period)].filter(Boolean);
         const meta = metaBits.join(' · ');
@@ -229,12 +246,12 @@
 
   function renderCertificates(items){
     if(!Array.isArray(items) || !items.length) return '';
-    return '<section class="card"><div class="section-title">Zertifizierungen</div>'+
+    return '<section class="card"><div class="section-title">'+t('ui.certificates')+'</div>'+
       items.map(c=>{
         const date = c.date ? '<span class="small">'+formatYearMonth(c.date)+'</span>' : '';
-        const title = s(c.title||'Zertifikat');
+        const title = s(c.title||t('ui.certificate'));
         const cleanUrl = sanitizeUrl(c.url);
-        const link = cleanUrl ? ' <a class="small" href="'+cleanUrl+'" target="_blank" rel="noopener">Link</a>' : '';
+        const link = cleanUrl ? ' <a class="small" href="'+cleanUrl+'" target="_blank" rel="noopener">'+t('ui.link')+'</a>' : '';
         const desc = c.description ? '<div class="small" style="margin-top:4px">'+md(c.description)+'</div>' : '';
         return '<div style="margin:12px 0"><div style="font-weight:600">'+title+' '+date+link+'</div>'+desc+'</div>';
       }).join('')+
@@ -248,12 +265,12 @@
     let md = '';
 
     // Header
-    md += `# ${data.name || 'Lebenslauf'}\n\n`;
+    md += `# ${data.name || t('ui.defaultPageTitle')}\n\n`;
     md += `**${data.title || ''}**\n\n`;
     if(data.description) md += `${data.description}\n\n`;
 
     // Contact
-    md += `## Kontakt\n\n`;
+    md += `## ${t('markdown.contact')}\n\n`;
     const contact = data.contact || {};
     if(contact.email) md += `- **E-Mail:** ${contact.email}\n`;
     if(contact.phone) md += `- **Telefon:** ${contact.phone}\n`;
@@ -266,7 +283,7 @@
 
     // Skills
     if(data.skills){
-      md += `## Kernkompetenzen & Tech-Stack\n\n`;
+      md += `## ${t('markdown.skills')}\n\n`;
       if(typeof data.skills === 'object' && !Array.isArray(data.skills)){
         // Categorized format (object)
         Object.entries(data.skills).forEach(([category, items]) => {
@@ -283,7 +300,7 @@
 
     // Languages
     if(data.languages && Object.keys(data.languages).length){
-      md += `## Sprachen\n\n`;
+      md += `## ${t('markdown.languages')}\n\n`;
       Object.entries(data.languages).forEach(([name, val]) => {
         const label = typeof val === 'object' ? val.label : '';
         const cefr = typeof val === 'object' ? val.cefr : '';
@@ -294,13 +311,13 @@
 
     // Interests
     if(Array.isArray(data.interests) && data.interests.length){
-      md += `## Interessen\n\n`;
+      md += `## ${t('markdown.interests')}\n\n`;
       md += data.interests.map(i => `- ${i}`).join('\n') + '\n\n';
     }
 
     // Experience
     if(Array.isArray(data.experience) && data.experience.length){
-      md += `## Berufserfahrung\n\n`;
+      md += `## ${t('markdown.experience')}\n\n`;
       const sorted = [...data.experience].sort((a,b)=>(b.period?.start||'').localeCompare(a.period?.start||''));
       sorted.forEach(exp => {
         md += `### ${exp.title}\n\n`;
@@ -308,7 +325,7 @@
         if(exp.location) md += ` · ${exp.location}`;
         if(exp.period) md += ` · ${formatPeriod(exp.period)}`;
         md += '\n\n';
-        if(exp.role) md += `**Rolle:** ${exp.role}\n\n`;
+        if(exp.role) md += `**${t('markdown.role')}:** ${exp.role}\n\n`;
         if(exp.description) md += `${exp.description}\n\n`;
         if(Array.isArray(exp.skills) && exp.skills.length){
           md += `**Skills:** ${exp.skills.join(', ')}\n\n`;
@@ -321,7 +338,7 @@
 
     // Education
     if(Array.isArray(data.education) && data.education.length){
-      md += `## Ausbildung & Abschlüsse\n\n`;
+      md += `## ${t('markdown.education')}\n\n`;
       data.education.forEach(ed => {
         md += `### ${ed.degree}\n\n`;
         if(ed.school) md += `**${ed.school}**`;
@@ -337,13 +354,13 @@
 
     // Certificates
     if(Array.isArray(data.certificates) && data.certificates.length){
-      md += `## Zertifizierungen\n\n`;
+      md += `## ${t('markdown.certificates')}\n\n`;
       data.certificates.forEach(cert => {
         md += `### ${cert.title}`;
         if(cert.date) md += ` (${formatYearMonth(cert.date)})`;
         md += '\n\n';
         if(cert.description) md += `${cert.description}\n\n`;
-        if(cert.url) md += `[Link zum Zertifikat](${cert.url})\n\n`;
+        if(cert.url) md += `[${t('markdown.certLink')}](${cert.url})\n\n`;
       });
     }
 
@@ -401,22 +418,28 @@
       const a = document.createElement('a');
       a.href = url;
       const name = cvData?.name ? cvData.name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'') : 'cv';
-      a.download = name + '-cv.md';
+      a.download = name + '-cv-' + currentLang + '.md';
       document.body.appendChild(a); a.click();
       setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 200);
       if(dropdown) dropdown.classList.remove('active');
     });
     if(j) j.addEventListener('click',()=>{
-      fetch('cv.json',{cache:'no-store'}).then(r=>r.blob()).then(b=>{
+      // Download merged data as JSON
+      const mergedData = { ...config, ...cvData };
+      delete mergedData.defaultLang;
+      delete mergedData.availableLangs;
+      const blob = new Blob([JSON.stringify(mergedData, null, 2)], {type: 'application/json;charset=utf-8'});
+      const b = blob;
+      Promise.resolve(b).then(b=>{
         const url = URL.createObjectURL(b);
         const a = document.createElement('a');
         a.href = url;
         const name = cvData?.name ? cvData.name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'') : 'cv';
-        a.download = name + '-cv.json';
+        a.download = name + '-cv-' + currentLang + '.json';
         document.body.appendChild(a); a.click();
         setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 200);
         if(dropdown) dropdown.classList.remove('active');
-      }).catch(e=>showError('cv.json konnte nicht geladen werden für Download: '+String(e)));
+      }).catch(e=>showError(t('ui.errorLoadCv')+': '+String(e)));
     });
   }
 
@@ -430,7 +453,7 @@
 
     const expSection = document.querySelector('#experienceSection');
     if(expSection){
-      expSection.innerHTML = '<div class="section-title">Ausgewählte Berufserfahrung'+(skill?' <span class="badge">Filter: '+s(skill)+'</span>':'')+'</div>'+
+      expSection.innerHTML = '<div class="section-title">'+t('ui.experience')+(skill?' <span class="badge">Filter: '+s(skill)+'</span>':'')+'</div>'+
         (filtered.length ? filtered.sort((a,b)=>(b.period?.start||'').localeCompare(a.period?.start||'')).map(exp=>{
           const metaBits = [exp.company, formatPeriod(exp.period)].filter(Boolean);
           const meta = metaBits.join(' · ');
@@ -442,17 +465,17 @@
           return '<details><summary><div class="summary-title">'+s(exp.title)+'</div><div class="small summary-meta">'+s(meta)+'</div></summary>'+
                  '<div class="exp-meta">'+
                    '<span class="meta-item">'+roleIcon+s(exp.role||'')+'</span>'+
-                   '<span class="meta-item">'+typeIcon+s(({'self_employed':'Selbstständig','permanent':'Festanstellung','contract':'Freier Vertrag','staffing':'AN-Überlassung'})[exp.type]||exp.type||'')+'</span>'+
+                   '<span class="meta-item">'+typeIcon+s(t('types.'+exp.type)||exp.type||'')+'</span>'+
                    '<span class="meta-item">'+locationIcon+s(exp.location||'')+'</span>'+
                  '</div>'+
    (Array.isArray(exp.skills)&&exp.skills.length ? '<div class=\"badges\" style=\"margin-top:8px\">'+exp.skills.map(t=>'<span class=\"badge\">'+s(t)+'</span>').join('')+'</div>' : '') + desc + details + '</details>';
-        }).join('') : '<div class="small">Keine Projekte mit dieser Kompetenz gefunden.</div>');
+        }).join('') : '<div class="small">'+t('ui.noProjects')+'</div>');
     }
 
     updateSkillBadges(skill);
     const filterStatus = $('filterStatus');
     if(filterStatus){
-      filterStatus.innerHTML = skill ? '(gefiltert nach: '+s(skill)+' – <a href="#" id="clearFilter" style="font-weight:600">Filter löschen</a>)' : '';
+      filterStatus.innerHTML = skill ? '('+t('ui.filteredBy')+': '+s(skill)+' – <a href="#" id="clearFilter" style="font-weight:600">'+t('ui.clearFilter')+'</a>)' : '';
       const clearBtn = $('clearFilter');
       if(clearBtn) clearBtn.addEventListener('click', (e)=>{ e.preventDefault(); filterExperienceBySkill(null); });
     }
@@ -487,7 +510,7 @@
     hideLoading();
     cvData = d;
     const root = $('cv');
-    if(!root){ showError('Container #cv fehlt.'); return; }
+    if(!root){ showError(t('ui.errorContainer')); return; }
     const blocks = [];
     blocks.push(renderHeader(d));
     blocks.push(renderSkills(d.skills));
@@ -501,12 +524,81 @@
     attachSkillFilter();
   }
 
+  function initLangSwitcher(lang){
+    const container = $('langSwitcher');
+    if(!container || !config.availableLangs) return;
+    container.innerHTML = config.availableLangs.map(l =>
+      '<button class="lang-btn'+(l.code===lang?' active':'')+'" data-lang="'+s(l.code)+'">'+s(l.code.toUpperCase())+'</button>'
+    ).join('');
+    container.querySelectorAll('.lang-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const newLang = btn.dataset.lang;
+        if(newLang !== lang){
+          const url = new URL(window.location);
+          url.searchParams.set('lang', newLang);
+          window.location.href = url.toString();
+        }
+      });
+    });
+  }
+
+  function updateStaticTexts(){
+    const loadingText = document.querySelector('#loading .small');
+    if(loadingText) loadingText.textContent = t('ui.loading');
+    const btnExportMain = $('btnExportMain');
+    if(btnExportMain){
+      const span = btnExportMain.querySelector('span');
+      if(span) span.textContent = t('buttons.exportPdf');
+    }
+    const btnPrintCompact = $('btnPrintCompact');
+    if(btnPrintCompact){
+      const span = btnPrintCompact.querySelector('span');
+      if(span) span.textContent = t('buttons.pdfCompact');
+    }
+    const btnPrintDetailed = $('btnPrintDetailed');
+    if(btnPrintDetailed){
+      const span = btnPrintDetailed.querySelector('span');
+      if(span) span.textContent = t('buttons.pdfDetailed');
+    }
+    const btnDownloadMarkdown = $('btnDownloadMarkdown');
+    if(btnDownloadMarkdown){
+      const span = btnDownloadMarkdown.querySelector('span');
+      if(span) span.textContent = t('buttons.markdown');
+    }
+    const btnDownloadJson = $('btnDownloadJson');
+    if(btnDownloadJson){
+      const span = btnDownloadJson.querySelector('span');
+      if(span) span.textContent = t('buttons.json');
+    }
+  }
+
   function boot(){
     attachControls();
+    // Load config first
     fetch('cv.json',{cache:'no-store'})
-      .then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status+' beim Laden von cv.json'); return r.json(); })
-      .then(d=>renderAll(d))
-      .catch(err=>showError('cv.json konnte nicht geladen werden: '+String(err)));
+      .then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+      .then(cfg=>{
+        config = cfg;
+        currentLang = detectLang();
+        // Load i18n and content in parallel
+        return Promise.all([
+          fetch('i18n/'+currentLang+'.json',{cache:'no-store'}).then(r=>{ if(!r.ok) throw new Error('i18n'); return r.json(); }),
+          fetch('cv/'+currentLang+'.json',{cache:'no-store'}).then(r=>{ if(!r.ok) throw new Error('content'); return r.json(); })
+        ]);
+      })
+      .then(([i18nData, contentData])=>{
+        i18n = i18nData;
+        updateStaticTexts();
+        initLangSwitcher(currentLang);
+        // Merge config + content
+        const data = { ...config, ...contentData };
+        renderAll(data);
+      })
+      .catch(err=>{
+        // Fallback: show error with default message if i18n not loaded
+        const msg = i18n.ui?.errorLoadCv || 'Fehler beim Laden';
+        showError(msg+': '+String(err));
+      });
   }
   if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', boot); } else { boot(); }
 })();

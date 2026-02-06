@@ -1,0 +1,57 @@
+{
+  "ui": {
+    "contact": "Contact",
+    "skills": "Core Competencies & Tech Stack",
+    "languages": "Languages",
+    "interests": "Interests",
+    "experience": "Selected Work Experience",
+    "education": "Education & Degrees",
+    "certificates": "Certifications",
+    "present": "present",
+    "loading": "Loading resume...",
+    "error": "Error",
+    "errorLoadCv": "Failed to load cv.json",
+    "errorLoadI18n": "Failed to load language file",
+    "errorLoadContent": "Failed to load content file",
+    "errorContainer": "Container #cv is missing.",
+    "noProjects": "No projects found with this skill.",
+    "filteredBy": "filtered by",
+    "clearFilter": "Clear filter",
+    "link": "Link",
+    "certificate": "Certificate",
+    "defaultPageTitle": "Resume",
+    "defaultDescription": "Professional Resume"
+  },
+  "buttons": {
+    "exportPdf": "Download as PDF",
+    "pdfCompact": "PDF (compact)",
+    "pdfDetailed": "PDF (detailed)",
+    "markdown": "Markdown",
+    "json": "JSON"
+  },
+  "contact": {
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "web": "Web",
+    "social": "Social"
+  },
+  "types": {
+    "self_employed": "Self-employed",
+    "permanent": "Full-time",
+    "contract": "Contract",
+    "staffing": "Temp Agency"
+  },
+  "months": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  "markdown": {
+    "contact": "Contact",
+    "skills": "Core Competencies & Tech Stack",
+    "languages": "Languages",
+    "interests": "Interests",
+    "experience": "Work Experience",
+    "education": "Education & Degrees",
+    "certificates": "Certifications",
+    "role": "Role",
+    "certLink": "Certificate Link"
+  }
+}
