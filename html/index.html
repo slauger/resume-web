@@ -19,6 +19,9 @@
   <meta name="twitter:description" content="Professioneller Lebenslauf mit modernem Design">
   <meta name="twitter:image" content="profile.jpg">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="custom.css">
   <style>
@@ -42,7 +45,9 @@
         <div id="summary" class="summary"></div>
       </div>
     </div>
-    <div class="export-dropdown no-print">
+    <div class="header-actions no-print">
+      <div id="langSwitcher" class="lang-switcher"></div>
+      <div class="export-dropdown">
       <div class="btn-group">
         <button id="btnExportMain" class="btn btn-export-main" aria-label="PDF detailliert exportieren" title="PDF herunterladen">
           <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -89,6 +94,7 @@
           </svg>
           <span>JSON</span>
         </button>
+      </div>
       </div>
     </div>
   </div>

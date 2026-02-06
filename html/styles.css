@@ -93,7 +93,7 @@ body{
   font-size:15px;
   line-height:1.6;
 }
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+/* Font loaded via <link> in index.html for better performance */
 
 /* Animated background shapes - deaktiviert für professionellen Look */
 .bg-decoration{
@@ -177,6 +177,40 @@ a:hover{filter:brightness(0.9)}
   line-height:1.6;
   font-weight:400;
 }
+/* Header Actions */
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+/* Language Switcher */
+.lang-switcher{
+  display:flex;
+  gap:4px;
+}
+.lang-btn{
+  padding:8px 12px;
+  border:1px solid var(--border);
+  background:var(--card);
+  border-radius:var(--radius-sm);
+  cursor:pointer;
+  font-size:12px;
+  font-weight:600;
+  text-transform:uppercase;
+  color:var(--text-secondary);
+  transition:all 0.2s ease;
+}
+.lang-btn:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+}
+.lang-btn.active{
+  background:var(--accent);
+  color:white;
+  border-color:var(--accent);
+}
+
 /* Export Dropdown */
 .export-dropdown{
   position:relative;
@@ -477,6 +511,8 @@ details summary:hover .summary-title{
 @media (max-width:768px){
   .hero-inner{flex-direction:column;align-items:flex-start}
   .hero-inner .id{gap:24px}
+  .header-actions{width:100%;flex-direction:column;gap:10px}
+  .lang-switcher{width:100%;justify-content:center}
   .export-dropdown{width:100%}
   .btn-group{width:100%}
   .btn-export-main{justify-content:center}
@@ -616,7 +652,9 @@ details a:hover,
   }
 
   .actions{display:none!important}
+  .header-actions{display:none!important}
   .export-dropdown{display:none!important}
+  .lang-switcher{display:none!important}
   #loading, #error{display:none!important}
   #cv{display:block!important}
 

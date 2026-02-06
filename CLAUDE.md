@@ -11,6 +11,7 @@ This document summarizes the complete project history, architecture, design deci
 ### Core Features
 
 - ✅ Load resume data from a single `cv.json` file
+- ✅ **Multi-language support (i18n)** - German and English with language switcher
 - ✅ **Modern light design** with orange accents
 - ✅ **Interactive skill filter** - Click on skills to filter experience entries
 - ✅ Glassmorphism design with subtle animations
@@ -40,9 +41,15 @@ resume-web/
 │       └── static.yml          # GitHub Pages deployment
 ├── html/
 │   ├── index.html              # Main HTML (minimalist)
-│   ├── app.js                  # Rendering logic
+│   ├── app.js                  # Rendering logic (with i18n)
 │   ├── styles.css              # Styling (incl. print CSS)
-│   ├── cv.json                 # Sample resume data
+│   ├── cv.json                 # Config + language-independent data
+│   ├── i18n/
+│   │   ├── de.json             # German UI strings
+│   │   └── en.json             # English UI strings
+│   ├── cv/
+│   │   ├── de.json             # German content (translatable)
+│   │   └── en.json             # English content (translatable)
 │   ├── profile.jpg             # Profile picture
 │   ├── favicon.ico             # Favicon
 │   └── robots.txt              # Robots file
@@ -70,6 +77,75 @@ resume-web/
 3. **Security** - No loading of external URLs, HTML escaping for XSS protection
 4. **Print-Optimized** - Special print stylesheet for professional PDFs
 5. **Progressive Enhancement** - Works even without JavaScript (basic HTML)
+
+---
+
+## 🌐 Multi-Language Support (i18n)
+
+The project supports multiple languages with a clean separation of UI strings and content.
+
+### Language Selection
+
+1. URL parameter `?lang=en` has highest priority
+2. Without parameter → `defaultLang` from `cv.json` is used
+3. Language switcher changes URL parameter and reloads the page
+
+### File Structure
+
+**`cv.json`** - Config + language-independent data:
+```json
+{
+  "defaultLang": "de",
+  "availableLangs": [
+    { "code": "de", "label": "Deutsch" },
+    { "code": "en", "label": "English" }
+  ],
+  "name": "Full Name",
+  "image": "profile.jpg",
+  "contact": { ... },
+  "socialLinks": [ ... ]
+}
+```
+
+**`i18n/de.json`** / **`i18n/en.json`** - UI strings:
+```json
+{
+  "ui": {
+    "contact": "Kontakt",
+    "skills": "Kernkompetenzen & Tech-Stack",
+    "experience": "Ausgewählte Berufserfahrung",
+    "present": "heute",
+    ...
+  },
+  "types": {
+    "self_employed": "Selbstständig",
+    "permanent": "Festanstellung",
+    ...
+  },
+  "months": ["Jan", "Feb", "Mär", ...]
+}
+```
+
+**`cv/de.json`** / **`cv/en.json`** - Translatable content:
+```json
+{
+  "title": "Professional Title",
+  "description": "Brief profile summary",
+  "pageTitle": "Name – Resume",
+  "skills": { ... },
+  "languages": { ... },
+  "interests": [ ... ],
+  "experience": [ ... ],
+  "education": [ ... ],
+  "certificates": [ ... ]
+}
+```
+
+### Adding a New Language
+
+1. Add entry to `availableLangs` in `cv.json`
+2. Create `i18n/xx.json` with translated UI strings
+3. Create `cv/xx.json` with translated content
 
 ---
 
@@ -475,7 +551,7 @@ The project contains humorous sample data of a fictional clown "Karl Klamauk" as
 - [x] Better page-break control in print (completely redesigned)
 - [ ] CLI tool for JSON validation and sorting
 - [x] Dark mode support (implemented, but currently light theme preferred)
-- [ ] Multilingual support (i18n for UI texts)
+- [x] Multilingual support (i18n for UI texts and content)
 - [x] Interactive features (skill filter implemented)
 - [ ] More filter options (by company, time period, etc.)
 - [ ] Timeline visualization for experience
@@ -529,5 +605,5 @@ The project contains humorous sample data of a fictional clown "Karl Klamauk" as
 
 ---
 
-**Last Updated:** 2025-10-17
+**Last Updated:** 2026-02-06
 **Design:** Light, friendly theme with glassmorphism
