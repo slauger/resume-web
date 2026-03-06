@@ -1,8 +1,8 @@
 :root{
   /* 🎨 THEME COLORS - Nur diese 3 Farben anpassen! */
-  --color-primary: #ff5722;      /* Hauptfarbe für Akzente */
-  --color-secondary: #0f172a;    /* Sehr dunkles Grau - Primary Text (WCAG AAA, 14:1) */
-  --color-background: #fff8f7;   /* Sehr helles neutrales Grau - Page Background */
+  --color-primary: #135999;      /* Hauptfarbe für Akzente */
+  --color-secondary: #041524;    /* Sehr dunkles Grau - Primary Text (WCAG AAA, 14:1) */
+  --color-background: #FAFDFF;   /* Sehr helles neutrales Grau - Page Background */
 
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
   /* FARBROLLEN - Automatisch aus --color-primary abgeleitet */
@@ -184,22 +184,27 @@ a:hover{filter:brightness(0.9)}
   gap:12px;
 }
 
-/* Language Switcher */
+/* Language Switcher - positioned top-right in hero */
 .lang-switcher{
+  position:absolute;
+  top:16px;
+  right:24px;
   display:flex;
-  gap:4px;
+  gap:2px;
+  z-index:20;
 }
 .lang-btn{
-  padding:10px 14px;
+  padding:6px 10px;
   border:1px solid var(--border);
   background:var(--card);
   border-radius:var(--radius-sm);
   cursor:pointer;
-  font-size:13px;
+  font-size:11px;
   font-weight:600;
   text-transform:uppercase;
-  color:var(--text-secondary);
+  color:var(--text-tertiary);
   transition:all 0.2s ease;
+  line-height:1;
 }
 .lang-btn:hover{
   border-color:var(--accent);
@@ -209,6 +214,17 @@ a:hover{filter:brightness(0.9)}
   background:var(--accent);
   color:white;
   border-color:var(--accent);
+}
+
+/* Footer Language Switcher */
+.footer-lang-switcher{
+  display:flex;
+  gap:2px;
+  justify-content:center;
+}
+.footer-lang-switcher .lang-btn{
+  padding:4px 8px;
+  font-size:10px;
 }
 
 /* Export Dropdown */
@@ -512,7 +528,7 @@ details summary:hover .summary-title{
   .hero-inner{flex-direction:column;align-items:flex-start}
   .hero-inner .id{gap:24px}
   .header-actions{width:100%;flex-direction:column;gap:10px}
-  .lang-switcher{width:100%;justify-content:center}
+  .lang-switcher{top:12px;right:16px}
   .export-dropdown{width:100%}
   .btn-group{width:100%}
   .btn-export-main{justify-content:center}
@@ -597,6 +613,27 @@ details a:hover,
   filter:brightness(0.9);
 }
 
+/* Footer */
+.site-footer{
+  text-align:center;
+  padding:20px 16px 24px;
+  color:var(--text-tertiary);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  font-size:11px;
+}
+.site-footer .footer-lang-switcher{
+  display:flex;
+  gap:2px;
+}
+.site-footer .footer-disclaimer{
+  max-width:900px;
+  line-height:1.3;
+}
+.site-footer .footer-copyright{}
+
 @media print{
   @page {
     margin: 0;
@@ -610,6 +647,11 @@ details a:hover,
     line-height:1.4;
     margin: 5mm;
     padding: 0;
+  }
+
+  *{
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
   }
 
   .bg-decoration,.shape{display:none!important}
@@ -655,6 +697,15 @@ details a:hover,
   .header-actions{display:none!important}
   .export-dropdown{display:none!important}
   .lang-switcher{display:none!important}
+  .site-footer{
+    display:flex!important;
+    padding:8pt 0 0!important;
+    margin-top:10pt!important;
+    border-top:0.5pt solid #ccc!important;
+    font-size:8pt!important;
+    color:#666!important;
+  }
+  .site-footer .footer-lang-switcher{display:none!important}
   #loading, #error{display:none!important}
   #cv{display:block!important}
 
@@ -663,6 +714,9 @@ details a:hover,
     padding:6pt 0pt!important;
     margin-bottom:10pt!important;
     box-shadow:none!important;
+    background:#fff!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
     break-inside:avoid;
     page-break-inside:avoid;
   }
@@ -722,7 +776,9 @@ details a:hover,
     padding:6pt!important;
     border:1pt solid var(--accent-soft-border)!important;
     border-radius:4pt!important;
-    background:rgba(255, 255, 255, 0.5)!important;
+    background:#fff!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
     break-inside:avoid;
     page-break-inside:avoid;
   }

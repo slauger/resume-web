@@ -40,7 +40,10 @@
     "self_employed": "Self-employed",
     "permanent": "Full-time",
     "contract": "Contract",
-    "staffing": "Temp Agency"
+    "staffing": "Temp Agency",
+    "Masterarbeit": "Master's Thesis",
+    "Bachelorarbeit": "Bachelor's Thesis",
+    "Projekt": "Project"
   },
   "months": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
   "markdown": {
