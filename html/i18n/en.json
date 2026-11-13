@@ -43,7 +43,8 @@
     "staffing": "Temp Agency",
     "Masterarbeit": "Master's Thesis",
     "Bachelorarbeit": "Bachelor's Thesis",
-    "Projekt": "Project"
+    "Projekt": "Project",
+    "internship": "Internship"
   },
   "months": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
   "markdown": {
