@@ -219,6 +219,22 @@
            '</section>';
   }
 
+  // Optional category icons for entries (shown in the timeline entry style)
+  const entryIcons = {
+    platform: '<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>',
+    cloud: '<path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>',
+    security: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+    development: '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
+    consulting: '<rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>',
+    education: '<path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>'
+  };
+  function entryIcon(name){
+    const paths = entryIcons[name];
+    if(!paths) return '';
+    return '<span class="entry-icon" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'+paths+'</svg></span>';
+  }
+  function detailsOpen(icon){ return '<details'+(icon?' class="has-icon"':'')+'><summary>'+icon; }
+
   // Organisation and period in separate spans so print can place the period right-aligned
   function summaryMeta(org, period){
     const parts = [];
@@ -231,7 +247,7 @@
   function renderExperience(items){
     if(!Array.isArray(items) || !items.length) return '';
     const sorted = [...items].sort((a,b)=>(b.period?.start||'').localeCompare(a.period?.start||''));
-    return '<section class="card"><div class="section-title">'+t('ui.experience')+'</div>'+
+    return '<section class="card entries"><div class="section-title">'+t('ui.experience')+'</div>'+
       sorted.map(exp=>{
         const meta = summaryMeta(exp.company, formatPeriod(exp.period));
         const desc = exp.description ? '<div style="margin-top:14px">'+md(exp.description)+'</div>' : '';
@@ -245,7 +261,7 @@
           typeLabel ? '<span class="meta-item">'+typeIcon+s(typeLabel)+'</span>' : '',
           exp.location ? '<span class="meta-item">'+locationIcon+s(exp.location)+'</span>' : ''
         ].filter(Boolean);
-        return '<details><summary><div class="summary-title">'+s(exp.title)+'</div><div class="summary-meta">'+meta+'</div></summary>'+
+        return detailsOpen(entryIcon(exp.icon))+'<div class="summary-title">'+s(exp.title)+'</div><div class="summary-meta">'+meta+'</div></summary>'+
                (metaItems.length ? '<div class="exp-meta">'+metaItems.join('')+'</div>' : '')+
  (Array.isArray(exp.skills)&&exp.skills.length ? '<div class=\"badges\" style=\"margin-top:8px\">'+exp.skills.map(t=>'<span class=\"badge\">'+s(t)+'</span>').join('')+'</div>' : '') + desc + details + '</details>';
       }).join('')+
@@ -254,12 +270,12 @@
 
   function renderEducation(items){
     if(!Array.isArray(items) || !items.length) return '';
-    return '<section class="card card-breakable"><div class="section-title">'+s(t('ui.education'))+'</div>'+
+    return '<section class="card card-breakable entries"><div class="section-title">'+s(t('ui.education'))+'</div>'+
       items.map(ed=>{
         const meta = summaryMeta([ed.school, ed.location].filter(Boolean).join(' · '), formatPeriod(ed.period));
         const desc = ed.description ? '<div style="margin-top:10px">'+md(ed.description)+'</div>' : '';
         const details = renderList(ed.details);
-        return '<details><summary><div class="summary-title">'+s(ed.degree)+'</div><div class="summary-meta">'+meta+'</div></summary>'+desc+details+'</details>';
+        return detailsOpen(entryIcon(ed.icon))+'<div class="summary-title">'+s(ed.degree)+'</div><div class="summary-meta">'+meta+'</div></summary>'+desc+details+'</details>';
       }).join('')+
     '</section>';
   }
@@ -483,14 +499,13 @@
     if(expSection){
       expSection.innerHTML = '<div class="section-title">'+t('ui.experience')+(skill?' <span class="badge">Filter: '+s(skill)+'</span>':'')+'</div>'+
         (filtered.length ? filtered.sort((a,b)=>(b.period?.start||'').localeCompare(a.period?.start||'')).map(exp=>{
-          const metaBits = [exp.company, formatPeriod(exp.period)].filter(Boolean);
-          const meta = metaBits.join(' · ');
+          const meta = summaryMeta(exp.company, formatPeriod(exp.period));
           const desc = exp.description ? '<div style="margin-top:14px">'+md(exp.description)+'</div>' : '';
           const details = renderList(exp.details);
           const roleIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
           const typeIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>';
           const locationIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
-          return '<details><summary><div class="summary-title">'+s(exp.title)+'</div><div class="small summary-meta">'+s(meta)+'</div></summary>'+
+          return detailsOpen(entryIcon(exp.icon))+'<div class="summary-title">'+s(exp.title)+'</div><div class="small summary-meta">'+meta+'</div></summary>'+
                  '<div class="exp-meta">'+
                    '<span class="meta-item">'+roleIcon+s(exp.role||'')+'</span>'+
                    '<span class="meta-item">'+typeIcon+s(t('types.'+exp.type)||exp.type||'')+'</span>'+
@@ -539,6 +554,8 @@
     cvData = d;
     const root = $('cv');
     if(!root){ showError(t('ui.errorContainer')); return; }
+    // Optional entry style for experience/education: "cards" (default) or "timeline"
+    document.body.classList.toggle('entry-style-timeline', d.entryStyle === 'timeline');
     const blocks = [];
     blocks.push(renderHeader(d));
     const langHtml = renderLanguages(d.languages);
@@ -550,7 +567,7 @@
     }
     blocks.push(renderSkills(d.skills));
 
-    blocks.push('<section class="card card-breakable" id="experienceSection">'+renderExperience(d.experience).replace('<section class="card">','').replace(/<\/section>$/,'')+'</section>');
+    blocks.push('<section class="card card-breakable entries" id="experienceSection">'+renderExperience(d.experience).replace('<section class="card entries">','').replace(/<\/section>$/,'')+'</section>');
     blocks.push(renderEducation(d.education));
     blocks.push(renderCertificates(d.certificates));
     root.innerHTML = blocks.join('');

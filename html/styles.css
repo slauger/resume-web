@@ -1051,3 +1051,101 @@ details a:hover,
   /* Certificates: tighter spacing */
   .card-breakable > div[style]{margin:0 0 6pt!important}
 }
+
+
+/* ===== Optional entry style: timeline (cv.json: "entryStyle": "timeline") ===== */
+/* Geometry via variables: line centre (--tl-x), marker sizes, text indent (--tl-pad),
+   vertical centre of the title line (--tl-mid). Smaller values on narrow screens. */
+@media screen{
+  .entry-style-timeline .entries{--tl-x:22px;--tl-icon:36px;--tl-dot:16px;--tl-pad:56px;--tl-mid:16px}
+  .entry-style-timeline .entries details{
+    position:relative;
+    margin:0;
+    padding:4px 0 24px var(--tl-pad);
+    border:none;
+    border-radius:0;
+    background:none;
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
+    box-shadow:none;
+  }
+  .entry-style-timeline .entries details:hover{background:none;box-shadow:none;transform:none}
+  .entry-style-timeline .entries details:last-of-type{padding-bottom:0}
+
+  /* vertical line */
+  .entry-style-timeline .entries details::before{
+    content:"";
+    position:absolute;
+    left:calc(var(--tl-x) - 1px);
+    top:0;
+    bottom:0;
+    width:2px;
+    background:var(--accent-soft-border);
+  }
+  .entry-style-timeline .entries details:first-of-type::before{top:var(--tl-mid)}
+  .entry-style-timeline .entries details:last-of-type::before{bottom:auto;height:var(--tl-mid)}
+  .entry-style-timeline .entries details:only-of-type::before{display:none}
+
+  /* dot (entries without icon), filled when expanded */
+  .entry-style-timeline .entries details::after{
+    content:"";
+    position:absolute;
+    left:calc(var(--tl-x) - var(--tl-dot) / 2);
+    top:calc(var(--tl-mid) - var(--tl-dot) / 2);
+    width:var(--tl-dot);
+    height:var(--tl-dot);
+    box-sizing:border-box;
+    border-radius:50%;
+    border:2.5px solid var(--accent-structural);
+    background:var(--card);
+    transition:background 0.2s ease;
+  }
+  .entry-style-timeline .entries details[open]::after,
+  .entry-style-timeline .entries details:hover::after{background:var(--accent-structural)}
+
+  /* category icon replaces the dot */
+  .entry-style-timeline .entries details.has-icon::after{display:none}
+  .entry-style-timeline .entries .entry-icon{
+    position:absolute;
+    left:calc(var(--tl-x) - var(--tl-icon) / 2);
+    top:calc(var(--tl-mid) - var(--tl-icon) / 2);
+    width:var(--tl-icon);
+    height:var(--tl-icon);
+    box-sizing:border-box;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:2px solid var(--accent-structural);
+    background:var(--card);
+    color:var(--accent-structural);
+    transition:background 0.2s ease, color 0.2s ease;
+  }
+  .entry-style-timeline .entries .entry-icon svg{width:calc(var(--tl-icon) * 0.47);height:calc(var(--tl-icon) * 0.47)}
+  .entry-style-timeline .entries details[open] .entry-icon,
+  .entry-style-timeline .entries details:hover .entry-icon{background:var(--accent-structural);color:#fff}
+
+  /* no disclosure triangle; instead a chevron right after the title that rotates when open */
+  .entry-style-timeline .entries details summary{list-style:none}
+  .entry-style-timeline .entries details summary::-webkit-details-marker{display:none}
+  .entry-style-timeline .entries details summary .summary-title::after{
+    content:"";
+    display:inline-block;
+    width:18px;
+    height:18px;
+    margin-left:6px;
+    vertical-align:-4px;
+    border-radius:50%;
+    background:var(--accent-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235b7da3' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") center/12px no-repeat;
+    transition:transform 0.2s ease, background-color 0.2s ease;
+  }
+  .entry-style-timeline .entries details[open] summary .summary-title::after{transform:rotate(180deg)}
+  .entry-style-timeline .entries details summary:hover .summary-title::after{background-color:var(--accent-soft-border)}
+}
+@media screen and (max-width:640px){
+  .entry-style-timeline .entries{--tl-x:13px;--tl-icon:26px;--tl-dot:14px;--tl-pad:40px;--tl-mid:14px}
+  .entry-style-timeline .entries details{padding-bottom:18px}
+}
+/* category icons belong to the timeline style only */
+.entry-icon{display:none}
+@media screen{ .entry-style-timeline .entries .entry-icon{display:flex} }
