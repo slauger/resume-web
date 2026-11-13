@@ -522,8 +522,14 @@ details summary:hover .summary-title{
 .interests{display:flex;flex-wrap:wrap;gap:6px}
 .contact-grid{display:grid;grid-template-columns:110px minmax(0,1fr) 110px minmax(0,1fr);gap:10px 16px}
 .contact-item{overflow-wrap:anywhere}
-.two-col-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;--lang-col:250px}
+.two-col-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .lang-meta{white-space:nowrap}
+/* Size the label column to the widest language so bars stay aligned and never overlap */
+@media (min-width:641px){
+  .two-col-grid .languages{display:grid;grid-template-columns:max-content 1fr;gap:12px 16px;align-items:center}
+  .two-col-grid .lang-row{display:contents}
+}
+.two-col-grid{margin-bottom:20px}
 .two-col-grid > .card{margin:0}
 .contact-key{display:flex;align-items:center;gap:6px;font-weight:600}
 .contact-key svg{flex-shrink:0;opacity:0.7}
@@ -1022,16 +1028,19 @@ details a:hover,
   .contact-item{font-size:9.5pt!important;overflow-wrap:normal;white-space:nowrap}
   .contact-key{font-size:9pt!important}
 
-  /* Languages: consistent size, room for badges */
-  .lang-row{grid-template-columns:150pt 1fr!important}
+  /* Languages: label column sized to the widest entry */
+  .languages{display:grid!important;grid-template-columns:max-content 1fr;gap:6pt 10pt!important;align-items:center}
+  .lang-row{display:contents!important}
   .lang-name{font-size:9.5pt!important}
 
   /* Body text in entries matches bullet size */
   details > div[style]{font-size:9.5pt!important;color:#1f2d3d}
 
   /* Uniform vertical rhythm between sections */
-  .hero{padding-bottom:0!important;margin-bottom:14pt!important}
-  #cv > *{margin:0 0 14pt!important}
+  .hero{padding-bottom:0!important;margin-bottom:12pt!important}
+  #cv > *{margin:0 0 9pt!important}
+  /* More air before the main sections than between the profile blocks above */
+  #experienceSection, #experienceSection ~ *{margin-top:20pt!important}
   .two-col-grid > .card{margin:0!important}
   .card > :last-child,
   .card > :last-child > :last-child{margin-bottom:0!important;padding-bottom:0!important}
