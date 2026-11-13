@@ -22,6 +22,12 @@
         }
       }
     },
+    "entryStyle": {
+      "type": "string",
+      "enum": ["cards", "timeline"],
+      "default": "cards",
+      "description": "Display style for experience and education entries"
+    },
     "name": {
       "type": "string",
       "description": "Full name",

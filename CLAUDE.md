@@ -103,9 +103,14 @@ The project supports multiple languages with a clean separation of UI strings an
   "name": "Full Name",
   "image": "profile.jpg",
   "contact": { ... },
-  "socialLinks": [ ... ]
+  "socialLinks": [ ... ],
+  "footer": true
 }
 ```
+
+**Optional Config Fields:**
+- `footer` (boolean, default: `false`) - Enables footer with copyright, disclaimer and language switcher. Must be explicitly set to `true` to show the footer.
+- `entryStyle` (`"cards"` | `"timeline"`, default: `"cards"`) - Display style for experience and education entries in the web view. `timeline` shows entries along a vertical line with dots instead of boxed cards. Print layout is unaffected.
 
 **`i18n/de.json`** / **`i18n/en.json`** - UI strings:
 ```json
@@ -131,6 +136,7 @@ The project supports multiple languages with a clean separation of UI strings an
 {
   "title": "Professional Title",
   "description": "Brief profile summary",
+  "disclaimer": "Optional legal disclaimer shown in footer",
   "pageTitle": "Name – Resume",
   "skills": { ... },
   "languages": { ... },

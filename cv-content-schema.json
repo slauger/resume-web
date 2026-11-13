@@ -73,6 +73,11 @@
           },
           "company": { "type": "string" },
           "location": { "type": "string" },
+          "icon": {
+            "type": "string",
+            "enum": ["platform", "cloud", "security", "development", "consulting", "education"],
+            "description": "Optional icon shown in the timeline entry style"
+          },
           "role": { "type": "string" },
           "type": {
             "type": "string",
@@ -121,6 +126,11 @@
           "degree": { "type": "string" },
           "school": { "type": "string" },
           "location": { "type": "string" },
+          "icon": {
+            "type": "string",
+            "enum": ["platform", "cloud", "security", "development", "consulting", "education"],
+            "description": "Optional icon shown in the timeline entry style"
+          },
           "period": {
             "type": "object",
             "properties": {

@@ -11,7 +11,20 @@
 
   function detectLang(){
     const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('lang') || config.defaultLang || 'de';
+    const urlLang = urlParams.get('lang');
+    if(urlLang) return urlLang;
+
+    // Auto-detect from browser language
+    const available = (config.availableLangs || []).map(l => l.code);
+    if(available.length){
+      const browserLangs = navigator.languages || [navigator.language || ''];
+      for(const bl of browserLangs){
+        const code = bl.split('-')[0].toLowerCase();
+        if(available.includes(code)) return code;
+      }
+    }
+
+    return config.defaultLang || 'de';
   }
 
   function t(key){
@@ -206,13 +219,37 @@
            '</section>';
   }
 
+  // Optional category icons for entries (shown in the timeline entry style)
+  const entryIcons = {
+    platform: '<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>',
+    cloud: '<path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>',
+    security: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+    development: '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
+    consulting: '<rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>',
+    education: '<path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>'
+  };
+  function entryIcon(name){
+    const paths = entryIcons[name];
+    if(!paths) return '';
+    return '<span class="entry-icon" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'+paths+'</svg></span>';
+  }
+  function detailsOpen(icon){ return '<details'+(icon?' class="has-icon"':'')+'><summary>'+icon; }
+
+  // Organisation and period in separate spans so print can place the period right-aligned
+  function summaryMeta(org, period){
+    const parts = [];
+    if(org) parts.push('<span class="meta-org">'+s(org)+'</span>');
+    if(org && period) parts.push('<span class="meta-sep"> · </span>');
+    if(period) parts.push('<span class="meta-period">'+s(period)+'</span>');
+    return parts.join('');
+  }
+
   function renderExperience(items){
     if(!Array.isArray(items) || !items.length) return '';
     const sorted = [...items].sort((a,b)=>(b.period?.start||'').localeCompare(a.period?.start||''));
-    return '<section class="card"><div class="section-title">'+t('ui.experience')+'</div>'+
+    return '<section class="card entries"><div class="section-title">'+t('ui.experience')+'</div>'+
       sorted.map(exp=>{
-        const metaBits = [exp.company, formatPeriod(exp.period)].filter(Boolean);
-        const meta = metaBits.join(' · ');
+        const meta = summaryMeta(exp.company, formatPeriod(exp.period));
         const desc = exp.description ? '<div style="margin-top:14px">'+md(exp.description)+'</div>' : '';
         const details = renderList(exp.details);
         const roleIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
@@ -224,7 +261,7 @@
           typeLabel ? '<span class="meta-item">'+typeIcon+s(typeLabel)+'</span>' : '',
           exp.location ? '<span class="meta-item">'+locationIcon+s(exp.location)+'</span>' : ''
         ].filter(Boolean);
-        return '<details><summary><div class="summary-title">'+s(exp.title)+'</div><div class="summary-meta">'+s(meta)+'</div></summary>'+
+        return detailsOpen(entryIcon(exp.icon))+'<div class="summary-title">'+s(exp.title)+'</div><div class="summary-meta">'+meta+'</div></summary>'+
                (metaItems.length ? '<div class="exp-meta">'+metaItems.join('')+'</div>' : '')+
  (Array.isArray(exp.skills)&&exp.skills.length ? '<div class=\"badges\" style=\"margin-top:8px\">'+exp.skills.map(t=>'<span class=\"badge\">'+s(t)+'</span>').join('')+'</div>' : '') + desc + details + '</details>';
       }).join('')+
@@ -233,20 +270,19 @@
 
   function renderEducation(items){
     if(!Array.isArray(items) || !items.length) return '';
-    return '<section class="card"><div class="section-title">'+s(t('ui.education'))+'</div>'+
+    return '<section class="card card-breakable entries"><div class="section-title">'+s(t('ui.education'))+'</div>'+
       items.map(ed=>{
-        const metaBits = [ed.school, ed.location, formatPeriod(ed.period)].filter(Boolean);
-        const meta = metaBits.join(' · ');
+        const meta = summaryMeta([ed.school, ed.location].filter(Boolean).join(' · '), formatPeriod(ed.period));
         const desc = ed.description ? '<div style="margin-top:10px">'+md(ed.description)+'</div>' : '';
         const details = renderList(ed.details);
-        return '<details><summary><div class="summary-title">'+s(ed.degree)+'</div><div class="summary-meta">'+s(meta)+'</div></summary>'+desc+details+'</details>';
+        return detailsOpen(entryIcon(ed.icon))+'<div class="summary-title">'+s(ed.degree)+'</div><div class="summary-meta">'+meta+'</div></summary>'+desc+details+'</details>';
       }).join('')+
     '</section>';
   }
 
   function renderCertificates(items){
     if(!Array.isArray(items) || !items.length) return '';
-    return '<section class="card"><div class="section-title">'+t('ui.certificates')+'</div>'+
+    return '<section class="card card-breakable"><div class="section-title">'+t('ui.certificates')+'</div>'+
       items.map(c=>{
         const date = c.date ? '<span class="small">'+formatYearMonth(c.date)+'</span>' : '';
         const title = s(c.title||t('ui.certificate'));
@@ -373,12 +409,17 @@
     const btnExportMain = $('btnExportMain');
     const btnDropdownToggle = $('btnDropdownToggle');
 
+    function printWithState(openAll){
+      const details = document.querySelectorAll('details');
+      const states = Array.from(details).map(d=>d.open);
+      details.forEach(d=>d.open=openAll);
+      window.print();
+      details.forEach((d,i)=>d.open=states[i]);
+    }
+
     // Main button: download detailed PDF
     if(btnExportMain){
-      btnExportMain.addEventListener('click', () => {
-        document.querySelectorAll('details').forEach(x=>x.open=true);
-        window.print();
-      });
+      btnExportMain.addEventListener('click', () => printWithState(true));
     }
 
     // Toggle button: open/close dropdown
@@ -394,20 +435,23 @@
           dropdown.classList.remove('active');
         }
       });
+
+      // Close dropdown with Escape key
+      document.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape') dropdown.classList.remove('active');
+      });
     }
 
     // Dropdown menu items
     const c = $('btnPrintCompact'), d = $('btnPrintDetailed'), m = $('btnDownloadMarkdown'), j = $('btnDownloadJson');
 
     if(c) c.addEventListener('click',()=>{
-      document.querySelectorAll('details').forEach(x=>x.open=false);
-      window.print();
+      printWithState(false);
       if(dropdown) dropdown.classList.remove('active');
     });
 
     if(d) d.addEventListener('click',()=>{
-      document.querySelectorAll('details').forEach(x=>x.open=true);
-      window.print();
+      printWithState(true);
       if(dropdown) dropdown.classList.remove('active');
     });
 
@@ -455,14 +499,13 @@
     if(expSection){
       expSection.innerHTML = '<div class="section-title">'+t('ui.experience')+(skill?' <span class="badge">Filter: '+s(skill)+'</span>':'')+'</div>'+
         (filtered.length ? filtered.sort((a,b)=>(b.period?.start||'').localeCompare(a.period?.start||'')).map(exp=>{
-          const metaBits = [exp.company, formatPeriod(exp.period)].filter(Boolean);
-          const meta = metaBits.join(' · ');
+          const meta = summaryMeta(exp.company, formatPeriod(exp.period));
           const desc = exp.description ? '<div style="margin-top:14px">'+md(exp.description)+'</div>' : '';
           const details = renderList(exp.details);
           const roleIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
           const typeIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>';
           const locationIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
-          return '<details><summary><div class="summary-title">'+s(exp.title)+'</div><div class="small summary-meta">'+s(meta)+'</div></summary>'+
+          return detailsOpen(entryIcon(exp.icon))+'<div class="summary-title">'+s(exp.title)+'</div><div class="small summary-meta">'+meta+'</div></summary>'+
                  '<div class="exp-meta">'+
                    '<span class="meta-item">'+roleIcon+s(exp.role||'')+'</span>'+
                    '<span class="meta-item">'+typeIcon+s(t('types.'+exp.type)||exp.type||'')+'</span>'+
@@ -511,25 +554,53 @@
     cvData = d;
     const root = $('cv');
     if(!root){ showError(t('ui.errorContainer')); return; }
+    // Optional entry style for experience/education: "cards" (default) or "timeline"
+    document.body.classList.toggle('entry-style-timeline', d.entryStyle === 'timeline');
     const blocks = [];
     blocks.push(renderHeader(d));
+    const langHtml = renderLanguages(d.languages);
+    const interestsHtml = renderInterests(d.interests);
+    if(langHtml && interestsHtml){
+      blocks.push('<div class="two-col-grid">'+langHtml+interestsHtml+'</div>');
+    } else {
+      blocks.push(langHtml, interestsHtml);
+    }
     blocks.push(renderSkills(d.skills));
-    blocks.push(renderLanguages(d.languages));
-    blocks.push(renderInterests(d.interests));
 
-    blocks.push('<section class="card" id="experienceSection">'+renderExperience(d.experience).replace('<section class="card">','').replace(/<\/section>$/,'')+'</section>');
+    blocks.push('<section class="card card-breakable entries" id="experienceSection">'+renderExperience(d.experience).replace('<section class="card entries">','').replace(/<\/section>$/,'')+'</section>');
     blocks.push(renderEducation(d.education));
     blocks.push(renderCertificates(d.certificates));
     root.innerHTML = blocks.join('');
     attachSkillFilter();
+    renderFooter(d);
   }
 
-  function initLangSwitcher(lang){
-    const container = $('langSwitcher');
-    if(!container || !config.availableLangs) return;
-    container.innerHTML = config.availableLangs.map(l =>
+  function renderFooter(d){
+    const footer = $('footer');
+    if(!footer || !config.footer) return;
+    const parts = [];
+    if(config.availableLangs && config.availableLangs.length > 1){
+      parts.push('<div class="footer-lang-switcher">'+buildLangButtons(currentLang)+'</div>');
+    }
+    if(d.disclaimer){
+      parts.push('<div class="footer-disclaimer">'+md(d.disclaimer)+'</div>');
+    }
+    const year = new Date().getFullYear();
+    const name = d.name ? s(d.name) : '';
+    parts.push('<div class="footer-copyright">&copy; '+year+(name?' '+name:'')+'</div>');
+    footer.innerHTML = parts.join('');
+    const footerLang = footer.querySelector('.footer-lang-switcher');
+    if(footerLang) attachLangEvents(footerLang, currentLang);
+  }
+
+  function buildLangButtons(lang){
+    if(!config.availableLangs) return '';
+    return config.availableLangs.map(l =>
       '<button class="lang-btn'+(l.code===lang?' active':'')+'" data-lang="'+s(l.code)+'">'+s(l.code.toUpperCase())+'</button>'
     ).join('');
+  }
+
+  function attachLangEvents(container, lang){
     container.querySelectorAll('.lang-btn').forEach(btn=>{
       btn.addEventListener('click', ()=>{
         const newLang = btn.dataset.lang;
@@ -540,6 +611,14 @@
         }
       });
     });
+  }
+
+  function initLangSwitcher(lang){
+    const header = $('langSwitcher');
+    if(header && config.availableLangs){
+      header.innerHTML = buildLangButtons(lang);
+      attachLangEvents(header, lang);
+    }
   }
 
   function updateStaticTexts(){
@@ -588,6 +667,7 @@
       })
       .then(([i18nData, contentData])=>{
         i18n = i18nData;
+        document.documentElement.lang = currentLang;
         updateStaticTexts();
         initLangSwitcher(currentLang);
         // Merge config + content
