@@ -529,8 +529,10 @@ details summary:hover .summary-title{
   .two-col-grid .languages{display:grid;grid-template-columns:max-content 1fr;gap:12px 16px;align-items:center}
   .two-col-grid .lang-row{display:contents}
 }
-.two-col-grid{margin-bottom:20px}
 .two-col-grid > .card{margin:0}
+/* Section rhythm: compact profile blocks, more space before the main sections */
+#cv > *{margin:0}
+#experienceSection, #experienceSection ~ *{margin-top:24px}
 .contact-key{display:flex;align-items:center;gap:6px;font-weight:600}
 .contact-key svg{flex-shrink:0;opacity:0.7}
 .contact-item{font-size:15px}
