@@ -11,7 +11,20 @@
 
   function detectLang(){
     const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('lang') || config.defaultLang || 'de';
+    const urlLang = urlParams.get('lang');
+    if(urlLang) return urlLang;
+
+    // Auto-detect from browser language
+    const available = (config.availableLangs || []).map(l => l.code);
+    if(available.length){
+      const browserLangs = navigator.languages || [navigator.language || ''];
+      for(const bl of browserLangs){
+        const code = bl.split('-')[0].toLowerCase();
+        if(available.includes(code)) return code;
+      }
+    }
+
+    return config.defaultLang || 'de';
   }
 
   function t(key){
@@ -206,13 +219,21 @@
            '</section>';
   }
 
+  // Organisation and period in separate spans so print can place the period right-aligned
+  function summaryMeta(org, period){
+    const parts = [];
+    if(org) parts.push('<span class="meta-org">'+s(org)+'</span>');
+    if(org && period) parts.push('<span class="meta-sep"> · </span>');
+    if(period) parts.push('<span class="meta-period">'+s(period)+'</span>');
+    return parts.join('');
+  }
+
   function renderExperience(items){
     if(!Array.isArray(items) || !items.length) return '';
     const sorted = [...items].sort((a,b)=>(b.period?.start||'').localeCompare(a.period?.start||''));
     return '<section class="card"><div class="section-title">'+t('ui.experience')+'</div>'+
       sorted.map(exp=>{
-        const metaBits = [exp.company, formatPeriod(exp.period)].filter(Boolean);
-        const meta = metaBits.join(' · ');
+        const meta = summaryMeta(exp.company, formatPeriod(exp.period));
         const desc = exp.description ? '<div style="margin-top:14px">'+md(exp.description)+'</div>' : '';
         const details = renderList(exp.details);
         const roleIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
@@ -224,7 +245,7 @@
           typeLabel ? '<span class="meta-item">'+typeIcon+s(typeLabel)+'</span>' : '',
           exp.location ? '<span class="meta-item">'+locationIcon+s(exp.location)+'</span>' : ''
         ].filter(Boolean);
-        return '<details><summary><div class="summary-title">'+s(exp.title)+'</div><div class="summary-meta">'+s(meta)+'</div></summary>'+
+        return '<details><summary><div class="summary-title">'+s(exp.title)+'</div><div class="summary-meta">'+meta+'</div></summary>'+
                (metaItems.length ? '<div class="exp-meta">'+metaItems.join('')+'</div>' : '')+
  (Array.isArray(exp.skills)&&exp.skills.length ? '<div class=\"badges\" style=\"margin-top:8px\">'+exp.skills.map(t=>'<span class=\"badge\">'+s(t)+'</span>').join('')+'</div>' : '') + desc + details + '</details>';
       }).join('')+
@@ -233,20 +254,19 @@
 
   function renderEducation(items){
     if(!Array.isArray(items) || !items.length) return '';
-    return '<section class="card"><div class="section-title">'+s(t('ui.education'))+'</div>'+
+    return '<section class="card card-breakable"><div class="section-title">'+s(t('ui.education'))+'</div>'+
       items.map(ed=>{
-        const metaBits = [ed.school, ed.location, formatPeriod(ed.period)].filter(Boolean);
-        const meta = metaBits.join(' · ');
+        const meta = summaryMeta([ed.school, ed.location].filter(Boolean).join(' · '), formatPeriod(ed.period));
         const desc = ed.description ? '<div style="margin-top:10px">'+md(ed.description)+'</div>' : '';
         const details = renderList(ed.details);
-        return '<details><summary><div class="summary-title">'+s(ed.degree)+'</div><div class="summary-meta">'+s(meta)+'</div></summary>'+desc+details+'</details>';
+        return '<details><summary><div class="summary-title">'+s(ed.degree)+'</div><div class="summary-meta">'+meta+'</div></summary>'+desc+details+'</details>';
       }).join('')+
     '</section>';
   }
 
   function renderCertificates(items){
     if(!Array.isArray(items) || !items.length) return '';
-    return '<section class="card"><div class="section-title">'+t('ui.certificates')+'</div>'+
+    return '<section class="card card-breakable"><div class="section-title">'+t('ui.certificates')+'</div>'+
       items.map(c=>{
         const date = c.date ? '<span class="small">'+formatYearMonth(c.date)+'</span>' : '';
         const title = s(c.title||t('ui.certificate'));
@@ -373,12 +393,17 @@
     const btnExportMain = $('btnExportMain');
     const btnDropdownToggle = $('btnDropdownToggle');
 
+    function printWithState(openAll){
+      const details = document.querySelectorAll('details');
+      const states = Array.from(details).map(d=>d.open);
+      details.forEach(d=>d.open=openAll);
+      window.print();
+      details.forEach((d,i)=>d.open=states[i]);
+    }
+
     // Main button: download detailed PDF
     if(btnExportMain){
-      btnExportMain.addEventListener('click', () => {
-        document.querySelectorAll('details').forEach(x=>x.open=true);
-        window.print();
-      });
+      btnExportMain.addEventListener('click', () => printWithState(true));
     }
 
     // Toggle button: open/close dropdown
@@ -394,20 +419,23 @@
           dropdown.classList.remove('active');
         }
       });
+
+      // Close dropdown with Escape key
+      document.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape') dropdown.classList.remove('active');
+      });
     }
 
     // Dropdown menu items
     const c = $('btnPrintCompact'), d = $('btnPrintDetailed'), m = $('btnDownloadMarkdown'), j = $('btnDownloadJson');
 
     if(c) c.addEventListener('click',()=>{
-      document.querySelectorAll('details').forEach(x=>x.open=false);
-      window.print();
+      printWithState(false);
       if(dropdown) dropdown.classList.remove('active');
     });
 
     if(d) d.addEventListener('click',()=>{
-      document.querySelectorAll('details').forEach(x=>x.open=true);
-      window.print();
+      printWithState(true);
       if(dropdown) dropdown.classList.remove('active');
     });
 
@@ -513,23 +541,49 @@
     if(!root){ showError(t('ui.errorContainer')); return; }
     const blocks = [];
     blocks.push(renderHeader(d));
+    const langHtml = renderLanguages(d.languages);
+    const interestsHtml = renderInterests(d.interests);
+    if(langHtml && interestsHtml){
+      blocks.push('<div class="two-col-grid">'+langHtml+interestsHtml+'</div>');
+    } else {
+      blocks.push(langHtml, interestsHtml);
+    }
     blocks.push(renderSkills(d.skills));
-    blocks.push(renderLanguages(d.languages));
-    blocks.push(renderInterests(d.interests));
 
-    blocks.push('<section class="card" id="experienceSection">'+renderExperience(d.experience).replace('<section class="card">','').replace(/<\/section>$/,'')+'</section>');
+    blocks.push('<section class="card card-breakable" id="experienceSection">'+renderExperience(d.experience).replace('<section class="card">','').replace(/<\/section>$/,'')+'</section>');
     blocks.push(renderEducation(d.education));
     blocks.push(renderCertificates(d.certificates));
     root.innerHTML = blocks.join('');
     attachSkillFilter();
+    renderFooter(d);
   }
 
-  function initLangSwitcher(lang){
-    const container = $('langSwitcher');
-    if(!container || !config.availableLangs) return;
-    container.innerHTML = config.availableLangs.map(l =>
+  function renderFooter(d){
+    const footer = $('footer');
+    if(!footer || !config.footer) return;
+    const parts = [];
+    if(config.availableLangs && config.availableLangs.length > 1){
+      parts.push('<div class="footer-lang-switcher">'+buildLangButtons(currentLang)+'</div>');
+    }
+    if(d.disclaimer){
+      parts.push('<div class="footer-disclaimer">'+md(d.disclaimer)+'</div>');
+    }
+    const year = new Date().getFullYear();
+    const name = d.name ? s(d.name) : '';
+    parts.push('<div class="footer-copyright">&copy; '+year+(name?' '+name:'')+'</div>');
+    footer.innerHTML = parts.join('');
+    const footerLang = footer.querySelector('.footer-lang-switcher');
+    if(footerLang) attachLangEvents(footerLang, currentLang);
+  }
+
+  function buildLangButtons(lang){
+    if(!config.availableLangs) return '';
+    return config.availableLangs.map(l =>
       '<button class="lang-btn'+(l.code===lang?' active':'')+'" data-lang="'+s(l.code)+'">'+s(l.code.toUpperCase())+'</button>'
     ).join('');
+  }
+
+  function attachLangEvents(container, lang){
     container.querySelectorAll('.lang-btn').forEach(btn=>{
       btn.addEventListener('click', ()=>{
         const newLang = btn.dataset.lang;
@@ -540,6 +594,14 @@
         }
       });
     });
+  }
+
+  function initLangSwitcher(lang){
+    const header = $('langSwitcher');
+    if(header && config.availableLangs){
+      header.innerHTML = buildLangButtons(lang);
+      attachLangEvents(header, lang);
+    }
   }
 
   function updateStaticTexts(){
@@ -588,6 +650,7 @@
       })
       .then(([i18nData, contentData])=>{
         i18n = i18nData;
+        document.documentElement.lang = currentLang;
         updateStaticTexts();
         initLangSwitcher(currentLang);
         // Merge config + content

@@ -39,8 +39,12 @@
   "types": {
     "self_employed": "Selbstständig",
     "permanent": "Festanstellung",
-    "contract": "Freier Vertrag",
-    "staffing": "AN-Überlassung"
+    "contract": "Freiberuflich",
+    "staffing": "AN-Überlassung",
+    "Masterarbeit": "Masterarbeit",
+    "Bachelorarbeit": "Bachelorarbeit",
+    "Projekt": "Projekt",
+    "internship": "Praktikum"
   },
   "months": ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
   "markdown": {
