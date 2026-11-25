@@ -36,14 +36,16 @@ jobs:
     steps:
       # 1. Checkout your fork (contains custom files in html/)
       - name: Checkout current repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           path: overlay
 
       # 2. Checkout upstream resume-web
       - name: Checkout upstream resume-web
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           repository: slauger/resume-web
           ref: ${{ env.UPSTREAM_REF }}
           path: resume-web
@@ -52,11 +54,11 @@ jobs:
       - name: Apply theme
         if: env.THEME != ''
         run: |
-          if [ -f "resume-web/themes/${{ env.THEME }}.css" ]; then
-            echo "📦 Applying theme: ${{ env.THEME }}"
-            cp -v "resume-web/themes/${{ env.THEME }}.css" resume-web/html/custom.css
+          if [ -f "resume-web/themes/${THEME}.css" ]; then
+            echo "📦 Applying theme: ${THEME}"
+            cp -v "resume-web/themes/${THEME}.css" resume-web/html/custom.css
           else
-            echo "⚠️  Theme '${{ env.THEME }}' not found, skipping"
+            echo "⚠️  Theme '${THEME}' not found, skipping"
           fi
 
       # 4. Copy your custom files (cv.json, profile.jpg, or custom theme)
@@ -75,7 +77,7 @@ jobs:
           # Copy all other custom files
           if [ -d "overlay/html" ]; then
             echo "Copying files to resume-web/html/..."
-            cp -fv overlay/html/* resume-web/html/ || true
+            cp -Rfv overlay/html/. resume-web/html/
           fi
 
           echo "Files in resume-web/html after copy:"
@@ -83,9 +85,9 @@ jobs:
 
       # 5. Validate cv.json against schema
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Install ajv-cli for schema validation
         run: npm install -g ajv-cli
@@ -96,12 +98,12 @@ jobs:
 
       # 6. Deploy to Cloudflare Pages
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4.1.3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: ${{ github.event.repository.name }}  # Uses repository name as project name
-          directory: resume-web/html
+          # Uses the repository name as Cloudflare Pages project name
+          command: pages deploy resume-web/html --project-name=${{ github.event.repository.name }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
 # ──────────────────────────────────────────────────────────────────────

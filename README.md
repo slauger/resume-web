@@ -2,7 +2,7 @@
 
 **Modern static web frontend for JSON-based resumes with advanced PDF export.**
 
-This project renders a stunning, modern resume directly from a `cv.json` file with glassmorphism design, animated backgrounds, and interactive features.
+This project renders a stunning, modern resume directly from JSON files with glassmorphism design, animated backgrounds, and interactive features.
 It is designed to be hosted statically (e.g. via GitHub Pages, GitLab Pages, or AWS S3).
 
 ![Screenshot](https://slauger.github.io/resume-web/screenshot.png)
@@ -20,7 +20,8 @@ It is designed to be hosted statically (e.g. via GitHub Pages, GitLab Pages, or 
 ## ✨ Features
 
 ### Core Features
-- 📄 Load resume data from a single `cv.json`
+- 📄 Load resume data from JSON files (`cv.json` plus one content file per language)
+- 🌍 **Multi-language support** - Language switcher and `?lang=` URL parameter
 - 🎨 **Modern glassmorphism design** with gradient backgrounds
 - 🎯 **Interactive skill filter** - Click on skills to filter experience entries
 - 🏷️ **Categorized skills** - Organize skills by category for better structure
@@ -45,8 +46,9 @@ It is designed to be hosted statically (e.g. via GitHub Pages, GitLab Pages, or 
 - 🔒 XSS protection with URL sanitization
 - ⚡ Zero dependencies - Pure vanilla JavaScript (including markdown parser!)
 - 🎯 JSON Schema validation
-- 🧪 Testing setup with Vitest
+- ✅ CI validation of the CV data on every pull request
 - 📦 No build step required
+- 🔤 Self-hosted web font, no requests to Google Fonts
 - 🔐 Secure markdown rendering (HTML escaping + URL sanitization)
 
 ---
@@ -57,8 +59,16 @@ It is designed to be hosted statically (e.g. via GitHub Pages, GitLab Pages, or 
 html/
 ├── index.html       # Main entry point
 ├── styles.css       # Styling
-├── script.js        # Data loading and rendering
-├── cv.json          # Your resume data
+├── custom.css       # Optional theme overrides
+├── app.js           # Data loading and rendering
+├── cv.json          # Config and language-independent data (name, contact, languages)
+├── cv/
+│   ├── de.json      # Resume content in German
+│   └── en.json      # Resume content in English
+├── i18n/
+│   ├── de.json      # UI strings in German
+│   └── en.json      # UI strings in English
+├── fonts/           # Self-hosted Inter font
 └── profile.jpg      # Profile picture
 ```
 
@@ -72,7 +82,7 @@ html/
    cd resume-web
    ```
 
-2. Replace `html/cv.json` and `html/profile.jpg` with your own data and image.
+2. Replace `html/cv.json`, the content files in `html/cv/` and `html/profile.jpg` with your own data and image (see [Multi-language support](#-multi-language-support)).
 
 3. **Local development**:
    ```bash
@@ -87,11 +97,34 @@ html/
    - **S3/CloudFront**: Upload `html/` folder and enable static website hosting
    - **Netlify/Vercel**: Point to `html/` directory
 
-5. **Validate your cv.json**:
+5. **Validate your data** against the JSON schemas (`cv.json` and all files in `cv/`):
    ```bash
-   npm install
+   npm install --ignore-scripts  # skips the Playwright browser download
    npm run validate
    ```
+
+---
+
+## 🌍 Multi-language support
+
+The data is split into three kinds of files:
+
+- `html/cv.json` - config and language-independent data: `defaultLang`, `availableLangs`, `name`, `image`, `contact`, `socialLinks`
+- `html/cv/<lang>.json` - translatable content: `title`, `description`, `pageTitle`, `skills`, `languages`, `interests`, `experience`, `education`, `certificates`
+- `html/i18n/<lang>.json` - UI strings (section titles, employment types, month names)
+
+```json
+{
+  "defaultLang": "de",
+  "availableLangs": [
+    { "code": "de", "label": "Deutsch" },
+    { "code": "en", "label": "English" }
+  ],
+  "name": "Full Name"
+}
+```
+
+The language is taken from the `?lang=` URL parameter, otherwise `defaultLang` is used. To add a language, add it to `availableLangs` and create `cv/<lang>.json` and `i18n/<lang>.json`.
 
 ---
 
@@ -137,9 +170,11 @@ The `themes/` directory contains ready-to-use color schemes:
 - **Retro**: `frnz-retro` (90s purple space vibes with neon colors)
 - **Fun**: `geocities-hell`, `comic-sans-nightmare` ⚠️ (not for actual resumes!)
 
-**Usage (for forks):**
+**Usage:**
 
-Set the `THEME` variable in your deployment workflow:
+Copy the theme to `html/custom.css`, e.g. `cp themes/professional-blue.css html/custom.css`.
+
+If you use the [custom workflow](#advanced-custom-workflow) from `deploy-template.yml`, you can set the `THEME` variable instead:
 ```yaml
 env:
   THEME: 'professional-blue'
@@ -151,7 +186,7 @@ See **[themes/README.md](themes/README.md)** for full theme documentation, previ
 
 You can create your own theme by overriding CSS variables. The design uses a modern color system based on three primary variables that automatically derive all other colors:
 
-**Option 1: Create `themes/custom.css` in your fork** (recommended for merge-ability):
+**Option 1: Create `themes/custom.css` in your fork** (only with the custom workflow from `deploy-template.yml`):
 ```css
 :root {
   --color-primary: #2563eb;      /* Main accent color (blue) */
@@ -170,9 +205,9 @@ All other colors (badges, buttons, borders, hover states, etc.) are automaticall
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `--color-primary` | `#f97316` | Main accent color (orange) |
+| `--color-primary` | `#ff5722` | Main accent color (orange) |
 | `--color-secondary` | `#0f172a` | Text and structural elements |
-| `--color-background` | `#f8fafc` | Page background |
+| `--color-background` | `#fff8f7` | Page background |
 | `--color-accent-soft` | derived | Soft accent backgrounds |
 | `--color-accent-structural` | derived | Borders and dividers |
 | `--color-text-secondary` | derived | Secondary text |
@@ -182,7 +217,7 @@ All other colors (badges, buttons, borders, hover states, etc.) are automaticall
 
 ## 🚀 Deployment with GitHub Actions
 
-This repository includes a ready-to-use GitHub Actions workflow for deploying to Cloudflare Pages. Forks automatically inherit this workflow.
+This repository includes a ready-to-use GitHub Actions workflow for deploying to Cloudflare Pages with [wrangler](https://github.com/cloudflare/wrangler-action). Forks automatically inherit this workflow. It validates `cv.json` and `cv/*.json` against the JSON schemas before deploying.
 
 ### Quick Start (for forks)
 
@@ -234,7 +269,7 @@ For advanced customization, copy `deploy-template.yml` to `.github/workflows/dep
 
 ## 📝 JSON structure
 
-Top-level fields in `cv.json`:
+Fields of the merged data (`cv.json` + `cv/<lang>.json`, see [Multi-language support](#-multi-language-support)):
 
 - `name`: Full name
 - `title`: Professional title (e.g. *Cloud Consultant*)
