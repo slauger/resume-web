@@ -1,6 +1,6 @@
 # Resume Themes
 
-This directory contains pre-defined color themes for your resume. You can use these themes by setting the `THEME` environment variable in your deployment workflow, or create your own custom theme.
+This directory contains pre-defined color themes for your resume. You can use these themes by copying one of them to `html/custom.css`, or create your own custom theme.
 
 ## 🎨 Available Themes
 
@@ -82,35 +82,24 @@ Everything wrong with web design, circa 2001. Comic Sans, WordArt, glitter backg
 
 ### Option 1: Use a Pre-defined Theme (Easiest)
 
-In your fork's `.github/workflows/deploy.yml`, set the `THEME` environment variable:
+Copy the theme to `html/custom.css`:
 
-```yaml
-env:
-  UPSTREAM_REF: 'main'
-  THEME: 'professional-blue'  # Choose any theme from above
+```bash
+cp themes/professional-blue.css html/custom.css
 ```
 
-### Option 2: Create Your Own Custom Theme (Recommended)
+### Option 2: Create Your Own Custom Theme
 
-This approach keeps your fork merge-able when upstream changes come in:
+Create `html/custom.css` with your own colors. You can base it on any theme here - just copy and modify!
 
-1. Create `themes/custom.css` in your fork:
-   ```css
-   /* My custom theme */
-   :root {
-     --color-primary: #your-color;
-     --color-secondary: #your-color;
-     --color-background: #your-color;
-   }
-   ```
-
-2. The workflow automatically detects and uses `themes/custom.css`
-
-3. You can base it on any theme here - just copy and modify!
-
-### Option 3: Direct Override
-
-Place `custom.css` directly in `html/` directory (will override THEME variable).
+```css
+/* My custom theme */
+:root {
+  --color-primary: #your-color;
+  --color-secondary: #your-color;
+  --color-background: #your-color;
+}
+```
 
 ## 🎨 Creating Your Own Theme
 
