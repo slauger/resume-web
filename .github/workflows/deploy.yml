@@ -92,7 +92,7 @@ jobs:
             ls -la overlay/html/ || echo "No html directory in fork"
             if [ -d "overlay/html" ]; then
               echo "Copying custom files to upstream..."
-              cp -fv overlay/html/* resume-web/html/ || true
+              cp -Rfv overlay/html/. resume-web/html/
             fi
           fi
           echo "Final files in resume-web/html:"

@@ -77,7 +77,7 @@ jobs:
           # Copy all other custom files
           if [ -d "overlay/html" ]; then
             echo "Copying files to resume-web/html/..."
-            cp -fv overlay/html/* resume-web/html/ || true
+            cp -Rfv overlay/html/. resume-web/html/
           fi
 
           echo "Files in resume-web/html after copy:"
