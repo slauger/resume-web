@@ -52,11 +52,11 @@ jobs:
       - name: Apply theme
         if: env.THEME != ''
         run: |
-          if [ -f "resume-web/themes/${{ env.THEME }}.css" ]; then
-            echo "📦 Applying theme: ${{ env.THEME }}"
-            cp -v "resume-web/themes/${{ env.THEME }}.css" resume-web/html/custom.css
+          if [ -f "resume-web/themes/${THEME}.css" ]; then
+            echo "📦 Applying theme: ${THEME}"
+            cp -v "resume-web/themes/${THEME}.css" resume-web/html/custom.css
           else
-            echo "⚠️  Theme '${{ env.THEME }}' not found, skipping"
+            echo "⚠️  Theme '${THEME}' not found, skipping"
           fi
 
       # 4. Copy your custom files (cv.json, profile.jpg, or custom theme)
