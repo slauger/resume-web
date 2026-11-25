@@ -96,12 +96,12 @@ jobs:
 
       # 6. Deploy to Cloudflare Pages
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: ${{ github.event.repository.name }}  # Uses repository name as project name
-          directory: resume-web/html
+          # Uses the repository name as Cloudflare Pages project name
+          command: pages deploy resume-web/html --project-name=${{ github.event.repository.name }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
 # ──────────────────────────────────────────────────────────────────────

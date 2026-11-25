@@ -139,23 +139,36 @@ jobs:
       deployments: write
     steps:
       - name: Download build artifact
-        uses: actions/upload-artifact/download@v4
+        uses: actions/download-artifact@v4
         with:
           name: resume-build
           path: html
 
+      - name: Validate Cloudflare project name
+        env:
+          PROJECT_NAME: ${{ env.CLOUDFLARE_PROJECT }}
+        run: |
+          if ! printf '%s' "$PROJECT_NAME" | grep -Eq '^[a-z0-9][a-z0-9-]{0,57}$'; then
+            echo "::error::Invalid Cloudflare Pages project name: $PROJECT_NAME"
+            exit 1
+          fi
+
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        id: cloudflare
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: ${{ env.CLOUDFLARE_PROJECT }}
-          directory: html
+          command: pages deploy html --project-name=${{ env.CLOUDFLARE_PROJECT }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deployment successful
+        env:
+          PROJECT_NAME: ${{ env.CLOUDFLARE_PROJECT }}
+          DEPLOYMENT_URL: ${{ steps.cloudflare.outputs.deployment-url }}
         run: |
           echo "🚀 Deployment successful!"
-          echo "📍 Project: ${{ env.CLOUDFLARE_PROJECT }}"
+          echo "📍 Project: $PROJECT_NAME"
+          echo "📍 Deployment: $DEPLOYMENT_URL"
           echo "📍 Your resume should be available at:"
-          echo "   https://${{ env.CLOUDFLARE_PROJECT }}.pages.dev"
+          echo "   https://$PROJECT_NAME.pages.dev"
