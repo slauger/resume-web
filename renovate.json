@@ -3,9 +3,6 @@
   "extends": ["config:recommended", "helpers:pinGitHubActionDigests"],
   "labels": ["dependencies"],
   "minimumReleaseAge": "3 days",
-  "github-actions": {
-    "managerFilePatterns": ["/(^|/)deploy-template\\.yml$/"]
-  },
   "packageRules": [
     {
       "matchManagers": ["github-actions"],

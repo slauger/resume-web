@@ -174,19 +174,13 @@ The `themes/` directory contains ready-to-use color schemes:
 
 Copy the theme to `html/custom.css`, e.g. `cp themes/professional-blue.css html/custom.css`.
 
-If you use the [custom workflow](#advanced-custom-workflow) from `deploy-template.yml`, you can set the `THEME` variable instead:
-```yaml
-env:
-  THEME: 'professional-blue'
-```
-
 See **[themes/README.md](themes/README.md)** for full theme documentation, previews, and customization guide.
 
 ### Custom Color Scheme
 
 You can create your own theme by overriding CSS variables. The design uses a modern color system based on three primary variables that automatically derive all other colors:
 
-**Option 1: Create `themes/custom.css` in your fork** (only with the custom workflow from `deploy-template.yml`):
+Create `html/custom.css` with your colors:
 ```css
 :root {
   --color-primary: #2563eb;      /* Main accent color (blue) */
@@ -194,10 +188,6 @@ You can create your own theme by overriding CSS variables. The design uses a mod
   --color-background: #f8fafc;   /* Page background (light) */
 }
 ```
-
-**Option 2: Create `html/custom.css`** (direct override):
-
-Same CSS as above, just placed in the `html/` directory.
 
 All other colors (badges, buttons, borders, hover states, etc.) are automatically calculated from these three base colors using CSS `color-mix()`.
 
@@ -217,53 +207,9 @@ All other colors (badges, buttons, borders, hover states, etc.) are automaticall
 
 ## 🚀 Deployment with GitHub Actions
 
-This repository includes a ready-to-use GitHub Actions workflow for deploying to Cloudflare Pages with [wrangler](https://github.com/cloudflare/wrangler-action). Forks automatically inherit this workflow. It validates `cv.json` and `cv/*.json` against the JSON schemas before deploying.
+The `Deploy static content to Pages` workflow (`.github/workflows/static.yml`) publishes the `html/` directory to GitHub Pages on every push to `main` and generates the theme screenshots used in this README. Enable GitHub Pages with source **GitHub Actions** in the repository settings to use it in your fork.
 
-### Quick Start (for forks)
-
-1. **Fork this repository**
-
-2. **Set up Cloudflare Pages secrets** in your fork:
-   - Go to **Settings → Secrets and variables → Actions**
-   - Add two repository secrets:
-     - `CLOUDFLARE_API_TOKEN`: Your Cloudflare API token
-     - `CLOUDFLARE_ACCOUNT_ID`: Your Cloudflare account ID
-
-   Get these from: https://dash.cloudflare.com/profile/api-tokens
-   Required permissions: **"Cloudflare Pages - Edit"**
-
-3. **Push to main** - The workflow automatically deploys to `https://{repository-name}.pages.dev`
-
-### Optional Configuration
-
-**Custom Cloudflare Project Name:**
-
-If your Cloudflare Pages project name differs from your repository name:
-
-1. Go to **Settings → Secrets and variables → Actions → Variables**
-2. Add repository variable: `CLOUDFLARE_PROJECT_NAME` = `your-project-name`
-
-**Pin Upstream Version (for forks):**
-
-To pin a specific version of the upstream `slauger/resume-web`:
-
-1. Go to **Actions → Deploy to Cloudflare Pages → Run workflow**
-2. Enter the upstream version:
-   - Git tag: `v1.0.0` (recommended for stability)
-   - Commit SHA: `a1b2c3d4...` (maximum control)
-   - Branch: `main` (auto-updates, not recommended)
-
-Or edit `.github/workflows/deploy.yml` and change:
-```yaml
-env:
-  UPSTREAM_REF: 'v1.0.0'  # Pin to specific tag
-```
-
-Find available tags at: https://github.com/slauger/resume-web/tags
-
-### Advanced: Custom Workflow
-
-For advanced customization, copy `deploy-template.yml` to `.github/workflows/deploy.yml` and modify as needed.
+The `CI` workflow validates `cv.json` and `cv/*.json` against the JSON schemas on every pull request.
 
 ---
 
